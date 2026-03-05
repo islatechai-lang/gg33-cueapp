@@ -13,11 +13,11 @@ import { Compass, TrendingUp, Calendar, Star, Globe, Heart, Loader2, MapPin, Bri
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Link } from 'wouter';
 import { calculateComprehensiveProfile, calculateLifePathNumber } from '@/lib/numerology';
-import { 
-  YearlyForecastDialog, MonthlyForecastDialog, HomePickerDialog, CarsDialog, 
-  LuckyNumberDialog, LetterologyDialog, MatrixNumbersDialog, CueCardsDialog, 
-  DreamInterpreterDialog, EnergyInsightsDialog, ColorologyDialog, 
-  VedicAstrologyDialog, AllAboutYouDialog, SaturnInsightsDialog 
+import {
+  YearlyForecastDialog, MonthlyForecastDialog, HomePickerDialog, CarsDialog,
+  LuckyNumberDialog, LetterologyDialog, MatrixNumbersDialog, CueCardsDialog,
+  DreamInterpreterDialog, EnergyInsightsDialog, ColorologyDialog,
+  VedicAstrologyDialog, AllAboutYouDialog, SaturnInsightsDialog
 } from '@/components/ExploreDialogs';
 const ODIS_ID_KEY = 'gg33-odis-id';
 
@@ -1127,7 +1127,7 @@ export default function Explore() {
                     <AlertCircle className="w-5 h-5 text-amber-9" />
                     <div>
                       <div className="font-medium">Create your profile for personalized features</div>
-                      <div className="text-sm text-gray-11">Unlock all 6 explore features with your birth date</div>
+                      <div className="text-sm text-gray-11">Unlock all 20 explore features with your birth date</div>
                     </div>
                   </div>
                   <Link href="/">

@@ -6,6 +6,7 @@ import { generatePersonalityInsights, generateDailyEnergy, generateCompatibility
 import { parsedCues, totalCuesCount, type ParsedCue } from "./cuesData";
 import { Resend } from 'resend';
 import { parseUTCDate } from '../shared/dateUtils';
+import { reduceToSingleDigit, getLifePath, getVedicNakshatra, pythagorean } from './exploreUtils';
 
 export async function registerRoutes(
   httpServer: Server,
@@ -615,16 +616,21 @@ export async function registerRoutes(
     }
   });
 
-  // --- NEW EXPLORE ENDPOINTS ---
   app.get("/api/explore/yearly-forecast/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const year = new Date().getFullYear();
     const l = parseInt(lifePath) || 1;
-    const personalYearNumber = ((l + year) % 9) || 9;
+    // Accurate Personal Year: sum of birth month + birth day (reduced) + current year (reduced)
+    // Since we only have Life Path (which is month + day + year), we can approximate by:
+    // Personal Year = reduced(Month + Day + CurrentYear)
+    // Mathematical shortcut if we only know LP: PersonalYear = reduced(LP - reduced(BirthYear) + reduced(CurrentYear))
+    // To make it simple and deterministic given just LP, we use a standard progression:
+    const personalYearNumber = reduceToSingleDigit(l + reduceToSingleDigit(year));
+
     res.json({
       year,
       personalYearNumber,
-      title: `The Year of ${personalYearNumber === 1 ? 'New Beginnings' : personalYearNumber === 9 ? 'Completion' : personalYearNumber === 4 ? 'Foundation' : 'Growth'}`,
+      title: `The Year of ${personalYearNumber === 1 ? 'New Beginnings' : personalYearNumber === 9 ? 'Completion' : personalYearNumber === 4 ? 'Foundation' : personalYearNumber === 8 ? 'Abundance' : 'Growth'}`,
       description: `This year brings a powerful shift in your energetic resonance. With a Personal Year number of ${personalYearNumber}, you are entering a cycle focused on overarching growth aligned with your Life Path ${l}. Prepare to shed old patterns and embrace incoming cosmic opportunities.`,
       quarters: [
         { quarter: 'Q1 (Jan-Mar)', theme: 'Planting Seeds', advice: 'Focus on setting intentions and initiating new connections.' },
@@ -641,16 +647,20 @@ export async function registerRoutes(
     const d = new Date();
     const month = d.getMonth() + 1;
     const year = d.getFullYear();
-    const personalYearNumber = ((l + year) % 9) || 9;
-    const personalMonthNumber = ((personalYearNumber + month) % 9) || 9;
+    const personalYearNumber = reduceToSingleDigit(l + reduceToSingleDigit(year));
+    const personalMonthNumber = reduceToSingleDigit(personalYearNumber + month);
 
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     res.json({
       monthName: months[month - 1],
       personalMonthNumber,
-      summary: `This month your energy peaks in areas of communication and self-expression. The vibration of ${personalMonthNumber} perfectly complements your Life Path ${l}.`,
-      opportunities: ['Networking with high-vibration individuals', 'Creative breakthroughs in stagnant projects', 'Healing past relationship wounds'],
+      summary: `This month your energy peaks around the frequency of ${personalMonthNumber}. This vibration perfectly complements your Life Path ${l}'s natural rhythm.`,
+      opportunities: [
+        personalMonthNumber === 1 ? 'Starting new ventures' : personalMonthNumber === 2 ? 'Forming deep partnerships' : 'Creative expression',
+        'Networking with high-vibration individuals',
+        'Healing past relationship wounds'
+      ],
       challenges: ['Over-committing your energy', 'Ignoring intuitive red flags', 'Financial impulsivity']
     });
   });
@@ -659,35 +669,69 @@ export async function registerRoutes(
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
 
+    let envs = [];
+    if ([1, 5, 8].includes(l)) {
+      envs = [{ type: 'Bustling City Centers', description: 'Provides the high-tempo and business opportunity your nervous system craves.' }, { type: 'Modern Lofts', description: 'Clean geometry and open space.' }];
+    } else if ([2, 6, 9].includes(l)) {
+      envs = [{ type: 'Serene Suburbs', description: 'Allows you to build deep community and family roots.' }, { type: 'Nature-Adjacent', description: 'Near parks or water to soothe your empathetic field.' }];
+    } else if ([3, 33].includes(l)) {
+      envs = [{ type: 'Artistic Districts', description: 'Inspires your immense need for creative output.' }, { type: 'Vibrant Communities', description: 'Keeps your social energy high.' }];
+    } else {
+      envs = [{ type: 'Mountain & Grounded', description: 'Aligns with your analytical and structural soul urge.' }, { type: 'Quiet Retreats', description: 'Provides solitude for deep work.' }];
+    }
+
     res.json({
       overview: `Your Life Path ${l} thrives in environments that balance stimulation with grounding. The energetic blueprint of your ideal home requires a specific mathematical resonance.`,
-      environments: [
-        { type: l % 2 === 0 ? 'Serene Suburbs' : 'Bustling City Centers', description: 'Provides the exact tempo your nervous system needs.' },
-        { type: l > 5 ? 'Coastal & Intuitive' : 'Mountain & Grounded', description: 'Aligns with your elemental soul urge.' }
-      ],
-      goodHouseNumbers: [l, (l + 2) % 9 || 9, (l + 4) % 9 || 9, 11, 22].filter((v, i, a) => a.indexOf(v) === i)
+      environments: envs,
+      goodHouseNumbers: [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i)
     });
   });
 
   app.get("/api/explore/cars/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
+
+    let types = [];
+    let colors = [];
+
+    if ([1, 8].includes(l)) {
+      types = [{ category: 'Luxury Sedans', reason: 'Matches your need for executive presence.', examples: ['Mercedes S-Class', 'BMW 7 Series'] }, { category: 'Sport Cars', reason: 'Fulfills your desire for speed and leadership.', examples: ['Porsche 911'] }];
+      colors = ['Obsidian Black', 'Chrome Silver', 'Deep Crimson'];
+    } else if ([4, 22].includes(l)) {
+      types = [{ category: 'Reliable SUVs', reason: 'Provides the structure and safety you seek.', examples: ['Toyota Land Cruiser', 'Volvo XC90'] }, { category: 'Practical Sedans', reason: 'Logical and efficient.', examples: ['Honda Accord'] }];
+      colors = ['Earthy Brown', 'Forest Green', 'Slate Grey'];
+    } else if ([5].includes(l)) {
+      types = [{ category: 'Off-Road / Adventure', reason: 'Accommodates your sudden urges to travel.', examples: ['Jeep Wrangler', 'Ford Bronco'] }, { category: 'Convertibles', reason: 'Gives you the feeling of absolute freedom.', examples: ['Mazda MX-5'] }];
+      colors = ['Electric Blue', 'Vibrant Yellow', 'Metallic Silver'];
+    } else {
+      types = [{ category: 'Eco/Electric', reason: 'Resonates with your conscious and caring vibration.', examples: ['Tesla Model Y', 'Lucid Air'] }, { category: 'Comfort Cruisers', reason: 'A peaceful sanctuary on wheels.', examples: ['Lexus ES'] }];
+      colors = ['Pearl White', 'Sapphire Blue', 'Soft Lavender'];
+    }
+
     res.json({
       overview: `A vehicle is an extension of your aura. For Life Path ${l}, your car needs to reflect your inner drive and provide the right energetic protection on the road.`,
-      types: [
-        { category: l % 2 === 0 ? 'Luxury Sedans' : 'Sport SUVs', reason: 'Matches your need for presence and stability.', examples: ['Mercedes E-Class', 'Range Rover Sport', 'Porsche Macan'] },
-        { category: l > 5 ? 'Eco/Electric' : 'Classic Muscle', reason: 'Resonates with your conscious or bold vibration.', examples: ['Tesla Model S', 'Ford Mustang', 'Lucid Air'] }
-      ],
-      colors: ['Obsidian Black', 'Pearl White', 'Deep Crimson', 'Sapphire Blue'].slice(0, (l % 3) + 2)
+      types,
+      colors
     });
   });
 
   app.get("/api/explore/lucky-number/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
+
+    // Primary is often the life path itself, or its reduced form if master
+    const primary = l;
+
+    // Secondary numbers derived mathematically without overlapping the primary
+    const secondary = [
+      l === 1 ? 8 : reduceToSingleDigit(l + 7),
+      reduceToSingleDigit(l * 2) === l ? reduceToSingleDigit(l + 3) : reduceToSingleDigit(l * 2),
+      l === 9 ? 3 : reduceToSingleDigit(l + 4)
+    ].filter((v, i, a) => a.indexOf(v) === i && v !== primary);
+
     res.json({
-      primary: l === 11 || l === 22 || l === 33 ? l : (l * 3 % 9) || 9,
-      secondary: [l + 7, l * 2, (l * 4 % 9) || 9].map(n => n > 31 ? n % 31 : n),
+      primary,
+      secondary,
       howToUse: 'Write your primary number on a piece of paper and keep it in your wallet. Use your secondary numbers when selecting dates, flight seat assignments, or times to initiate important emails.'
     });
   });
@@ -696,11 +740,11 @@ export async function registerRoutes(
     const name = typeof req.query.name === 'string' ? req.query.name : 'Unknown';
     const cleanName = name.replace(/[^a-zA-Z]/g, '').toUpperCase();
     const letters = cleanName.split('').map(char => {
-      const val = (char.charCodeAt(0) - 64) % 9 || 9;
+      const val = pythagorean[char] || 0;
       return { char, value: val };
     });
 
-    if (letters.length === 0) {
+    if (letters.length === 0 || letters[0].value === 0) {
       return res.json({
         letters: [{ char: 'A', value: 1 }],
         cornerstone: { char: 'A', meaning: 'Originality and leadership' },
@@ -713,11 +757,11 @@ export async function registerRoutes(
       letters: letters.slice(0, 10), // Limit for UI display
       cornerstone: {
         char: letters[0].char,
-        meaning: `The cornerstone '${letters[0].char}' dictates how you approach opportunities and obstacles. You are likely a self-starter.`
+        meaning: `The cornerstone '${letters[0].char}' dictates how you approach opportunities and obstacles. Based on its value of ${letters[0].value}, you initiate with ${letters[0].value === 1 ? 'leadership and original ideas' : letters[0].value === 2 ? 'tact and diplomacy' : letters[0].value === 3 ? 'creative expression' : letters[0].value === 4 ? 'methodical planning' : letters[0].value === 8 ? 'executive power' : 'a unique energetic frequency'}.`
       },
       capstone: {
         char: letters[letters.length - 1].char,
-        meaning: `The capstone '${letters[letters.length - 1].char}' reveals your attitude towards finishing projects.`
+        meaning: `The capstone '${letters[letters.length - 1].char}' (value ${letters[letters.length - 1].value}) reveals your attitude towards finishing projects. It is how you cap off your endeavors.`
       },
       summary: `The vibrational sequence of your name creates a powerful frequency. When people speak your name, they invoke a ${letters[0].value}-${letters[letters.length - 1].value} energy bridge.`
     });
@@ -727,11 +771,11 @@ export async function registerRoutes(
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
     res.json({
-      sequence: [l, (l * 2 % 9) || 9, (l * 4 % 9) || 9, 11, 33],
+      sequence: [l, reduceToSingleDigit(l * 2, true), reduceToSingleDigit(l * 4, true), 11, 33],
       meaning: `This specific esoteric sequence connects your earthly Life Path ${l} to the higher dimensions. It represents the mathematical underlying structure of your soul's journey in this incarnation.`,
       nodes: [
         { number: l, title: 'The Anchor', description: 'Your base earthly vibration.' },
-        { number: (l * 2 % 9) || 9, title: 'The Catalyst', description: 'Forces sudden growth and shifts.' },
+        { number: reduceToSingleDigit(l * 2, true), title: 'The Catalyst', description: 'Forces sudden growth and shifts.' },
         { number: 33, title: 'The Zenith', description: 'Your highest potential state.' }
       ]
     });
@@ -785,42 +829,80 @@ export async function registerRoutes(
   app.get("/api/explore/colorology/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
+
+    let colors = [];
+    if ([1, 9].includes(l)) {
+      colors = [
+        { name: 'Crimson Red', hex: '#DC143C', usage: 'Wear during important meetings', benefit: 'Enhances absolute authority and courage.' },
+        { name: 'Gold', hex: '#FFD700', usage: 'Decorate your workspace', benefit: 'Stimulates financial flow and confidence.' }
+      ];
+    } else if ([2, 6].includes(l)) {
+      colors = [
+        { name: 'Soft Indigo', hex: '#4B0082', usage: 'Wear during deep conversations', benefit: 'Enhances intuition and emotional connection.' },
+        { name: 'Seafoam Green', hex: '#20B2AA', usage: 'Use in your bedroom', benefit: 'Promotes deep healing and peace.' }
+      ];
+    } else if ([3, 5].includes(l)) {
+      colors = [
+        { name: 'Vibrant Yellow', hex: '#FFFF00', usage: 'Wear when socializing', benefit: 'Magnetizes people to your energy field and enhances joy.' },
+        { name: 'Electric Blue', hex: '#7DF9FF', usage: 'Use for creative endeavors', benefit: 'Stimulates rapid communication and ideation.' }
+      ];
+    } else if ([4, 8].includes(l)) {
+      colors = [
+        { name: 'Forest Green', hex: '#228B22', usage: 'Wear when handling finances', benefit: 'Grounds your energy into material reality.' },
+        { name: 'Earth Brown', hex: '#8B4513', usage: 'Decorate your home', benefit: 'Provides stability and structural strength.' }
+      ];
+    } else {
+      colors = [
+        { name: 'Amethyst', hex: '#9966CC', usage: 'Wear during meditation', benefit: 'Connects you to higher spiritual realms.' },
+        { name: 'Pearl White', hex: '#F0EAD6', usage: 'Use anywhere', benefit: 'Purifies your aura from lower vibrations.' }
+      ];
+    }
+
     res.json({
       overview: `Colors are simply visible frequencies. For Life Path ${l}, wearing or surrounding yourself with these specific wavelengths hacks your energetic state.`,
-      colors: [
-        { name: 'Indigo', hex: '#4B0082', usage: 'Wear during important meetings', benefit: 'Enhances absolute authority and deep intuition.' },
-        { name: 'Emerald', hex: '#50C878', usage: 'Decorate your workspace', benefit: 'Stimulates financial flow and emotional equilibrium.' },
-        { name: l % 2 === 0 ? 'Soft Coral' : 'Vibrant Orange', hex: l % 2 === 0 ? '#F88379' : '#FF5F1F', usage: 'Wear when networking or socializing', benefit: 'Magnetizes people to your energy field.' }
-      ]
+      colors
     });
   });
 
   app.get("/api/explore/vedic-astrology/:birthDate", (req, res) => {
-    res.json({
-      nakshatra: 'Ashwini (The Star of Transport)',
-      deity: 'Ashwini Kumaras (Physicians of the Gods)',
-      traits: ['Pioneer Spirit', 'Rapid Healer', 'Restless Energy', 'Direct Communication'],
-      karmicPath: 'Your soul incarnated to initiate new cycles. Your biggest karmic block is impatience. You must learn that rapid starts require sustained discipline to yield mastery.'
-    });
+    const birthDate = new Date(req.params.birthDate);
+    const result = getVedicNakshatra(isNaN(birthDate.getTime()) ? new Date() : birthDate);
+    res.json(result);
   });
 
   app.get("/api/explore/all-about-you/:odisId", async (req, res) => {
     const { odisId } = req.params;
     const user = await storage.getUserByOdisId(odisId);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user || !user.birthDate) return res.status(404).json({ error: "User or birth data not found" });
+
+    // Assuming we have the numerology functions available to calculate this properly
+    // We already have some logic in gemini.ts for this, but let's do a fast generation here
+    const birthDate = new Date(user.birthDate);
+    const lifePath = getLifePath(birthDate);
+
+    // Archetype and element
+    let archetype = 'The Pioneer';
+    let element = 'Fire';
+    let easternDesc = 'Independent and dynamic.';
+
+    if ([2, 6].includes(lifePath)) { archetype = 'The Healer'; element = 'Water'; easternDesc = 'Deeply feeling and deeply caring.'; }
+    if ([3, 5].includes(lifePath)) { archetype = 'The Communicator'; element = 'Air'; easternDesc = 'Rapid intellect and social charm.'; }
+    if ([4, 8].includes(lifePath)) { archetype = 'The Builder'; element = 'Earth'; easternDesc = 'Structural mastery and material success.'; }
+    if ([7, 9].includes(lifePath)) { archetype = 'The Mystic Seeker'; element = 'Aether'; easternDesc = 'Philosophical depth and spiritual connection.'; }
+    if ([11, 22, 33].includes(lifePath)) { archetype = 'The Master Teacher'; element = 'Spirit'; easternDesc = 'Incarnated for global impact and paradigm shifts.'; }
 
     res.json({
-      fullName: user.fullName,
-      lifePath: 7, // Mocked for speed
-      archetype: 'The Mystic Seeker',
-      chineseZodiac: 'Wood Dragon',
-      easternDescription: 'Fiercely independent with a natural propensity for leadership and esoteric arts.',
-      element: 'Water',
-      summaryDirective: 'To bridge the gap between the material world and the unseen spiritual dimensions, utilizing analytical depth and intuitive grace.',
+      fullName: user.fullName || odisId,
+      lifePath,
+      archetype,
+      chineseZodiac: ['Monkey', 'Rooster', 'Dog', 'Pig', 'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake', 'Horse', 'Sheep'][birthDate.getUTCFullYear() % 12],
+      easternDescription: easternDesc,
+      element,
+      summaryDirective: `To align your earthly actions with the higher frequency of ${archetype}, using your core ${element} energy.`,
       pillars: [
-        { title: 'Destiny', value: '7', subtitle: 'The Seeker' },
-        { title: 'Soul', value: '11', subtitle: 'The Illuminator' },
-        { title: 'Personality', value: '5', subtitle: 'The Adventurer' }
+        { title: 'Destiny', value: lifePath.toString(), subtitle: archetype },
+        { title: 'Soul Urge', value: 'varies', subtitle: 'Inner Desire' }, // Would need full calculation
+        { title: 'Personality', value: 'varies', subtitle: 'Outer Expression' }
       ]
     });
   });
@@ -830,16 +912,30 @@ export async function registerRoutes(
     const age = new Date().getFullYear() - birthYear;
     let state = 'Pre-Return';
     if (age >= 28 && age <= 30) state = 'Active Saturn Return';
-    if (age > 30 && age < 58) state = 'Post-Return Integration';
-    if (age >= 58 && age <= 60) state = 'Second Saturn Return';
+    if (age > 30 && age < 56) state = 'Post-Return Integration';
+    if (age >= 56 && age <= 60) state = 'Second Saturn Return';
+    if (age > 60) state = 'Saturn Mastery';
+
+    let headline = 'The Great Taskmaster';
+    let overview = `Saturn represents karma, discipline, and boundaries. Your relationship with Saturn dictates how easily you manifest your goals in the dense 3D reality.`;
+    let lesson = 'You are learning to transmute chaos into structure. Saturn is forcing you to take radical responsibility for your own energetic boundaries.';
+    let reward = 'Indestructible self-trust, mastery over your chosen field, and generational wealth alignment.';
+
+    if (state === 'Active Saturn Return') {
+      headline = 'The Crucible of Adulthood';
+      overview = 'You are currently in the eye of the storm. Saturn is stripping away everything that is not aligned with your true soul contract.';
+    } else if (state === 'Second Saturn Return') {
+      headline = 'The Master Phase';
+      overview = 'Saturn is checking your homework. This is a time of incredible harvest, assuming you integrated the lessons of your first return.';
+    }
 
     res.json({
       state,
-      headline: 'The Great Taskmaster',
-      overview: `Saturn represents karma, discipline, and boundaries. Your relationship with Saturn dictates how easily you manifest your goals in the dense 3D reality.`,
-      lesson: 'You are learning to transmute chaos into structure. Saturn is forcing you to take radical responsibility for your own energetic boundaries.',
-      reward: 'Indestructible self-trust, mastery over your chosen field, and generational wealth alignment.',
-      nextMilestoneYear: new Date().getFullYear() + ((29 - (age % 29)) % 29 || 29),
+      headline,
+      overview,
+      lesson,
+      reward,
+      nextMilestoneYear: new Date().getFullYear() + ((29.5 - (age % 29.5)) % 29.5 || 29.5).toFixed(0),
       nextMilestoneEvent: 'Major karmic review and structural upgrade of your life path.'
     });
   });
