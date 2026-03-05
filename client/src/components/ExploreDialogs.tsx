@@ -13,6 +13,26 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+function FormattedMessage({ text }: { text: string }) {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return (
+        <>
+            {parts.map((part, i) => {
+                if (part.startsWith('**') && part.endsWith('**')) {
+                    const content = part.slice(2, -2);
+                    return (
+                        <span key={i} className="font-black text-amber-11 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)] mx-0.5">
+                            {content}
+                        </span>
+                    );
+                }
+                return part;
+            })}
+        </>
+    );
+}
+
 function AIFeatureChat({ endpoint, payload, placeholder = "Ask Gemini...", buttonText = "Analyze", isTextarea = false }: { endpoint: string, payload: any, placeholder?: string, buttonText?: string, isTextarea?: boolean }) {
     const [input, setInput] = useState('');
 
@@ -42,8 +62,8 @@ function AIFeatureChat({ endpoint, payload, placeholder = "Ask Gemini...", butto
 
                 {chatMutation.data ? (
                     <div className="space-y-4">
-                        <div className="p-4 bg-gray-a2 border border-amber-a4 rounded-lg rounded-tr-none ml-6 text-sm leading-relaxed text-gray-12 shadow-sm">
-                            {chatMutation.data}
+                        <div className="p-5 bg-background border border-amber-500/30 rounded-xl rounded-tr-none ml-6 text-sm leading-relaxed text-gray-12 shadow-inner whitespace-pre-wrap">
+                            <FormattedMessage text={chatMutation.data} />
                         </div>
                         <Button variant="outline" size="sm" onClick={() => { setInput(''); chatMutation.reset(); }} className="w-full">Ask Another Question</Button>
                     </div>
