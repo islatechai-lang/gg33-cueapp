@@ -3,17 +3,18 @@ import { NavLink } from '@/components/NavLink';
 import { Button } from '@/components/ui/button';
 import { UpgradeModal } from '@/components/UpgradeModal';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  Compass, 
-  LayoutDashboard, 
-  Users, 
-  Database, 
-  MessageCircle, 
+import {
+  Compass,
+  LayoutDashboard,
+  Users,
+  Database,
+  MessageCircle,
   BookOpen,
   Menu,
   X,
   Crown
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 interface MembershipInfo {
   hasMembership: boolean;
@@ -77,6 +78,11 @@ export function Navigation() {
                 >
                   <item.icon className="w-4 h-4 flex-shrink-0" />
                   {item.label}
+                  {item.to === '/explore' && (
+                    <Badge className="ml-1 bg-red-9 text-white border-none px-1.5 py-0 h-4 text-[9px] font-black uppercase tracking-tighter shadow-sm shadow-red-9/20">
+                      Hot
+                    </Badge>
+                  )}
                 </NavLink>
               ))}
             </div>
@@ -89,10 +95,10 @@ export function Navigation() {
                   <span className="text-2 font-medium text-amber-11">Pro</span>
                 </div>
               ) : (
-                <Button 
-                  variant="gold" 
-                  size="sm" 
-                  className="hidden sm:flex" 
+                <Button
+                  variant="gold"
+                  size="sm"
+                  className="hidden sm:flex"
                   onClick={handleUpgradeClick}
                   data-testid="button-upgrade"
                 >
@@ -125,7 +131,12 @@ export function Navigation() {
                     data-testid={`mobile-link-${item.label.toLowerCase().replace(/\s/g, '-')}`}
                   >
                     <item.icon className="w-5 h-5" />
-                    {item.label}
+                    <span className="flex-1">{item.label}</span>
+                    {item.to === '/explore' && (
+                      <Badge className="bg-red-9 text-white border-none px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter">
+                        Hot
+                      </Badge>
+                    )}
                   </NavLink>
                 ))}
                 {isPro ? (
@@ -134,9 +145,9 @@ export function Navigation() {
                     <span className="text-3 font-medium text-amber-11">Pro Member</span>
                   </div>
                 ) : (
-                  <Button 
-                    variant="gold" 
-                    className="mt-4" 
+                  <Button
+                    variant="gold"
+                    className="mt-4"
                     onClick={handleUpgradeClick}
                     data-testid="button-mobile-upgrade"
                   >

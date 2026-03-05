@@ -1183,14 +1183,14 @@ export default function Explore() {
                     <div className="flex items-center gap-2">
                       <div className="flex flex-col items-end gap-1">
                         <div className="flex items-center gap-2">
-                          {(item as any).isNew && (
-                            <Badge className="bg-amber-9 text-white border-none animate-pulse px-2 py-0 h-5 text-[10px] font-black uppercase tracking-tighter">
-                              New
-                            </Badge>
-                          )}
                           <Badge variant="outline" className="bg-amber-a2 text-amber-11 border-amber-a4 px-2 py-0 h-5 text-[10px] font-bold uppercase tracking-wider">
                             {item.tag}
                           </Badge>
+                          {(item as any).isNew && (
+                            <Badge className="bg-amber-9 text-white border-none px-2 py-0 h-5 text-[10px] font-black uppercase tracking-tighter">
+                              New
+                            </Badge>
+                          )}
                         </div>
                         {profileLoaded && item.requiresProfile && !hasProfile && (
                           <Badge variant="outline" size="sm" className="text-[10px] opacity-70 border-dashed">
