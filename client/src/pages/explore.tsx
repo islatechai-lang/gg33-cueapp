@@ -9,14 +9,19 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { UpgradeModal } from '@/components/UpgradeModal';
-import { Compass, TrendingUp, Calendar, Star, Globe, Heart, Loader2, MapPin, Briefcase, Users, Check, AlertCircle, X, Lock, Crown } from 'lucide-react';
+import { Compass, TrendingUp, Calendar, Star, Globe, Heart, Loader2, MapPin, Briefcase, Users, Check, AlertCircle, X, Lock, Crown, CalendarDays, CalendarRange, Home, Car, Hash, Type, Grid, Square, Moon, Zap, Palette, Sun, UserCircle, CircleDashed } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Link } from 'wouter';
 import { calculateComprehensiveProfile, calculateLifePathNumber } from '@/lib/numerology';
-
+import { 
+  YearlyForecastDialog, MonthlyForecastDialog, HomePickerDialog, CarsDialog, 
+  LuckyNumberDialog, LetterologyDialog, MatrixNumbersDialog, CueCardsDialog, 
+  DreamInterpreterDialog, EnergyInsightsDialog, ColorologyDialog, 
+  VedicAstrologyDialog, AllAboutYouDialog, SaturnInsightsDialog 
+} from '@/components/ExploreDialogs';
 const ODIS_ID_KEY = 'gg33-odis-id';
 
-type FeatureType = 'trending' | 'best-days' | 'celebrity' | 'travel' | 'relationship' | 'career' | null;
+type FeatureType = 'trending' | 'best-days' | 'celebrity' | 'travel' | 'relationship' | 'career' | 'yearly-forecast' | 'monthly-forecast' | 'home-picker' | 'cars' | 'lucky-number' | 'letterology' | 'matrix-numbers' | 'cue-cards' | 'dream-interpreter' | 'energy-insights' | 'colorology' | 'vedic-astrology' | 'all-about-you' | 'saturn-insights' | null;
 
 interface ProfileData {
   odisId: string;
@@ -73,6 +78,118 @@ const explorations = [
     description: 'Industries and roles that match your energy',
     icon: Compass,
     tag: 'Career',
+    requiresProfile: true,
+  },
+  {
+    id: 'yearly-forecast' as FeatureType,
+    title: 'Yearly Forecast',
+    description: 'Cosmic themes and cycles for your year ahead',
+    icon: CalendarDays,
+    tag: 'Planning',
+    requiresProfile: true,
+  },
+  {
+    id: 'monthly-forecast' as FeatureType,
+    title: 'Monthly Forecast',
+    description: 'Detailed monthly predictions and guidance',
+    icon: CalendarRange,
+    tag: 'Planning',
+    requiresProfile: true,
+  },
+  {
+    id: 'home-picker' as FeatureType,
+    title: 'Home Picker',
+    description: 'Find places to live that match your vibe',
+    icon: Home,
+    tag: 'Lifestyle',
+    requiresProfile: true,
+  },
+  {
+    id: 'cars' as FeatureType,
+    title: 'Cars',
+    description: 'Vehicles that align with your energetic signature',
+    icon: Car,
+    tag: 'Lifestyle',
+    requiresProfile: true,
+  },
+  {
+    id: 'lucky-number' as FeatureType,
+    title: 'Lucky Numbers',
+    description: 'Your personal numbers for manifestation',
+    icon: Hash,
+    tag: 'Fun',
+    requiresProfile: true,
+  },
+  {
+    id: 'letterology' as FeatureType,
+    title: 'Letterology',
+    description: 'The hidden meaning behind the letters in your name',
+    icon: Type,
+    tag: 'Insights',
+    requiresProfile: true,
+  },
+  {
+    id: 'matrix-numbers' as FeatureType,
+    title: 'Matrix Numbers',
+    description: 'Decode your personal matrix sequence',
+    icon: Grid,
+    tag: 'Insights',
+    requiresProfile: true,
+  },
+  {
+    id: 'cue-cards' as FeatureType,
+    title: 'Cue Cards',
+    description: 'Draw daily cards for immediate guidance',
+    icon: Square,
+    tag: 'Spirit',
+    requiresProfile: false,
+  },
+  {
+    id: 'dream-interpreter' as FeatureType,
+    title: 'Dream Interpreter',
+    description: 'Understand your subconscious messages',
+    icon: Moon,
+    tag: 'Spirit',
+    requiresProfile: false,
+  },
+  {
+    id: 'energy-insights' as FeatureType,
+    title: 'Energy Insights',
+    description: 'Deep dive into your core energetic makeup',
+    icon: Zap,
+    tag: 'Insights',
+    requiresProfile: true,
+  },
+  {
+    id: 'colorology' as FeatureType,
+    title: 'Colorology',
+    description: 'Colors that boost your aura and success',
+    icon: Palette,
+    tag: 'Fun',
+    requiresProfile: true,
+  },
+  {
+    id: 'vedic-astrology' as FeatureType,
+    title: 'Vedic Astrology',
+    description: 'Ancient Eastern astrological wisdom for you',
+    icon: Sun,
+    tag: 'Insights',
+    requiresProfile: true,
+  },
+  {
+    id: 'all-about-you' as FeatureType,
+    title: 'All About You',
+    description: 'Comprehensive summary of your cosmic DNA',
+    icon: UserCircle,
+    tag: 'Profile',
+    requiresProfile: true,
+  },
+  {
+    id: 'saturn-insights' as FeatureType,
+    title: 'Saturn Insights',
+    description: 'Lessons and karmic cycles of your Saturn return',
+    icon: CircleDashed,
+    tag: 'Insights',
     requiresProfile: true,
   },
 ];
@@ -1108,6 +1225,90 @@ export default function Explore() {
         open={activeFeature === 'career'}
         onClose={handleCloseDialog}
         lifePathNumber={lifePathNumber}
+      />
+
+      <YearlyForecastDialog
+        open={activeFeature === 'yearly-forecast'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <MonthlyForecastDialog
+        open={activeFeature === 'monthly-forecast'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <HomePickerDialog
+        open={activeFeature === 'home-picker'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <CarsDialog
+        open={activeFeature === 'cars'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <LuckyNumberDialog
+        open={activeFeature === 'lucky-number'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <LetterologyDialog
+        open={activeFeature === 'letterology'}
+        onClose={handleCloseDialog}
+        profileData={profileData}
+      />
+
+      <MatrixNumbersDialog
+        open={activeFeature === 'matrix-numbers'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <CueCardsDialog
+        open={activeFeature === 'cue-cards'}
+        onClose={handleCloseDialog}
+      />
+
+      <DreamInterpreterDialog
+        open={activeFeature === 'dream-interpreter'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <EnergyInsightsDialog
+        open={activeFeature === 'energy-insights'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+        energySignature={energySignature}
+      />
+
+      <ColorologyDialog
+        open={activeFeature === 'colorology'}
+        onClose={handleCloseDialog}
+        lifePathNumber={lifePathNumber}
+      />
+
+      <VedicAstrologyDialog
+        open={activeFeature === 'vedic-astrology'}
+        onClose={handleCloseDialog}
+        birthDate={birthDate}
+      />
+
+      <AllAboutYouDialog
+        open={activeFeature === 'all-about-you'}
+        onClose={handleCloseDialog}
+        profileData={profileData}
+      />
+
+      <SaturnInsightsDialog
+        open={activeFeature === 'saturn-insights'}
+        onClose={handleCloseDialog}
+        birthDate={birthDate}
       />
 
       {showProfilePrompt && (

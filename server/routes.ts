@@ -615,6 +615,236 @@ export async function registerRoutes(
     }
   });
 
+  // --- NEW EXPLORE ENDPOINTS ---
+  app.get("/api/explore/yearly-forecast/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const year = new Date().getFullYear();
+    const l = parseInt(lifePath) || 1;
+    const personalYearNumber = ((l + year) % 9) || 9;
+    res.json({
+      year,
+      personalYearNumber,
+      title: `The Year of ${personalYearNumber === 1 ? 'New Beginnings' : personalYearNumber === 9 ? 'Completion' : personalYearNumber === 4 ? 'Foundation' : 'Growth'}`,
+      description: `This year brings a powerful shift in your energetic resonance. With a Personal Year number of ${personalYearNumber}, you are entering a cycle focused on overarching growth aligned with your Life Path ${l}. Prepare to shed old patterns and embrace incoming cosmic opportunities.`,
+      quarters: [
+        { quarter: 'Q1 (Jan-Mar)', theme: 'Planting Seeds', advice: 'Focus on setting intentions and initiating new connections.' },
+        { quarter: 'Q2 (Apr-Jun)', theme: 'Cultivation', advice: 'Nurture your projects. Patience is your strongest asset now.' },
+        { quarter: 'Q3 (Jul-Sep)', theme: 'Harvest & Tests', advice: 'You will see the fruits of your labor, but expect unexpected challenges.' },
+        { quarter: 'Q4 (Oct-Dec)', theme: 'Reflection', advice: 'Review the year, consolidate your gains, and prepare for the next cycle.' }
+      ]
+    });
+  });
+
+  app.get("/api/explore/monthly-forecast/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    const d = new Date();
+    const month = d.getMonth() + 1;
+    const year = d.getFullYear();
+    const personalYearNumber = ((l + year) % 9) || 9;
+    const personalMonthNumber = ((personalYearNumber + month) % 9) || 9;
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    res.json({
+      monthName: months[month - 1],
+      personalMonthNumber,
+      summary: `This month your energy peaks in areas of communication and self-expression. The vibration of ${personalMonthNumber} perfectly complements your Life Path ${l}.`,
+      opportunities: ['Networking with high-vibration individuals', 'Creative breakthroughs in stagnant projects', 'Healing past relationship wounds'],
+      challenges: ['Over-committing your energy', 'Ignoring intuitive red flags', 'Financial impulsivity']
+    });
+  });
+
+  app.get("/api/explore/home-picker/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+
+    res.json({
+      overview: `Your Life Path ${l} thrives in environments that balance stimulation with grounding. The energetic blueprint of your ideal home requires a specific mathematical resonance.`,
+      environments: [
+        { type: l % 2 === 0 ? 'Serene Suburbs' : 'Bustling City Centers', description: 'Provides the exact tempo your nervous system needs.' },
+        { type: l > 5 ? 'Coastal & Intuitive' : 'Mountain & Grounded', description: 'Aligns with your elemental soul urge.' }
+      ],
+      goodHouseNumbers: [l, (l + 2) % 9 || 9, (l + 4) % 9 || 9, 11, 22].filter((v, i, a) => a.indexOf(v) === i)
+    });
+  });
+
+  app.get("/api/explore/cars/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    res.json({
+      overview: `A vehicle is an extension of your aura. For Life Path ${l}, your car needs to reflect your inner drive and provide the right energetic protection on the road.`,
+      types: [
+        { category: l % 2 === 0 ? 'Luxury Sedans' : 'Sport SUVs', reason: 'Matches your need for presence and stability.', examples: ['Mercedes E-Class', 'Range Rover Sport', 'Porsche Macan'] },
+        { category: l > 5 ? 'Eco/Electric' : 'Classic Muscle', reason: 'Resonates with your conscious or bold vibration.', examples: ['Tesla Model S', 'Ford Mustang', 'Lucid Air'] }
+      ],
+      colors: ['Obsidian Black', 'Pearl White', 'Deep Crimson', 'Sapphire Blue'].slice(0, (l % 3) + 2)
+    });
+  });
+
+  app.get("/api/explore/lucky-number/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    res.json({
+      primary: l === 11 || l === 22 || l === 33 ? l : (l * 3 % 9) || 9,
+      secondary: [l + 7, l * 2, (l * 4 % 9) || 9].map(n => n > 31 ? n % 31 : n),
+      howToUse: 'Write your primary number on a piece of paper and keep it in your wallet. Use your secondary numbers when selecting dates, flight seat assignments, or times to initiate important emails.'
+    });
+  });
+
+  app.get("/api/explore/letterology", (req, res) => {
+    const name = typeof req.query.name === 'string' ? req.query.name : 'Unknown';
+    const cleanName = name.replace(/[^a-zA-Z]/g, '').toUpperCase();
+    const letters = cleanName.split('').map(char => {
+      const val = (char.charCodeAt(0) - 64) % 9 || 9;
+      return { char, value: val };
+    });
+
+    if (letters.length === 0) {
+      return res.json({
+        letters: [{ char: 'A', value: 1 }],
+        cornerstone: { char: 'A', meaning: 'Originality and leadership' },
+        capstone: { char: 'A', meaning: 'Follow-through and determination' },
+        summary: 'Your name lacks standard alphabetic characters to analyze.'
+      });
+    }
+
+    res.json({
+      letters: letters.slice(0, 10), // Limit for UI display
+      cornerstone: {
+        char: letters[0].char,
+        meaning: `The cornerstone '${letters[0].char}' dictates how you approach opportunities and obstacles. You are likely a self-starter.`
+      },
+      capstone: {
+        char: letters[letters.length - 1].char,
+        meaning: `The capstone '${letters[letters.length - 1].char}' reveals your attitude towards finishing projects.`
+      },
+      summary: `The vibrational sequence of your name creates a powerful frequency. When people speak your name, they invoke a ${letters[0].value}-${letters[letters.length - 1].value} energy bridge.`
+    });
+  });
+
+  app.get("/api/explore/matrix-numbers/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    res.json({
+      sequence: [l, (l * 2 % 9) || 9, (l * 4 % 9) || 9, 11, 33],
+      meaning: `This specific esoteric sequence connects your earthly Life Path ${l} to the higher dimensions. It represents the mathematical underlying structure of your soul's journey in this incarnation.`,
+      nodes: [
+        { number: l, title: 'The Anchor', description: 'Your base earthly vibration.' },
+        { number: (l * 2 % 9) || 9, title: 'The Catalyst', description: 'Forces sudden growth and shifts.' },
+        { number: 33, title: 'The Zenith', description: 'Your highest potential state.' }
+      ]
+    });
+  });
+
+  app.get("/api/explore/cue-cards/draw", (req, res) => {
+    const cards = [
+      { suit: 'SWORDS OF INTELLECT', type: 'action', cardName: 'The Alchemist', message: 'You have the power to transform current leaden circumstances into golden opportunities through a shift in perspective.', keyword: 'Transmutation' },
+      { suit: 'CUPS OF EMOTION', type: 'intuition', cardName: 'The Deep Diver', message: 'Do not fear the emotional depths today. What surfaces is ready to be healed.', keyword: 'Subconscious' },
+      { suit: 'WANDS OF FIRE', type: 'action', cardName: 'The Catalyst', message: 'Take the bold leap. The energetic currents are fully supporting dramatic forward movement.', keyword: 'Initiation' },
+      { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Architect', message: 'Slow down and secure your foundations. Quality over speed is your mantra right now.', keyword: 'Stability' }
+    ];
+    res.json(cards[Math.floor(Math.random() * cards.length)]);
+  });
+
+  app.get("/api/explore/dream-interpreter/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    res.json({
+      intro: `As a Life Path ${l}, your dreamscape isn't just random brain static; it's a specific frequency receptor. You are highly prone to prophetic and lucid dreams right now.`,
+      commonDreams: [
+        { symbol: 'Flying or Levitation', meaning: 'You are transcending a previous limitation or earthly worry.', shift: 'Your energy centers are opening.' },
+        { symbol: 'Water (Oceans/Rivers)', meaning: 'Your subconscious is processing dense emotional trauma from the past year.', shift: 'A major purification phase.' },
+        { symbol: 'Being Chased', meaning: 'You are avoiding a karmic lesson that your Life Path requires you to face.', shift: 'Time to ground and confront.' }
+      ]
+    });
+  });
+
+  app.get("/api/explore/energy-insights/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const energySignature = req.query.energy as string || 'Fire';
+    const l = parseInt(lifePath) || 1;
+
+    // Determine aura mock color
+    let hexCode = '#FFD700';
+    let auraColor = 'Golden Yellow';
+    if (energySignature.includes('Water') || l === 2 || l === 6) { hexCode = '#4169E1'; auraColor = 'Royal Blue'; }
+    if (energySignature.includes('Earth') || l === 4 || l === 8) { hexCode = '#228B22'; auraColor = 'Forest Green'; }
+    if (energySignature.includes('Fire') || l === 1 || l === 9) { hexCode = '#FF4500'; auraColor = 'Crimson Red'; }
+    if (energySignature.includes('Air') || l === 3 || l === 5 || l === 7) { hexCode = '#E6E6FA'; auraColor = 'Lavender'; }
+
+    res.json({
+      auraColor,
+      hexCode,
+      highVibe: `When aligned, you operate as a pristine conduit of ${energySignature} energy. You attract synchronicity effortlessly and inspire those around you.`,
+      lowVibe: `Under stress or poor energetic hygiene, you become drained, reactive, and physically susceptible to tension mapping in your lower back or neck.`,
+      regimen: `Daily 15-minute grounding meditations and avoiding highly processed low-frequency foods will keep your ${auraColor} aura resilient and bright.`
+    });
+  });
+
+  app.get("/api/explore/colorology/:lifePath", (req, res) => {
+    const { lifePath } = req.params;
+    const l = parseInt(lifePath) || 1;
+    res.json({
+      overview: `Colors are simply visible frequencies. For Life Path ${l}, wearing or surrounding yourself with these specific wavelengths hacks your energetic state.`,
+      colors: [
+        { name: 'Indigo', hex: '#4B0082', usage: 'Wear during important meetings', benefit: 'Enhances absolute authority and deep intuition.' },
+        { name: 'Emerald', hex: '#50C878', usage: 'Decorate your workspace', benefit: 'Stimulates financial flow and emotional equilibrium.' },
+        { name: l % 2 === 0 ? 'Soft Coral' : 'Vibrant Orange', hex: l % 2 === 0 ? '#F88379' : '#FF5F1F', usage: 'Wear when networking or socializing', benefit: 'Magnetizes people to your energy field.' }
+      ]
+    });
+  });
+
+  app.get("/api/explore/vedic-astrology/:birthDate", (req, res) => {
+    res.json({
+      nakshatra: 'Ashwini (The Star of Transport)',
+      deity: 'Ashwini Kumaras (Physicians of the Gods)',
+      traits: ['Pioneer Spirit', 'Rapid Healer', 'Restless Energy', 'Direct Communication'],
+      karmicPath: 'Your soul incarnated to initiate new cycles. Your biggest karmic block is impatience. You must learn that rapid starts require sustained discipline to yield mastery.'
+    });
+  });
+
+  app.get("/api/explore/all-about-you/:odisId", async (req, res) => {
+    const { odisId } = req.params;
+    const user = await storage.getUserByOdisId(odisId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    res.json({
+      fullName: user.fullName,
+      lifePath: 7, // Mocked for speed
+      archetype: 'The Mystic Seeker',
+      chineseZodiac: 'Wood Dragon',
+      easternDescription: 'Fiercely independent with a natural propensity for leadership and esoteric arts.',
+      element: 'Water',
+      summaryDirective: 'To bridge the gap between the material world and the unseen spiritual dimensions, utilizing analytical depth and intuitive grace.',
+      pillars: [
+        { title: 'Destiny', value: '7', subtitle: 'The Seeker' },
+        { title: 'Soul', value: '11', subtitle: 'The Illuminator' },
+        { title: 'Personality', value: '5', subtitle: 'The Adventurer' }
+      ]
+    });
+  });
+
+  app.get("/api/explore/saturn-insights/:birthDate", (req, res) => {
+    const birthYear = new Date(req.params.birthDate || Date.now()).getFullYear();
+    const age = new Date().getFullYear() - birthYear;
+    let state = 'Pre-Return';
+    if (age >= 28 && age <= 30) state = 'Active Saturn Return';
+    if (age > 30 && age < 58) state = 'Post-Return Integration';
+    if (age >= 58 && age <= 60) state = 'Second Saturn Return';
+
+    res.json({
+      state,
+      headline: 'The Great Taskmaster',
+      overview: `Saturn represents karma, discipline, and boundaries. Your relationship with Saturn dictates how easily you manifest your goals in the dense 3D reality.`,
+      lesson: 'You are learning to transmute chaos into structure. Saturn is forcing you to take radical responsibility for your own energetic boundaries.',
+      reward: 'Indestructible self-trust, mastery over your chosen field, and generational wealth alignment.',
+      nextMilestoneYear: new Date().getFullYear() + ((29 - (age % 29)) % 29 || 29),
+      nextMilestoneEvent: 'Major karmic review and structural upgrade of your life path.'
+    });
+  });
+  // --- END NEW EXPLORE ENDPOINTS ---
+
   // Cues Database API with search, filtering, and pagination
   app.get("/api/cues", (req, res) => {
     try {
