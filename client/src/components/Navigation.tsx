@@ -77,12 +77,14 @@ export function Navigation() {
                   data-testid={`link-${item.label.toLowerCase().replace(/\s/g, '-')}`}
                 >
                   <item.icon className="w-4 h-4 flex-shrink-0" />
-                  {item.label}
-                  {item.to === '/explore' && (
-                    <Badge className="ml-1 bg-red-9 text-white border-none px-1.5 py-0 h-4 text-[9px] font-black uppercase tracking-tighter shadow-sm shadow-red-9/20">
-                      Hot
-                    </Badge>
-                  )}
+                  <div className="flex items-center gap-1">
+                    {item.label}
+                    {item.to === '/explore' && (
+                      <Badge className="bg-red-9 text-white border-none px-1 py-0 h-3.5 text-[8px] font-black uppercase tracking-tighter shadow-sm shadow-red-9/20">
+                        Hot
+                      </Badge>
+                    )}
+                  </div>
                 </NavLink>
               ))}
             </div>
@@ -131,12 +133,14 @@ export function Navigation() {
                     data-testid={`mobile-link-${item.label.toLowerCase().replace(/\s/g, '-')}`}
                   >
                     <item.icon className="w-5 h-5" />
-                    <span className="flex-1">{item.label}</span>
-                    {item.to === '/explore' && (
-                      <Badge className="bg-red-9 text-white border-none px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter">
-                        Hot
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                      <span>{item.label}</span>
+                      {item.to === '/explore' && (
+                        <Badge className="bg-red-9 text-white border-none px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter">
+                          Hot
+                        </Badge>
+                      )}
+                    </div>
                   </NavLink>
                 ))}
                 {isPro ? (
