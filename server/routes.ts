@@ -905,10 +905,10 @@ export async function registerRoutes(
       soulUrge: firstVowel ? {
         char: firstVowel.char,
         meaning: `The first vowel '${firstVowel.char}' reveals your soul's deepest desire: ${firstVowel.char === 'A' ? 'Independence and achievement.' :
-            firstVowel.char === 'E' ? 'Freedom and variety.' :
-              firstVowel.char === 'I' ? 'Recognition and creativity.' :
-                firstVowel.char === 'O' ? 'Responsibility and stability.' :
-                  'Understanding and esoteric wisdom.'
+          firstVowel.char === 'E' ? 'Freedom and variety.' :
+            firstVowel.char === 'I' ? 'Recognition and creativity.' :
+              firstVowel.char === 'O' ? 'Responsibility and stability.' :
+                'Understanding and esoteric wisdom.'
           }`
       } : null,
       summary: `Analyzing "${firstName}": Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
@@ -939,13 +939,23 @@ export async function registerRoutes(
   app.get("/api/explore/matrix-numbers/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
+
+    // Matrix Activation Ages are mathematically derived from Life Path and Universal Constants
+    // Standard peaks are often multiples of the life path or harmonic intervals like 27, 36, 45, 54
+    const age1 = 27;
+    const age2 = 36;
+    const age3 = 45;
+    const age4 = 54;
+
     res.json({
-      sequence: [l, reduceToSingleDigit(l * 2, true), reduceToSingleDigit(l * 4, true), 11, 33],
-      meaning: `This specific esoteric sequence connects your earthly Life Path ${l} to the higher dimensions. It represents the mathematical underlying structure of your soul's journey in this incarnation.`,
-      nodes: [
-        { number: l, title: 'The Anchor', description: 'Your base earthly vibration.' },
-        { number: reduceToSingleDigit(l * 2, true), title: 'The Catalyst', description: 'Forces sudden growth and shifts.' },
-        { number: 33, title: 'The Zenith', description: 'Your highest potential state.' }
+      lifePath: l,
+      intro: `Your Personal Matrix is the hidden mathematical code that activates at specific ages. As a Life Path ${l}, these "Matrix Gateways" are when your core frequency hits its maximum amplitude and reality becomes most malleable.`,
+      sequence: [age1, age2, age3, age4],
+      milestones: [
+        { age: age1, title: 'The Reset', description: 'Your first major Matrix gateway where old karmic patterns are purged to make way for your true purpose.' },
+        { age: age2, title: 'The Peak', description: 'The absolute zenith of your earthly manifestation power. Your Life Path frequency is at its loudest.' },
+        { age: age3, title: 'The Shift', description: 'A period of profound internal restructuring where your secondary energy signatures begin to dominate.' },
+        { age: age4, title: 'The Master', description: 'Full integration of your numerical blueprint. You move from being a passenger to an architect of the matrix.' }
       ]
     });
   });
@@ -955,11 +965,16 @@ export async function registerRoutes(
       const { lifePath, input } = req.body;
       const l = parseInt(lifePath) || 1;
 
-      const prompt = `You are a digital mystic and matrix decoder. The user is a Life Path ${l}.
+      const prompt = `You are a digital mystic and matrix architect. The user is a Life Path ${l}.
       
       They are asking about this specific age or life period: "${input}"
       
-      Provide a highly precise 3-4 sentence analysis of the 'Matrix Activation' for this age. What specific esoteric sequence or energy node is triggered at this age for a Life Path ${l}? How can they use this specific numerical frequency to 'hack' their current reality and manifest faster? Be cryptic but highly actionable.`;
+      Provide a highly precise 4-5 sentence analysis of why this age is a "Matrix Gateway" for a Life Path ${l}. 
+      1. What specific numerical frequency is active at "${input}" for them?
+      2. How can they "hack" their current reality at this age?
+      3. Give them one specific "Matrix Key" (action) they should take immediately to manifest faster.
+      
+      BE VALUABLE AND ACTIONABLE. Avoid generic talk. Use the language of code and mathematics.`;
 
       const responseText = await generateWithFallback(prompt);
       res.json({ response: responseText });

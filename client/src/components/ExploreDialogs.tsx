@@ -532,43 +532,36 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber }: any) {
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
             <DialogContent className="max-w-2xl max-h-[85vh]">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+                    <DialogTitle className="flex items-center gap-2 text-xl">
                         <Grid className="w-5 h-5 text-amber-9" />
-                        Matrix Numbers
+                        Personal Matrix Decoded
                     </DialogTitle>
-                    <DialogDescription>Decode your personal esoteric sequence</DialogDescription>
+                    <DialogDescription>Ages of peak activation for your Life Path {lifePathNumber}</DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="max-h-[60vh] pr-4">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load matrix numbers" /> : data ? (
                         <div className="space-y-6">
-                            <div className="p-6 bg-gradient-to-br from-gray-900 to-black text-green-500 font-mono rounded-xl border border-green-900/50 shadow-2xl relative overflow-hidden">
-                                <div className="absolute inset-0 bg-[url('https://transparenttextures.com/patterns/matrix-code.png')] opacity-10 mix-blend-overlay"></div>
-                                <div className="relative z-10">
-                                    <div className="text-xs uppercase tracking-[0.2em] mb-4 text-green-600/70">Personal Code Decoded</div>
-                                    <div className="text-4xl md:text-5xl font-black mb-6 tracking-widest text-shadow-glow">
-                                        {data.sequence.join(' - ')}
-                                    </div>
-                                    <p className="text-sm text-green-400/80 leading-relaxed max-w-lg">
-                                        {data.meaning}
-                                    </p>
-                                </div>
+                            <div className="p-4 bg-amber-900/10 border border-amber-500/20 rounded-xl text-amber-950 dark:text-amber-200 text-xs leading-relaxed">
+                                {data.intro}
                             </div>
 
-                            <div>
-                                <h4 className="font-medium mb-3">Matrix Nodes</h4>
-                                <div className="grid gap-3">
-                                    {data.nodes.map((n: any, i: number) => (
-                                        <div key={i} className="flex gap-4 p-4 bg-gray-a2 rounded-lg items-center">
-                                            <div className="w-10 h-10 bg-amber-a3 rounded flex items-center justify-center font-bold font-mono text-amber-11">
-                                                {n.number}
-                                            </div>
-                                            <div>
-                                                <div className="font-bold text-sm">{n.title}</div>
-                                                <div className="text-xs text-gray-11">{n.description}</div>
-                                            </div>
+                            <div className="relative space-y-4">
+                                <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-amber-9/20 z-0 hidden md:block" />
+                                {data.milestones.map((m: any, i: number) => (
+                                    <div key={i} className="relative z-10 flex gap-4 p-4 bg-background rounded-xl border border-gray-a3 shadow-sm hover:border-amber-500/30 transition-all group">
+                                        <div className="w-12 h-12 rounded-full bg-amber-9 text-white flex flex-col items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+                                            <div className="text-[10px] font-bold uppercase leading-none">Age</div>
+                                            <div className="text-xl font-black leading-none">{m.age}</div>
                                         </div>
-                                    ))}
-                                </div>
+                                        <div className="flex-1">
+                                            <div className="flex items-center justify-between mb-1">
+                                                <h4 className="font-black text-gray-12 uppercase tracking-tight text-sm">{m.title}</h4>
+                                                <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse hidden group-hover:block" />
+                                            </div>
+                                            <p className="text-xs text-gray-11 leading-relaxed">{m.description}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
 
                             <AIFeatureChat
