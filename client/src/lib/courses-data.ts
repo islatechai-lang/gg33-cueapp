@@ -1684,6 +1684,639 @@ Congratulations on completing Advanced Numerology!`,
         ]
       }
     ]
+  },
+  {
+    id: 'master-numbers',
+    title: 'Master Numbers Mastery',
+    description: 'A deep dive into the burdens, blessings, and extreme power of 11, 22, and 33',
+    duration: '40 min',
+    free: false,
+    lessons: [
+      {
+        id: 'mn-1',
+        title: 'The Burden of the Master Number',
+        duration: '5 min',
+        content: `Master Numbers are not "better" than single digits—they are higher frequency, which means they are harder to handle. 
+
+**The Price of Power:**
+- Master Numbers carry more nervous energy and anxiety.
+- They are often tested more severely in early life.
+- If not lived up to, they "reduce" to their base vibration (11 becomes 2, 22 becomes 4, 33 becomes 6).
+
+**Why You Were Chosen:**
+If you have a Master Number, your soul chose a path of high impact. You are held to a higher standard of integrity and service. Failing to meet this standard often results in significant life friction.`,
+        keyPoints: [
+          'High frequency brings high anxiety',
+          'Master Numbers are tested more severely',
+          'Reduction happens if potential isn\'t met',
+          'Held to a higher karmic standard'
+        ]
+      },
+      {
+        id: 'mn-2',
+        title: 'Master Number 11: The Psychic Conduit',
+        duration: '8 min',
+        content: `The 11 is the first of the Master Numbers. It is the bridge between the conscious and the subconscious.
+
+**Key Frequencies:**
+- **Intuition:** 11s have a "gut feeling" that is rarely wrong.
+- **Illumination:** They are here to bring light to dark situations.
+- **Sensitivity:** They are often hyper-aware of their environment.
+
+**Mastering the 11:**
+To succeed as an 11, you must trust your first impression. Over-analyzing (moving into the 2 energy) will lead to indecision and "analysis paralysis." You are a conduit for messages—listen to the silence.`,
+        keyPoints: [
+          'Bridge between conscious and subconscious',
+          'Higher level of psychic intuition',
+          'Must trust first impressions over logic',
+          'Prone to environmental overstimulation'
+        ]
+      },
+      {
+        id: 'mn-3',
+        title: 'Master Number 22: Architect of Empires',
+        duration: '8 min',
+        content: `The 22 is often considered the most powerful number in the entire system. It combines the vision of the 11 with the practicality of the 4.
+
+**The Master Builder:**
+- **Visionary Realism:** You don\'t just dream; you see the blueprint.
+- **Discipline:** 22s require immense self-control to manifest their grand scale.
+- **Universal Benefit:** A 22\'s work should benefit more than just themselves.
+
+**The 22 Trap:**
+Because the energy is so huge, many 22s feel overwhelmed and hide in the safety of the 4 (just working a 9-5). To activate the 22, you must take calculated risks on a global or systemic level.`,
+        keyPoints: [
+          'Most powerful manifesting energy',
+          'Combines 11 vision with 4 structure',
+          'Must work on projects that benefit many',
+          'Overwhelm can lead to hiding in the 4'
+        ]
+      },
+      {
+        id: 'mn-4',
+        title: 'Master Number 33: The Avatar Frequency',
+        duration: '10 min',
+        content: `The 33 is the rarest Master Number. It is the "Master Teacher" and the "Avatar" frequency.
+
+**The Ultimate Service:**
+- **Unconditional Love:** 33s are here to teach the world how to love selflessly.
+- **The Burden of Others:** They naturally attract people who need healing.
+- **Spiritual Mastery:** 33s must master their own emotions before they can teach others.
+
+**Living as a 33:**
+A 33 must avoid the "Martyr Complex." You cannot help everyone. Your primary goal is to be a beacon of high-vibration energy. If you let others drain you, you will fall into the negative 6 vibration (worry and interference).`,
+        keyPoints: [
+          'The Master Teacher frequency',
+          'Highest level of spiritual service',
+          'Must guard against a martyr complex',
+          'Mastery of emotions is required'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'karmic-debt',
+    title: 'The Karma Decoder',
+    description: 'Identify and clear the four specific karmic debt numbers: 13, 14, 16, and 19',
+    duration: '35 min',
+    free: false,
+    lessons: [
+      {
+        id: 'kd-1',
+        title: 'What is Karmic Debt?',
+        duration: '5 min',
+        content: `Karmic Debt numbers (13, 14, 16, 19) indicate areas where the soul made errors in past cycles. They are not punishments, but "mandatory graduation requirements" for this life.
+
+**Identification:**
+These numbers usually appear in your Life Path, Day of Birth, or Expression numbers. If you find one, it explains why certain areas of your life feel like an uphill battle.
+
+**The Goal:**
+By acknowledging the debt and performing the "Corrective Action," the friction stops, and you unlock the hidden power behind the number.`,
+        keyPoints: [
+          'Mandatory soul graduation requirements',
+          'Not punishments, but lessons to be mastered',
+          'Explain recurring life friction',
+          'Corrective action unlocks hidden power'
+        ]
+      },
+      {
+        id: 'kd-13',
+        title: 'Karmic Debt 13: The Debt of Laziness',
+        duration: '7 min',
+        content: `The 13 debt suggests that in a past cycle, work was avoided or passed off to others.
+
+**Symptoms:**
+- Feeling that you have to work twice as hard as others for the same result.
+- Constantly facing obstacles just as you\'re about to succeed.
+- Tendency to give up when things get difficult.
+
+**The Fix:**
+Discipline. To clear the 13, you must embrace hard work without taking shortcuts. One you master the "Builder" energy of the 4 (1+3), the 13 becomes a powerhouse of productivity.`,
+        keyPoints: [
+          'Result of past-life laziness or avoidance',
+          'Requires twice the effort for results',
+          'The cure is unwavering discipline',
+          'Avoid all shortcuts to clear the debt'
+        ]
+      },
+      {
+        id: 'kd-14',
+        title: 'Karmic Debt 14: The Debt of Misused Freedom',
+        duration: '7 min',
+        content: `The 14 debt suggests that freedom or power was used to infringe on others or through excessive indulgence.
+
+**Symptoms:**
+- Issues with addiction (drugs, alcohol, sex, adrenaline).
+- A life that is constantly changing or "chaotic."
+- Difficulty sticking to one path.
+
+**The Fix:**
+Temperance. You must learn to find freedom *within* structure. Setting boundaries for yourself is the only way to clear the 14. Once cleared, you gain the 5\'s ability to adapt and succeed in any environment.`,
+        keyPoints: [
+          'Result of past-life excess or harm to others',
+          'Manifests as addiction or chaos',
+          'The cure is temperance and boundaries',
+          'Must find freedom through structure'
+        ]
+      },
+      {
+        id: 'kd-16',
+        title: 'Karmic Debt 16: The Debt of Ego (The Tower)',
+        duration: '8 min',
+        content: `The 16 is the most difficult karmic debt. It represents the "shattered ego" and a past-life misuse of love or intellectual superiority.
+
+**Symptoms:**
+- The "Tower" effect: Life building up to a peak, then collapsing suddenly.
+- Difficulty with long-term relationships.
+- Feeling "detached" or superior to others.
+
+**The Fix:**
+Humility. The 16 requires you to dismantle your own ego before the universe does it for you. You must seek spiritual truth and genuine connection over status. When cleared, the 16 becomes the highly intuitive and wise 7.`,
+        keyPoints: [
+          'Result of past-life ego and misuse of love',
+          'Manifests as sudden collapses or "Towers"',
+          'The cure is radical humility',
+          'Must prioritize spirit over status'
+        ]
+      },
+      {
+        id: 'kd-19',
+        title: 'Karmic Debt 19: The Debt of Power',
+        duration: '8 min',
+        content: `The 19 debt suggests that power was used selfishly, often ignoring the needs of others while focused solely on personal gain.
+
+**Symptoms:**
+- Feeling isolation or "alone at the top."
+- Difficulty accepting help from others (Independence to a fault).
+- Struggles with self-sabotage once power is attained.
+
+**The Fix:**
+Service. To clear the 19, you must learn that "to lead is to serve." You must use your natural 1 traits to uplift others. Once you start helping others succeed, your own path becomes infinitely smoother.`,
+        keyPoints: [
+          'Result of past-life misuse of power',
+          'Manifests as isolation and self-sabotage',
+          'The cure is using power to serve others',
+          'Must learn to accept help gracefully'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'wealth-codes',
+    title: 'Wealth & Manifestation Codes',
+    description: 'Align your cosmic DNA with financial abundance and career success',
+    duration: '30 min',
+    free: false,
+    lessons: [
+      {
+        id: 'wc-1',
+        title: 'The Numerology of Money',
+        duration: '5 min',
+        content: `Money is energy, and energy follows the numbers in your chart. Every Life Path has a "Natural Relationship" with wealth.
+
+**The Money Vibe of Your Path:**
+- **Leaders (1, 8):** Build empires and attract high-ticket capital.
+- **Creators (3, 9):** Wealth through ideas and artistic expression.
+- **Stabilizers (4, 6):** Wealth through consistency and solid management.
+
+**Your Primary Obstacle:**
+Most people block wealth because they operate in the *shadow* of their number. An 8 focusing on greed instead of high-level building will always struggle with cash flow. We must find the high vibration of your wealth code.`,
+        keyPoints: [
+          'Money is energy following numerological laws',
+          'Every Life Path has a unique wealth archetype',
+          'Shadow frequencies block abundance',
+          'Manifestation depends on high-vibration alignment'
+        ]
+      },
+      {
+        id: 'wc-2',
+        title: 'Identifying Your Money Years',
+        duration: '8 min',
+        content: `In the 9-year cycle, certain years are "Harvest" years and others are "Plowing" years.
+
+**The Peak Wealth Years:**
+- **Personal Year 1:** The Seed. Start the business now.
+- **Personal Year 8:** The Harvest. This is the peak year for financial return.
+- **Personal Year 9:** The Release. End old ventures to make space for the new cycle.
+
+**Timing the Market:**
+If you try to launch a major financial project in a Personal Year 7 (Introspection), you are fighting the cosmic current. We will calculate exactly where you sit in the cycle today.`,
+        keyPoints: [
+          'Wealth cycles flow in 9-year patterns',
+          'Personal Year 8 is the primary financial harvest',
+          'Personal Year 1 is for launching new ventures',
+          'Don\'t force financial growth in Resting years'
+        ]
+      },
+      {
+        id: 'wc-3',
+        title: 'Elemental Career Alignment',
+        duration: '7 min',
+        content: `Your Chinese Element dictates which industries and environments will yield the most profit for you.
+
+**Industries by Element:**
+- **Wood:** Design, education, agriculture, media.
+- **Fire:** Tech startups, entertainment, sales, stock market.
+- **Earth:** Real estate, construction, hospitality, logistics.
+- **Metal:** Finance, law, jewelry, high-end manufacturing.
+- **Water:** Psychology, shipping, creative arts, consulting.
+
+**Optimal Environment:**
+A Fire person in a slow-moving, bureaucratic Earth company will feel drained. A Metal person in a chaotic startup will lose focus. Your productivity (and wealth) triples when the environment matches your element.`,
+        keyPoints: [
+          'Elements define optimal profit sectors',
+          'Work environments must match birth element',
+          'Incompatibility leads to drainage and low income',
+          'Maximize ROI by picking the right industry'
+        ]
+      },
+      {
+        id: 'wc-4',
+        title: 'Manifestation Anchors',
+        duration: '10 min',
+        content: `To pull energy from the matrix into physical wealth, you need "Anchors" specific to your numbers.
+
+**Personal Manifestation Tools:**
+- **Signaling:** Using specific colors (based on your element) for business meetings.
+- **Sacred Dates:** Signing contracts on your "Power Dates" (calculated from your Life Path).
+- **The Numbers Guy Secret:** Using the number 8 or 33 in your prices to attract abundance frequency.
+
+**Developing the Habit:**
+Manifestation is a daily practice, not a one-time event. By aligning your digital passwords, prices, and meeting times with your favorable numbers, you create a "Wealth Net" that constantly catches opportunities.`,
+        keyPoints: [
+          'Use physical anchors to pull matrix energy',
+          'Incorporate favorable numbers in pricing and dates',
+          'Color-coded signaling for business success',
+          'Build a daily "Wealth Net" habit'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'personal-year',
+    title: 'Personal Year Cycles & Timing',
+    description: 'Master the 9-year cycle to know exactly when to act, build, or rest',
+    duration: '35 min',
+    free: false,
+    lessons: [
+      {
+        id: 'py-1',
+        title: 'The 9-Year Cycle Explained',
+        duration: '5 min',
+        content: `Life does not move in a straight line; it moves in waves. In GG33, we track these waves through the 9-year Universal and Personal cycles.
+
+**How to Calculate Your Personal Year:**
+1. Your Day of Birth
+2. Your Month of Birth
+3. The Current Calendar Year
+*Example: Born June 10, in 2024.*
+6 + 1 + 0 + 2 + 0 + 2 + 4 = 15. 1 + 5 = **Personal Year 6.**
+
+**The Cycle Energy:**
+Years 1-3 are for planting. Years 4-6 are for tending and adjusting. Years 7-9 are for harvesting and clearing. Knowing your year is like knowing the weather before you go outside.`,
+        keyPoints: [
+          'Life moves in 9-year cycles of energy',
+          'Calculate by adding birth day/month to current year',
+          'Understanding your year prevents wasted effort',
+          'Cycles dictate when to push and when to rest'
+        ]
+      },
+      {
+        id: 'py-2',
+        title: 'The Action Years (1, 3, 5, 8)',
+        duration: '10 min',
+        content: `These are the years where you must be proactive. If you stay passive during an Action Year, you miss out on a decade of potential.
+
+**Year 1 (The Start):** The most important year. New seeds, new business, new identity.
+**Year 3 (Expression):** Social expansion, networking, and creative outbursts.
+**Year 5 (Change):** The pivot point. Travel, fast movement, and unexpected opportunities.
+**Year 8 (Harvest):** The peak of manifestation and money. Work your hardest here.
+
+**Maximizing Action:**
+In an 8 year, you should sleep less and work more. The universe is literally handing you the results of the previous 7 years. Don't waste it on vacation.`,
+        keyPoints: [
+          'Odd-numbered years are generally for outward action',
+          'Year 1 sets the theme for the entire 9-year cycle',
+          'Year 8 is the absolute peak for financial results',
+          'Passive behavior in these years wastes the frequency'
+        ]
+      },
+      {
+        id: 'py-3',
+        title: 'The Foundation & Introspection Years (2, 4, 7)',
+        duration: '10 min',
+        content: `These years are often misunderstood as "bad" because they feel slower, but they are critical for long-term success.
+
+**Year 2 (Partnership):** Patience. Wait for others. Build relationships.
+**Year 4 (Work):** The "plowing" year. Hard, boring, repetitive work that builds the foundation for the 8.
+**Year 7 (Spirit):** The "danger" year for business but peak for wisdom. Introspection, learning, and rest.
+
+**The Danger of Year 7:**
+Trying to launch a massive aggressive business in a 7 year often leads to burnout or failure. This year is for the mind and spirit, not the wallet. Respect the pace.`,
+        keyPoints: [
+          'Slower years are for building internal strength',
+          'Year 4 is essential work for the Year 8 harvest',
+          'Year 7 is for spiritual and mental growth',
+          'Forcing action in a 7 year leads to frustration'
+        ]
+      },
+      {
+        id: 'py-4',
+        title: 'The Universal Year Connection',
+        duration: '10 min',
+        content: `Your Personal Year exists inside the Universal Year (the vibration of the world).
+
+**Universal Year Calculation:**
+2024 = 2+0+2+4 = **8 Universal Year.**
+2025 = 2+0+2+5 = **9 Universal Year.**
+
+**The Interaction:**
+If you are in a Personal Year 1 (Start) during a Universal Year 9 (End), you may feel a push-pull effect. The world is letting go while you are trying to grab hold. Learning to balance your personal wave with the global tide is the mark of a master practitioner.`,
+        keyPoints: [
+          'Universal Years set the global tone/background',
+          'The world moves through the 1-9 cycle collectively',
+          'Balance your personal cycle against the global one',
+          'Predict global shifts using the Universal Year'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'adv-letterology',
+    title: 'Advanced Letterology',
+    description: 'Understand the hidden frequencies of names and how they shape destiny',
+    duration: '40 min',
+    free: false,
+    lessons: [
+      {
+        id: 'al-1',
+        title: 'The Difference Between Name and Number',
+        duration: '5 min',
+        content: `While your birth date is your "Blueprint" (Destiny), your Name is your "Vibration" (How the world sees you).
+
+**The Name Components:**
+- **Cornerstone (1st Letter):** Your approach to new opportunities.
+- **Capstone (Last Letter):** Your ability to finish what you start.
+- **Expression Number:** The sum of all letters—the "Total You."
+
+**Name Changes:**
+When you change your name (marriage, stage name), you are adding a new frequency to your life. This is why many successful people use "power names" that vibrate to 8, 11, or 33.`,
+        keyPoints: [
+          'Birth date is the blueprint; name is the frequency',
+          'Names shape how the world perceives your energy',
+          'Letter positions (First/Last) indicate success patterns',
+          'Name changes alter your daily energy frequency'
+        ]
+      },
+      {
+        id: 'al-2',
+        title: 'The Soul Urge (Vowels Only)',
+        duration: '10 min',
+        content: `Your Soul Urge number is calculated by adding only the vowels in your full birth name. It reveals what you *truly* want, even if you never tell anyone.
+
+**Vowel Significance:**
+- **A (1):** Desire for independence and being first.
+- **E (5):** Desire for variation and sensory experience.
+- **I (9):** Desire for humanitarian impact and wisdom.
+- **O (6):** Desire for domestic harmony and responsibility.
+- **U (3):** Desire for creative expression and joy.
+
+**The Internal Drive:**
+If your Life Path is an 8 (Money) but your Soul Urge is a 2 (Peace), you will always feel a conflict between your career and your heart. Aligning these is the key to happiness.`,
+        keyPoints: [
+          'Soul Urge reveals deep, hidden desires',
+          'Calculated using only the vowels of birth name',
+          'Explains internal personality conflicts',
+          'Essential for understanding true motivation'
+        ]
+      },
+      {
+        id: 'al-3',
+        title: 'Picking Business & Brand Names',
+        duration: '15 min',
+        content: `In business, the name is often more important than the product. 
+
+**The Power Numbers for Business:**
+- **Vibration 8:** For finance, real estate, and high-end luxury.
+- **Vibration 3:** For marketing, entertainment, and social apps.
+- **Vibration 1:** For innovative tech and leadership consulting.
+
+**Avoiding the "Enemy" Name:**
+A business name should never vibrate to a number that is an "enemy" of the founder's Life Path. If a Life Path 1 starts a company named "Harmony" (vibrating to 2), the company will lack the aggressive edge needed for the founder to succeed.`,
+        keyPoints: [
+          'Business names carry specific commercial frequencies',
+          '8 and 33 are the "Gold Standards" for high-end success',
+          'Match brand vibration to the industry type',
+          'Ensure the name is compatible with the founder\'s path'
+        ]
+      },
+      {
+        id: 'al-4',
+        title: 'The Power of the Signature',
+        duration: '10 min',
+        content: `How you sign your name is a magical act. It is the physical manifestation of your frequency.
+
+**Signature Analysis:**
+- **Ascending Line:** Optimism and growth.
+- **Underline:** Self-reliance and stability.
+- **Large Initials:** Confidence and social presence.
+- **Illegibility:** Secrecy or a desire for mystery.
+
+**Crafting Your Power Signature:**
+We will walk through how to design a signature that incorporates your most favorable numbers and elements, ensuring every contract you sign is backed by your cosmic energy.`,
+        keyPoints: [
+          'Signatures are physical manifestation tools',
+          'Handwriting direction indicates energy flow',
+          'Design signatures to favor your personal numbers',
+          'Use signatures to anchor intentions in reality'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'health-vitality',
+    title: 'Health, Vitality & The Elements',
+    description: 'Discover how your Zodiac and Element influence your physical vessel',
+    duration: '30 min',
+    free: false,
+    lessons: [
+      {
+        id: 'hv-1',
+        title: 'The Body as an Elemental System',
+        duration: '5 min',
+        content: `In Eastern wisdom, health is the balance of the Five Elements within the body. When one element is too "High" or too "Low," disease manifests.
+
+**Elemental Weak Points:**
+- **Wood:** Liver and Gallbladder.
+- **Fire:** Heart and Small Intestine.
+- **Earth:** Spleen and Stomach.
+- **Metal:** Lungs and Large Intestine.
+- **Water:** Kidneys and Bladder.
+
+**The Goal:**
+By identifying your birth element, you can predict which systems will be the first to struggle under stress. You don't wait for the symptoms—you balance the element before the issue starts.`,
+        keyPoints: [
+          'Health is the balance of the five elements',
+          'Elements correspond to specific organ systems',
+          'Birth element indicates natural biological weak points',
+          'Preventative care starts with elemental balancing'
+        ]
+      },
+      {
+        id: 'hv-2',
+        title: 'Zodiac Vitality Patterns',
+        duration: '10 min',
+        content: `Each Chinese Zodiac animal enters this world with a different reservoir of "Jing" (Vitality).
+
+**High Energy Animals:** Dragon, Tiger, Horse (Need high-impact activity).
+**Refined Energy Animals:** Snake, Rooster, Rat (Need precision and mental rest).
+**Steady Energy Animals:** Ox, Goat, Pig (Need consistency and grounding).
+
+**The Danger of Over-Training:**
+A Snake (Refined/Low physical Jing) trying to follow a heavy bodybuilding program designed for a Tiger will often end up with adrenal Fatigue. You must train and eat according to your animal's nature.`,
+        keyPoints: [
+          'Zodiac animals have different vitality reservoirs',
+          'Match exercise intensity to your animal type',
+          'Different animals prone to different types of stress',
+          'Over-exerting refined animals leads to rapid aging'
+        ]
+      },
+      {
+        id: 'hv-3',
+        title: 'Dietary Alignment for Success',
+        duration: '15 min',
+        content: `What you eat either fuels your element or extinguishes it.
+
+**The Elemental Kitchen:**
+- **Fire Elements:** Need "cooling" foods to prevent inflammation (Cucumber, Mint).
+- **Water Elements:** Need "warming" foods to prevent depression/stagnation (Ginger, Soup).
+- **Metal Elements:** Need "moisturizing" foods to prevent dry lungs/skin (Pear, Honey).
+
+**Timing Your Meals:**
+Using the Chinese Organ Clock, we will look at when you should eat based on your weakest element. Eating a heavy meal when your Stomach/Spleen energy is at its lowest is a recipe for low productivity.`,
+        keyPoints: [
+          'Foods have thermal and elemental properties',
+          'Oppose element excess with dietary property',
+          'Utilize the Organ Clock for optimal digestion',
+          'Nutritional timing determines daily energy output'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'matrix-hacking',
+    title: 'Matrix Hacking: Defensive Numerology',
+    description: 'Defensive numerology: how to survive and thrive when the energy is against you',
+    duration: '45 min',
+    free: false,
+    lessons: [
+      {
+        id: 'mh-1',
+        title: 'The "Enemy" Numbers',
+        duration: '8 min',
+        content: `The matrix is a system of math. Just as 1+1=2, certain energy combinations result in friction. We call these "Enemy Numbers."
+
+**The Primary Enemies:**
+- **1 vs 2:** Leadership vs Cooperation (Can be friction).
+- **4 vs 5:** Structure vs Chaos (The most common office conflict).
+- **8 vs 9:** Materialism vs Humanitarianism.
+
+**Identifying Your Enemy:**
+An enemy is someone whose Life Path is in direct mathematical opposition to yours. You cannot "fix" them. You must learn to *navigate* them or use a "Bridge Number" to communicate.`,
+        keyPoints: [
+          'The matrix has inherent mathematical frictions',
+          'Enemy numbers are pairs that struggle to coexist',
+          'Don\'t try to change an enemy energy—navigate it',
+          'Use "Bridge" numbers to mediate conflicts'
+        ]
+      },
+      {
+        id: 'mh-2',
+        title: 'Surviving Incompatible Cycles',
+        duration: '10 min',
+        content: `What happens when you are in a Personal Year 1 (I want to start) but the world is in a Universal Year 9 (Everything is ending)?
+
+**The Counter-Current:**
+This is when people feel "stuck" despite doing everything right. 
+
+**Survival Strategies:**
+- **Lower the Stakes:** Don't bet the whole house on a venture during a counter-current.
+- **Focus on Research:** Use the friction as a time to sharpen your blade.
+- **The Pivot:** Sometimes the matrix is telling you to go a different direction.
+
+We will look at the Universal Year 4 (The global plowing year) and how to protect your assets when the collective energy is restrictive.`,
+        keyPoints: [
+          'Predict periods of "Counter-Current" energy',
+          'Lower financial risk when cycles are opposed',
+          'Use restrictive global years for internal building',
+          'Recognize "Stall" patterns before they cause burnout'
+        ]
+      },
+      {
+        id: 'mh-3',
+        title: 'Cosmic Armor: Number Signaling',
+        duration: '12 min',
+        content: `Number Signaling as a defensive tool. 
+
+**Power Colors:**
+Wearing your element's favorable color isn't just fashion; it's a frequency shield. 
+
+**Digital Shields:**
+- **Pins and Passwords:** Never use your enemy number in your PIN. Use your Power Numbers (calculated from Life Path) to "lock" your energy.
+- **Email Send Times:** Use a delay-send tool to ensure major communications go out on your Power Hours.
+
+**Manifestation Redirection:**
+When bad energy is coming your way (e.g., a challenging year), you can "redirect" it by performing specific charitable acts that resonate with the challenging number. For example, if facing a difficult 16/7 year, perform acts of radical humility.`,
+        keyPoints: [
+          'Use colors and numbers as frequency shields',
+          'Avoid enemy numbers in critical digital security',
+          'Time communications to align with Power Hours',
+          'Redirect negative energy through specific charity'
+        ]
+      },
+      {
+        id: 'mh-4',
+        title: 'The GG33 Master Mindset',
+        duration: '15 min',
+        content: `The final lesson in the Study Zone. Moving from a "Victim" of the numbers to a "Master" of the matrix.
+
+**The Golden Rules:**
+1. Numbers don't make you; they reveal you.
+2. Timing beats talent.
+3. Awareness is 90% of the battle.
+
+**The Path Forward:**
+You now have the keys to the kingdom. Use this wisdom to help yourself, build your family, and serve your community. The matrix is just a game of numbers. Once you know the rules, you can decide how to play.
+
+Welcome to the elite circle of GG33 practitioners.`,
+        keyPoints: [
+          'Shift from being a victim to a master of path',
+          'Timing is often more important than pure skill',
+          'Always prioritize awareness over reaction',
+          'Use this knowledge for self-mastery and service'
+        ]
+      }
+    ]
   }
 ];
 
@@ -1705,7 +2338,7 @@ export function getTotalDuration(): string {
     const minutes = parseInt(course.duration);
     return acc + (isNaN(minutes) ? 0 : minutes);
   }, 0);
-  
+
   if (totalMinutes >= 60) {
     const hours = Math.floor(totalMinutes / 60);
     const mins = totalMinutes % 60;
