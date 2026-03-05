@@ -87,6 +87,7 @@ const explorations = [
     icon: CalendarDays,
     tag: 'Planning',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'monthly-forecast' as FeatureType,
@@ -95,6 +96,7 @@ const explorations = [
     icon: CalendarRange,
     tag: 'Planning',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'home-picker' as FeatureType,
@@ -103,6 +105,7 @@ const explorations = [
     icon: Home,
     tag: 'Lifestyle',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'cars' as FeatureType,
@@ -111,6 +114,7 @@ const explorations = [
     icon: Car,
     tag: 'Lifestyle',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'lucky-number' as FeatureType,
@@ -119,6 +123,7 @@ const explorations = [
     icon: Hash,
     tag: 'Fun',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'letterology' as FeatureType,
@@ -127,6 +132,7 @@ const explorations = [
     icon: Type,
     tag: 'Insights',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'matrix-numbers' as FeatureType,
@@ -135,6 +141,7 @@ const explorations = [
     icon: Grid,
     tag: 'Insights',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'cue-cards' as FeatureType,
@@ -143,6 +150,7 @@ const explorations = [
     icon: Square,
     tag: 'Spirit',
     requiresProfile: false,
+    isNew: true,
   },
   {
     id: 'dream-interpreter' as FeatureType,
@@ -151,6 +159,7 @@ const explorations = [
     icon: Moon,
     tag: 'Spirit',
     requiresProfile: false,
+    isNew: true,
   },
   {
     id: 'energy-insights' as FeatureType,
@@ -159,6 +168,7 @@ const explorations = [
     icon: Zap,
     tag: 'Insights',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'colorology' as FeatureType,
@@ -167,6 +177,7 @@ const explorations = [
     icon: Palette,
     tag: 'Fun',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'vedic-astrology' as FeatureType,
@@ -175,6 +186,7 @@ const explorations = [
     icon: Sun,
     tag: 'Insights',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'all-about-you' as FeatureType,
@@ -183,6 +195,7 @@ const explorations = [
     icon: UserCircle,
     tag: 'Profile',
     requiresProfile: true,
+    isNew: true,
   },
   {
     id: 'saturn-insights' as FeatureType,
@@ -191,6 +204,7 @@ const explorations = [
     icon: CircleDashed,
     tag: 'Insights',
     requiresProfile: true,
+    isNew: true,
   },
 ];
 
@@ -1167,14 +1181,23 @@ export default function Explore() {
                       <item.icon className="w-6 h-6 text-amber-9" />
                     </div>
                     <div className="flex items-center gap-2">
-                      {profileLoaded && item.requiresProfile && !hasProfile && (
-                        <Badge variant="outline" size="sm" className="text-xs">
-                          Profile needed
-                        </Badge>
-                      )}
-                      <Badge variant="secondary" size="sm">
-                        {item.tag}
-                      </Badge>
+                      <div className="flex flex-col items-end gap-1">
+                        <div className="flex items-center gap-2">
+                          {(item as any).isNew && (
+                            <Badge className="bg-amber-9 text-white border-none animate-pulse px-2 py-0 h-5 text-[10px] font-black uppercase tracking-tighter">
+                              New
+                            </Badge>
+                          )}
+                          <Badge variant="outline" className="bg-amber-a2 text-amber-11 border-amber-a4 px-2 py-0 h-5 text-[10px] font-bold uppercase tracking-wider">
+                            {item.tag}
+                          </Badge>
+                        </div>
+                        {profileLoaded && item.requiresProfile && !hasProfile && (
+                          <Badge variant="outline" size="sm" className="text-[10px] opacity-70 border-dashed">
+                            Profile needed
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <CardTitle className="text-4 mt-4">{item.title}</CardTitle>
