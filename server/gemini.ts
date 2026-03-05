@@ -16,7 +16,7 @@ const PRIMARY_MODEL = MODELS[0];
 
 // Helper function to generate content with automatic fallback
 // Helper function to generate content with automatic multi-level fallback
-async function generateWithFallback(prompt: string): Promise<string> {
+export async function generateWithFallback(prompt: string): Promise<string> {
   let lastError: any;
 
   for (const model of MODELS) {

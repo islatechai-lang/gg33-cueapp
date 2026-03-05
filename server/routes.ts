@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage, generateOdisId } from "./storage";
 import { whopAuthMiddleware, requireWhopAuth, checkAccess, getWhopUserProfile, type WhopRequest } from "./whop";
-import { generatePersonalityInsights, generateDailyEnergy, generateCompatibilityInsights, generateChatResponse, generateChatResponseWithContext, generateChatResponseStream, buildUserContext, type UserNumerologyProfile, type CompatibilityProfile, type ChatMessage } from "./gemini";
+import { generatePersonalityInsights, generateDailyEnergy, generateCompatibilityInsights, generateChatResponse, generateChatResponseWithContext, generateChatResponseStream, buildUserContext, generateWithFallback, type UserNumerologyProfile, type CompatibilityProfile, type ChatMessage } from "./gemini";
 import { parsedCues, totalCuesCount, type ParsedCue } from "./cuesData";
 import { Resend } from 'resend';
 import { parseUTCDate } from '../shared/dateUtils';
@@ -641,6 +641,27 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/yearly-forecast/interact", async (req, res) => {
+    try {
+      const { lifePath, goal } = req.body;
+      const year = new Date().getFullYear();
+      const l = parseInt(lifePath) || 1;
+      const personalYearNumber = reduceToSingleDigit(l + reduceToSingleDigit(year));
+
+      const prompt = `You are an expert numerologist. The user is a Life Path ${l} and is currently in a Personal Year ${personalYearNumber} (${year}).
+      
+      Their specific goal for this year is: "${goal}"
+      
+      Provide a highly personalized 4-5 sentence strategic roadmap on how they can use the specific energetic frequency of their Personal Year ${personalYearNumber} to achieve this goal. Be practical, mystical, and direct. Do not use generic filler. Focus on action items perfectly suited for a Life Path ${l} navigating a Personal Year ${personalYearNumber}.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating yearly forecast AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/monthly-forecast/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
@@ -665,6 +686,30 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/monthly-forecast/interact", async (req, res) => {
+    try {
+      const { lifePath, obstacle } = req.body;
+      const l = parseInt(lifePath) || 1;
+      const d = new Date();
+      const month = d.getMonth() + 1;
+      const year = d.getFullYear();
+      const personalYearNumber = reduceToSingleDigit(l + reduceToSingleDigit(year));
+      const personalMonthNumber = reduceToSingleDigit(personalYearNumber + month);
+
+      const prompt = `You are a visionary numerologist and problem solver. The user is a Life Path ${l} and is currently in a Personal Month ${personalMonthNumber}.
+      
+      They are facing this specific obstacle right now: "${obstacle}"
+      
+      Provide a precise 3-4 sentence strategy on how they can overcome or reframe this obstacle by leveraging the specific energy of their Personal Month ${personalMonthNumber}. Be insightful, empowering, and use numerological principles to give them an exact energetic hack to solve this.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating monthly forecast AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/home-picker/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
@@ -685,6 +730,25 @@ export async function registerRoutes(
       environments: envs,
       goodHouseNumbers: [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i)
     });
+  });
+
+  app.post("/api/explore/home-picker/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are an expert numerologist and feng shui master. The user is a Life Path ${l}.
+      
+      They are considering moving to or living in this specific location/environment: "${input}"
+      
+      Provide a precise 3-4 sentence evaluation of how this location's energetic signature naturally aligns (or misaligns) with a Life Path ${l}. Give them specific advice on how to harmonize with this environment, or what specific area of the home they should focus their energetic intention on. Do not give generic real estate advice, focus purely on the numerological/energetic resonance.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating home picker AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/cars/:lifePath", (req, res) => {
@@ -715,6 +779,25 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/cars/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are a mystical numerologist that reads the energy of material objects. The user is a Life Path ${l}.
+      
+      They are considering buying or driving this specific vehicle: "${input}"
+      
+      Provide a highly precise 3-4 sentence energetic evaluation. Does this specific car model align with the core frequency of a Life Path ${l}? What specific interior or exterior color should they choose for this exact vehicle to maximize their manifestations and personal protection while driving it?`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating cars AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/lucky-number/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
@@ -734,6 +817,25 @@ export async function registerRoutes(
       secondary,
       howToUse: 'Write your primary number on a piece of paper and keep it in your wallet. Use your secondary numbers when selecting dates, flight seat assignments, or times to initiate important emails.'
     });
+  });
+
+  app.post("/api/explore/lucky-number/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are a master of numerological synchronicities. The user is a Life Path ${l}.
+      
+      They are asking about a specific number or date that has been appearing in their life: "${input}"
+      
+      Provide a precise 3-4 sentence decoding of this synchronicity. How does this specific number or date relate to their core Life Path ${l} frequency? Is it a warning, a green light, or a specific energetic marker they should pay attention to right now?`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating lucky number AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/letterology", (req, res) => {
@@ -767,6 +869,22 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/letterology/interact", async (req, res) => {
+    try {
+      const { input } = req.body; // 'input' is the name they want to analyze
+
+      const prompt = `You are an expert in Pythagorean Letterology. The user is asking about the resonance of this specific name, word, or business title: "${input}"
+      
+      Provide a highly precise 3-4 sentence analysis of the Pythagorean frequency of this specific name. How does its numerical vibration (1-9) interact with the surrounding world? Is it a name that attracts power, creativity, stability, or chaos? Give them a clear energetic verdict on the name "${input}".`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating letterology AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/matrix-numbers/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
@@ -781,6 +899,25 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/matrix-numbers/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are a digital mystic and matrix decoder. The user is a Life Path ${l}.
+      
+      They are asking about this specific age or life period: "${input}"
+      
+      Provide a highly precise 3-4 sentence analysis of the 'Matrix Activation' for this age. What specific esoteric sequence or energy node is triggered at this age for a Life Path ${l}? How can they use this specific numerical frequency to 'hack' their current reality and manifest faster? Be cryptic but highly actionable.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating matrix numbers AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/cue-cards/draw", (req, res) => {
     const cards = [
       { suit: 'SWORDS OF INTELLECT', type: 'action', cardName: 'The Alchemist', message: 'You have the power to transform current leaden circumstances into golden opportunities through a shift in perspective.', keyword: 'Transmutation' },
@@ -789,6 +926,24 @@ export async function registerRoutes(
       { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Architect', message: 'Slow down and secure your foundations. Quality over speed is your mantra right now.', keyword: 'Stability' }
     ];
     res.json(cards[Math.floor(Math.random() * cards.length)]);
+  });
+
+  app.post("/api/explore/cue-cards/interact", async (req, res) => {
+    try {
+      const { cardName, suit, message, input } = req.body;
+
+      const prompt = `You are an expert card reader and intuitive. The user just drew this card: "${cardName}" of the "${suit}" (Message: "${message}").
+      
+      Their specific question or situation is: "${input}"
+      
+      Provide a precise 3-4 sentence interpretation. How does the specific energy of "${cardName}" directly answer their question? Give them one specific "Cue" (action) they should take in the next 24 hours to align with this card's guidance.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating cue cards AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/dream-interpreter/:lifePath", (req, res) => {
@@ -802,6 +957,25 @@ export async function registerRoutes(
         { symbol: 'Being Chased', meaning: 'You are avoiding a karmic lesson that your Life Path requires you to face.', shift: 'Time to ground and confront.' }
       ]
     });
+  });
+
+  app.post("/api/explore/dream-interpreter/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are a mystical dream alchemist. The user is a Life Path ${l}.
+      
+      They just had this dream: "${input}"
+      
+      Provide a highly precise 3-4 sentence decoding of the symbols in this dream. How does the specific message of this dream relate to their Life Path ${l} journey? Give them one specific "Dream Action" they should take today to ground the wisdom of this dream into their physical reality.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating dream interpreter AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/energy-insights/:lifePath", (req, res) => {
@@ -824,6 +998,25 @@ export async function registerRoutes(
       lowVibe: `Under stress or poor energetic hygiene, you become drained, reactive, and physically susceptible to tension mapping in your lower back or neck.`,
       regimen: `Daily 15-minute grounding meditations and avoiding highly processed low-frequency foods will keep your ${auraColor} aura resilient and bright.`
     });
+  });
+
+  app.post("/api/explore/energy-insights/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are an energetic hygiene specialist. The user is a Life Path ${l}.
+      
+      They are feeling this way or are in this specific situation: "${input}"
+      
+      Provide a precise 3-4 sentence energetic evaluation. How is their current Life Path ${l} frequency being affected? What specific, immediate energetic 'cleansing' or 'shielding' technique should they use right now to restore their aura? Be direct and highly practical.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating energy insights AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/colorology/:lifePath", (req, res) => {
@@ -864,10 +1057,47 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/colorology/interact", async (req, res) => {
+    try {
+      const { lifePath, input } = req.body;
+      const l = parseInt(lifePath) || 1;
+
+      const prompt = `You are a master of color frequency and manifestation. The user is a Life Path ${l}.
+      
+      They have an upcoming event or specific need: "${input}"
+      
+      Provide a highly precise 3-4 sentence color prescription. What exact shade or color combination should they wear to this event to maximize their Life Path ${l} impact? How will this specific color interact with their personal aura to ensure they achieve their desired outcome?`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating colorology AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/vedic-astrology/:birthDate", (req, res) => {
     const birthDate = new Date(req.params.birthDate);
     const result = getVedicNakshatra(isNaN(birthDate.getTime()) ? new Date() : birthDate);
     res.json(result);
+  });
+
+  app.post("/api/explore/vedic-astrology/interact", async (req, res) => {
+    try {
+      const { birthDate, input } = req.body;
+
+      const prompt = `You are an expert Vedic Astrologer (Jyotish). The user has their chart snapshot (Nakshatra, Deity, etc.) based on their birth date.
+      
+      Their specific question or area of life focus is: "${input}"
+      
+      Provide a precise 3-4 sentence Vedic interpretation. How do the shifting cosmic currents affect them right now? Give them one specific Vedic remedy (Upaya)—like a specific color to wear, a small ritual, or a mindset shift—to harmonize with their chart today.`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating vedic AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
 
   app.get("/api/explore/all-about-you/:odisId", async (req, res) => {
@@ -907,6 +1137,24 @@ export async function registerRoutes(
     });
   });
 
+  app.post("/api/explore/all-about-you/interact", async (req, res) => {
+    try {
+      const { lifePath, archetype, element, input } = req.body;
+
+      const prompt = `You are a cosmic guide reading a soul's DNA profile. The user is a Life Path ${lifePath}, known as "${archetype}" with an emphasis on "${element}" energy.
+      
+      They are asking deeply about themselves: "${input}"
+      
+      Provide a highly precise 3-4 sentence spiritual analysis. How does their unique archetypal signature answer this question? What is the most important "Soul Directive" they need to hear right now to fully step into their power as a ${archetype}?`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating all-about-you AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
+  });
+
   app.get("/api/explore/saturn-insights/:birthDate", (req, res) => {
     const birthYear = new Date(req.params.birthDate || Date.now()).getFullYear();
     const age = new Date().getFullYear() - birthYear;
@@ -938,6 +1186,24 @@ export async function registerRoutes(
       nextMilestoneYear: new Date().getFullYear() + ((29.5 - (age % 29.5)) % 29.5 || 29.5).toFixed(0),
       nextMilestoneEvent: 'Major karmic review and structural upgrade of your life path.'
     });
+  });
+
+  app.post("/api/explore/saturn-insights/interact", async (req, res) => {
+    try {
+      const { birthDate, state, input } = req.body;
+
+      const prompt = `You are a karmic strategist and master of Saturnian cycles. The user is in this Saturnian phase: "${state}".
+      
+      They are facing this specific challenge or question: "${input}"
+      
+      Provide a precise 3-4 sentence analysis. How is Saturn using this specific situation to test their foundations? What is the single most important "Structural Shift" they must make in their life right now to turn this challenge into a long-term reward?`;
+
+      const responseText = await generateWithFallback(prompt);
+      res.json({ response: responseText });
+    } catch (error) {
+      console.error('Error generating saturn insights AI interaction:', error);
+      res.status(500).json({ error: 'Failed to generate insight.' });
+    }
   });
   // --- END NEW EXPLORE ENDPOINTS ---
 

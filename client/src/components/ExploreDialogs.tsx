@@ -1,14 +1,86 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
     AlertCircle, CalendarDays, CalendarRange, Home, Car, Hash, Type,
     Grid, Square, Moon, Zap, Palette, Sun, UserCircle, CircleDashed,
-    Star, Compass, Heart, Globe, TrendingUp, Users, Check, MapPin, Briefcase
+    Star, Compass, Heart, Globe, TrendingUp, Users, Check, MapPin, Briefcase,
+    Sparkles, Loader2
 } from 'lucide-react';
 import { useState } from 'react';
+
+function AIFeatureChat({ endpoint, payload, placeholder = "Ask Gemini...", buttonText = "Analyze", isTextarea = false }: { endpoint: string, payload: any, placeholder?: string, buttonText?: string, isTextarea?: boolean }) {
+    const [input, setInput] = useState('');
+
+    const chatMutation = useMutation({
+        mutationFn: async (text: string) => {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...payload, input: text })
+            });
+            if (!res.ok) throw new Error('Failed to get AI response');
+            const data = await res.json();
+            return data.response;
+        }
+    });
+
+    return (
+        <div className="mt-8 relative rounded-xl border-2 border-amber-9/30 bg-gradient-to-br from-amber-a2/30 to-amber-a4/30 overflow-hidden shadow-lg backdrop-blur-sm">
+            <div className="absolute top-0 right-0 p-3 opacity-20">
+                <Sparkles className="w-12 h-12 text-amber-9" />
+            </div>
+            <div className="p-5 relative z-10">
+                <h4 className="font-bold flex items-center gap-2 mb-3 text-amber-11">
+                    <Sparkles className="w-5 h-5 fill-amber-9" />
+                    Ask Your Cosmic AI
+                </h4>
+
+                {chatMutation.data ? (
+                    <div className="space-y-4">
+                        <div className="p-4 bg-gray-a2 border border-amber-a4 rounded-lg rounded-tr-none ml-6 text-sm leading-relaxed text-gray-12 shadow-sm">
+                            {chatMutation.data}
+                        </div>
+                        <Button variant="outline" size="sm" onClick={() => { setInput(''); chatMutation.reset(); }} className="w-full">Ask Another Question</Button>
+                    </div>
+                ) : (
+                    <form onSubmit={(e) => { e.preventDefault(); if (input) chatMutation.mutate(input); }} className="space-y-3">
+                        {isTextarea ? (
+                            <Textarea
+                                placeholder={placeholder}
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                className="resize-none bg-background/80 border-amber-a4 focus-visible:ring-amber-9 min-h-[80px]"
+                                disabled={chatMutation.isPending}
+                            />
+                        ) : (
+                            <Input
+                                placeholder={placeholder}
+                                value={input}
+                                onChange={e => setInput(e.target.value)}
+                                className="bg-background/80 border-amber-a4 focus-visible:ring-amber-9"
+                                disabled={chatMutation.isPending}
+                            />
+                        )}
+                        <Button
+                            type="submit"
+                            className="w-full bg-amber-9 hover:bg-amber-10 text-white font-bold"
+                            disabled={!input.trim() || chatMutation.isPending}
+                        >
+                            {chatMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Sparkles className="w-4 h-4 mr-2" />}
+                            {chatMutation.isPending ? 'Analyzing Frequency...' : buttonText}
+                        </Button>
+                        {chatMutation.isError && <div className="text-red-9 text-xs mt-2 text-center">Failed to connect to Oracle. Try again.</div>}
+                    </form>
+                )}
+            </div>
+        </div>
+    );
+}
 
 function LoadingSkeleton() {
     return (
@@ -85,6 +157,14 @@ export function YearlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                                     ))}
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/yearly-forecast/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="What is your biggest goal or intention for this year?"
+                                buttonText="Generate Strategic Roadmap"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -143,6 +223,14 @@ export function MonthlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                                     </ul>
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/monthly-forecast/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="What is a specific obstacle you are facing right now?"
+                                buttonText="Get Cosmic Strategy"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -204,6 +292,14 @@ export function HomePickerDialog({ open, onClose, lifePathNumber }: any) {
                                 </div>
                                 <p className="text-xs text-gray-11 italic">These numbers create a harmonic resonance with your Life Path.</p>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/home-picker/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="Enter a city, country, or specific address you're considering..."
+                                buttonText="Evaluate Energetic Match"
+                                isTextarea={false}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -264,6 +360,14 @@ export function CarsDialog({ open, onClose, lifePathNumber }: any) {
                                     ))}
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/cars/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="What specific car make/model are you considering?"
+                                buttonText="Analyze Car Energy"
+                                isTextarea={false}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -320,6 +424,14 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber }: any) {
                                     <p className="text-sm leading-relaxed">{data.howToUse}</p>
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/lucky-number/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="Seen a recurring number or date? Enter it here..."
+                                buttonText="Decode Synchronicity"
+                                isTextarea={false}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -382,6 +494,14 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
                                 <h4 className="font-bold mb-2 border-b pb-2">Name Vibrational Summary</h4>
                                 <p className="text-sm leading-relaxed text-gray-11">{data.summary}</p>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/letterology/interact"
+                                payload={{ name: profileData?.fullName }}
+                                placeholder="Enter another name, brand, or word to analyze..."
+                                buttonText="Analyze Frequency"
+                                isTextarea={false}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -445,6 +565,14 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber }: any) {
                                     ))}
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/matrix-numbers/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="What is your current age or a significant age you're curious about?"
+                                buttonText="Decode Age Activation"
+                                isTextarea={false}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -521,13 +649,22 @@ export function CueCardsDialog({ open, onClose }: any) {
                             </div>
 
                             {flipped && (
-                                <Button
-                                    onClick={handleDrawAnother}
-                                    variant="outline"
-                                    className="mt-8 opacity-0 animate-in fade-in slide-in-from-bottom-4 delay-500 fill-mode-forwards"
-                                >
-                                    Draw Another Card
-                                </Button>
+                                <div className="mt-8 w-full">
+                                    <AIFeatureChat
+                                        endpoint="/api/explore/cue-cards/interact"
+                                        payload={{
+                                            cardName: data.cardName,
+                                            suit: data.suit,
+                                            message: data.message
+                                        }}
+                                        placeholder="Ask a specific question about this card's guidance..."
+                                        buttonText="Interpret Card for Me"
+                                        isTextarea={true}
+                                    />
+                                    <Button onClick={handleDrawAnother} variant="outline" className="w-full mt-4">
+                                        Draw Another Card
+                                    </Button>
+                                </div>
                             )}
                         </div>
                     ) : null}
@@ -581,6 +718,14 @@ export function DreamInterpreterDialog({ open, onClose, lifePathNumber }: any) {
                                     </div>
                                 ))}
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/dream-interpreter/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="Describe a dream symbol or scene you remember..."
+                                buttonText="Decode Dream"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -644,6 +789,14 @@ export function EnergyInsightsDialog({ open, onClose, lifePathNumber, energySign
                                 <h4 className="font-bold mb-2">Energetic Regimen</h4>
                                 <p className="text-sm text-gray-12 leading-relaxed">{data.regimen}</p>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/energy-insights/interact"
+                                payload={{ lifePath: lifePathNumber }}
+                                placeholder="How are you feeling energetically right now?"
+                                buttonText="Check Aura Hygiene"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -747,6 +900,14 @@ export function VedicAstrologyDialog({ open, onClose, birthDate }: any) {
                                 <h4 className="text-sm font-bold mb-1 uppercase text-gray-11 tracking-wider">Karmic Path</h4>
                                 <p className="text-sm text-gray-12 leading-relaxed">{data.karmicPath}</p>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/vedic-astrology/interact"
+                                payload={{ birthDate: birthDate }}
+                                placeholder="Ask about a specific area of life (Career, Love, etc.)..."
+                                buttonText="Get Vedic Insight"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -822,6 +983,18 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
                                     ))}
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/all-about-you/interact"
+                                payload={{
+                                    lifePath: data.lifePath,
+                                    archetype: data.archetype,
+                                    element: data.element
+                                }}
+                                placeholder="Ask a question about your composite profile..."
+                                buttonText="Ask Matrix Self"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
@@ -889,6 +1062,17 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                                     <div className="text-sm flex-1">{data.nextMilestoneEvent}</div>
                                 </div>
                             </div>
+
+                            <AIFeatureChat
+                                endpoint="/api/explore/saturn-insights/interact"
+                                payload={{
+                                    birthDate: birthDate,
+                                    state: data.state
+                                }}
+                                placeholder="Ask a question about your current Saturn cycle..."
+                                buttonText="Decode Karmic Lesson"
+                                isTextarea={true}
+                            />
                         </div>
                     ) : null}
                 </ScrollArea>
