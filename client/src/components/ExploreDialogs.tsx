@@ -457,11 +457,11 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
             <DialogContent className="max-w-3xl max-h-[85vh]">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+                    <DialogTitle className="flex items-center gap-2 text-xl">
                         <Type className="w-5 h-5 text-amber-9" />
-                        Letterology
+                        Letterology: {data?.firstName}
                     </DialogTitle>
-                    <DialogDescription>The hidden meaning behind the letters in your name</DialogDescription>
+                    <DialogDescription>Decoding the vibrational frequency of your first name</DialogDescription>
                 </DialogHeader>
                 <ScrollArea className="max-h-[60vh] pr-4">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load letterology" /> : data ? (
@@ -477,16 +477,21 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
                                 ))}
                             </div>
 
-                            <div className="grid md:grid-cols-2 gap-4">
+                            <div className="grid md:grid-cols-3 gap-4">
                                 <div className="p-4 bg-amber-a2 border-amber-a4 border rounded-lg">
-                                    <div className="text-sm text-amber-11 font-bold mb-1">Cornerstone (First Letter)</div>
-                                    <div className="text-lg font-bold mb-2">"{data.cornerstone.char}"</div>
-                                    <div className="text-sm leading-relaxed">{data.cornerstone.meaning}</div>
+                                    <div className="text-[10px] text-amber-11 font-bold uppercase tracking-wider mb-1">Cornerstone (Start)</div>
+                                    <div className="text-xl font-bold mb-2">"{data.cornerstone.char}"</div>
+                                    <div className="text-xs leading-relaxed">{data.cornerstone.meaning}</div>
+                                </div>
+                                <div className="p-4 bg-indigo-a2 border-indigo-a4 border rounded-lg">
+                                    <div className="text-[10px] text-indigo-11 font-bold uppercase tracking-wider mb-1">Soul Urge (Vowel)</div>
+                                    <div className="text-xl font-bold mb-2">"{data.soulUrge?.char || 'N/A'}"</div>
+                                    <div className="text-xs leading-relaxed">{data.soulUrge?.meaning || 'Inner desire frequency.'}</div>
                                 </div>
                                 <div className="p-4 bg-gray-a2 border-gray-a4 border rounded-lg">
-                                    <div className="text-sm text-gray-11 font-bold mb-1">Capstone (Last Letter)</div>
-                                    <div className="text-lg font-bold mb-2">"{data.capstone.char}"</div>
-                                    <div className="text-sm leading-relaxed">{data.capstone.meaning}</div>
+                                    <div className="text-[10px] text-gray-11 font-bold uppercase tracking-wider mb-1">Capstone (Finish)</div>
+                                    <div className="text-xl font-bold mb-2">"{data.capstone.char}"</div>
+                                    <div className="text-xs leading-relaxed">{data.capstone.meaning}</div>
                                 </div>
                             </div>
 

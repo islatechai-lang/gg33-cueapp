@@ -839,33 +839,79 @@ export async function registerRoutes(
   });
 
   app.get("/api/explore/letterology", (req, res) => {
-    const name = typeof req.query.name === 'string' ? req.query.name : 'Unknown';
-    const cleanName = name.replace(/[^a-zA-Z]/g, '').toUpperCase();
-    const letters = cleanName.split('').map(char => {
-      const val = pythagorean[char] || 0;
-      return { char, value: val };
-    });
+    const fullName = typeof req.query.name === 'string' ? req.query.name : 'Unknown';
+    const parts = fullName.trim().split(/\s+/);
+    const firstName = parts[0] || 'Unknown';
 
-    if (letters.length === 0 || letters[0].value === 0) {
+    const cleanFirstName = firstName.replace(/[^a-zA-Z]/g, '').toUpperCase();
+    const letters = cleanFirstName.split('').map(char => ({
+      char,
+      value: pythagorean[char] || 0
+    }));
+
+    if (letters.length === 0) {
       return res.json({
         letters: [{ char: 'A', value: 1 }],
-        cornerstone: { char: 'A', meaning: 'Originality and leadership' },
-        capstone: { char: 'A', meaning: 'Follow-through and determination' },
-        summary: 'Your name lacks standard alphabetic characters to analyze.'
+        cornerstone: { char: 'A', meaning: 'Originality' },
+        capstone: { char: 'A', meaning: 'Completion' },
+        summary: 'Name analysis requires alphabetic characters.'
       });
     }
 
+    const vowels = ['A', 'E', 'I', 'O', 'U'];
+    const firstVowel = letters.find(l => vowels.includes(l.char));
+
+    const meanings: Record<string, string> = {
+      'A': 'Ambitious and independent. You initiate with force.',
+      'B': 'Sensitive and cooperative. You seek harmony.',
+      'C': 'Creative and expressive. You bring joy to projects.',
+      'D': 'Practical and grounded. You build solid foundations.',
+      'E': 'Versatile and freedom-loving. You adapt quickly.',
+      'F': 'Responsible and nurturing. You care for the details.',
+      'G': 'Analytical and introspective. You seek inner truth.',
+      'H': 'Authoritative and efficient. You aim for big results.',
+      'I': 'Idealistic and compassionate. You work with vision.',
+      'J': 'Inventive and self-motivated. A natural leader.',
+      'K': 'Intuitive and inspirational. You act as a catalyst.',
+      'L': 'Intellectual and friendly. You gather information.',
+      'M': 'Hard-working and stable. The "worker bee" energy.',
+      'N': 'Dynamic and unconventional. You think outside the box.',
+      'O': 'Patience and service. You are the backbone.',
+      'P': 'Philosophical and studious. You look for deep meaning.',
+      'Q': 'Unique and influential. You have a rare perspective.',
+      'R': 'Resilient and intense. You finish with great power.',
+      'S': 'Charismatic and emotional. You prefer to work solo.',
+      'T': 'Cooperative and team-oriented. You work through others.',
+      'U': 'Lucky and artistic. You have a natural flow.',
+      'V': 'Visionary and master builder. Long-term focus.',
+      'W': 'Experimental and purposeful. You seek experience.',
+      'X': 'Exceptional and helpful. You are a natural teacher.',
+      'Y': 'Mystical and questioning. You look for the why.',
+      'Z': 'Optimistic and hopeful. You see the light ahead.'
+    };
+
     res.json({
-      letters: letters.slice(0, 10), // Limit for UI display
+      fullName,
+      firstName,
+      letters: letters.slice(0, 15), // Show more letters
       cornerstone: {
         char: letters[0].char,
-        meaning: `The cornerstone '${letters[0].char}' dictates how you approach opportunities and obstacles. Based on its value of ${letters[0].value}, you initiate with ${letters[0].value === 1 ? 'leadership and original ideas' : letters[0].value === 2 ? 'tact and diplomacy' : letters[0].value === 3 ? 'creative expression' : letters[0].value === 4 ? 'methodical planning' : letters[0].value === 8 ? 'executive power' : 'a unique energetic frequency'}.`
+        meaning: meanings[letters[0].char] || 'A unique starting vibration.'
       },
       capstone: {
         char: letters[letters.length - 1].char,
-        meaning: `The capstone '${letters[letters.length - 1].char}' (value ${letters[letters.length - 1].value}) reveals your attitude towards finishing projects. It is how you cap off your endeavors.`
+        meaning: meanings[letters[letters.length - 1].char] || 'A unique closing vibration.'
       },
-      summary: `The vibrational sequence of your name creates a powerful frequency. When people speak your name, they invoke a ${letters[0].value}-${letters[letters.length - 1].value} energy bridge.`
+      soulUrge: firstVowel ? {
+        char: firstVowel.char,
+        meaning: `The first vowel '${firstVowel.char}' reveals your soul's deepest desire: ${firstVowel.char === 'A' ? 'Independence and achievement.' :
+            firstVowel.char === 'E' ? 'Freedom and variety.' :
+              firstVowel.char === 'I' ? 'Recognition and creativity.' :
+                firstVowel.char === 'O' ? 'Responsibility and stability.' :
+                  'Understanding and esoteric wisdom.'
+          }`
+      } : null,
+      summary: `Analyzing "${firstName}": Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
     });
   });
 
@@ -873,9 +919,14 @@ export async function registerRoutes(
     try {
       const { input } = req.body; // 'input' is the name they want to analyze
 
-      const prompt = `You are an expert in Pythagorean Letterology. The user is asking about the resonance of this specific name, word, or business title: "${input}"
+      const prompt = `You are an elite Pythagorean Numerologist and Letterology expert. The user is asking for a deep reading on the resonance of the name: "${input}"
       
-      Provide a highly precise 3-4 sentence analysis of the Pythagorean frequency of this specific name. How does its numerical vibration (1-9) interact with the surrounding world? Is it a name that attracts power, creativity, stability, or chaos? Give them a clear energetic verdict on the name "${input}".`;
+      Analyze the name based on these factors:
+      1. Component Letters: The physical vibration of the specific alphabet characters.
+      2. Numerical Sequence: The 1-9 frequency of the name.
+      3. Practical Verdict: Is this name better for business, fame, spiritual work, or family?
+      
+      Provide a highly valuable, punchy, and professional 4-5 sentence analysis. Avoid generic flattery—be precise about what this name attracts and what its weaknesses are. Does it attract power (8), stability (4), or change (5)? Give a final "Power Verdict" for the name "${input}".`;
 
       const responseText = await generateWithFallback(prompt);
       res.json({ response: responseText });
