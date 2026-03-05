@@ -16,19 +16,19 @@ const ODIS_ID_KEY = 'gg33-odis-id';
 export default function Learn() {
   const { basePath } = useWhopContext();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  
+
   const savedOdisId = localStorage.getItem(ODIS_ID_KEY);
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
     queryKey: ['/api/profile', savedOdisId],
     enabled: !!savedOdisId,
   });
   const isPro = profileData?.isPro ?? false;
-  
+
   return (
     <>
       <StarField />
       <Navigation />
-      
+
       <main className="pt-20 pb-12 px-4 min-h-screen" data-testid="page-learn">
         <div className="container mx-auto max-w-6xl space-y-8">
           <div className="text-center">
@@ -61,8 +61,8 @@ export default function Learn() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course) => (
-              <Card 
-                key={course.id} 
+              <Card
+                key={course.id}
                 variant={course.free ? 'frosted' : 'glass'}
                 className="relative overflow-hidden flex flex-col"
                 data-testid={`card-course-${course.id}`}
@@ -75,11 +75,11 @@ export default function Learn() {
                 <CardHeader>
                   <div className="flex items-center gap-2 mb-2">
                     {course.free ? (
-                      <Badge color="green" variant="outline" size="sm">
+                      <Badge variant="outline" className="bg-green-a2 text-green-11 border-green-a4 px-2 py-0 h-5 text-[10px] font-bold uppercase tracking-wider">
                         Free
                       </Badge>
                     ) : (
-                      <Badge variant="secondary" size="sm">
+                      <Badge variant="outline" className="bg-amber-a2 text-amber-11 border-amber-a4 px-2 py-0 h-5 text-[10px] font-bold uppercase tracking-wider">
                         Premium
                       </Badge>
                     )}
@@ -101,8 +101,8 @@ export default function Learn() {
                   <div className="mt-auto">
                     {course.free || isPro ? (
                       <Link href={`${basePath}/course/${course.id}`}>
-                        <Button 
-                          variant="gold" 
+                        <Button
+                          variant="gold"
                           className="w-full"
                           data-testid={`button-start-course-${course.id}`}
                         >
@@ -111,8 +111,8 @@ export default function Learn() {
                         </Button>
                       </Link>
                     ) : (
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         className="w-full"
                         onClick={() => setShowUpgradeModal(true)}
                         data-testid={`button-locked-course-${course.id}`}
@@ -137,8 +137,8 @@ export default function Learn() {
                 <p className="text-gray-11 text-2 mb-6 max-w-md mx-auto">
                   Upgrade to Pro to access all premium courses and become a GG33 master.
                 </p>
-                <Button 
-                  variant="gold" 
+                <Button
+                  variant="gold"
                   onClick={() => setShowUpgradeModal(true)}
                   data-testid="button-unlock-courses"
                 >
@@ -150,7 +150,7 @@ export default function Learn() {
           )}
         </div>
       </main>
-      
+
       <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
     </>
   );
