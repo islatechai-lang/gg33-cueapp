@@ -1153,12 +1153,12 @@ export default function Explore() {
             </Card>
           )}
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7">
             {explorations.map((item) => (
               <Card
                 key={item.id}
                 variant="frosted"
-                className={`hover:border-amber-6/30 transition-all cursor-pointer group relative ${profileLoaded && item.requiresProfile && !hasProfile ? 'opacity-60' : ''
+                className={`hover:border-amber-6/30 transition-all cursor-pointer group relative flex flex-col min-h-[180px] sm:min-h-[210px] lg:min-h-[230px] ${profileLoaded && item.requiresProfile && !hasProfile ? 'opacity-60' : ''
                   }`}
                 onClick={() => handleCardClick(item.id)}
                 data-testid={`card-explore-${item.id}`}
@@ -1176,10 +1176,10 @@ export default function Explore() {
                     </div>
                   </div>
                 )}
-                <CardHeader>
+                <CardHeader className="p-5 sm:p-6 lg:p-7 pb-3 sm:pb-4 flex-none">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="w-12 h-12 rounded-lg bg-amber-a3 flex items-center justify-center group-hover:bg-amber-a4 transition-colors">
-                      <item.icon className="w-6 h-6 text-amber-9" />
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-amber-a3 flex items-center justify-center group-hover:bg-amber-a4 transition-colors">
+                      <item.icon className="w-6 h-6 sm:w-7 sm:h-7 text-amber-9" />
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="flex flex-col items-end gap-1">
@@ -1201,10 +1201,10 @@ export default function Explore() {
                       </div>
                     </div>
                   </div>
-                  <CardTitle className="text-4 mt-4">{item.title}</CardTitle>
+                  <CardTitle className="text-4 sm:text-[1.15rem] mt-4 sm:mt-5">{item.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-2 text-gray-11">{item.description}</p>
+                <CardContent className="p-5 sm:p-6 lg:p-7 pt-0 mt-auto">
+                  <p className="text-2 sm:text-[0.85rem] text-gray-11 leading-relaxed">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
