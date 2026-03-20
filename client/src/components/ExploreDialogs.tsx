@@ -9,7 +9,9 @@ import {
     AlertCircle, CalendarDays, CalendarRange, Home, Car, Hash, Type,
     Grid, Square, Moon, Zap, Palette, Sun, UserCircle, CircleDashed,
     Star, Compass, Heart, Globe, TrendingUp, Users, Check, MapPin, Briefcase,
-    Sparkles, Loader2
+    Sparkles, Loader2, AlertTriangle, Stars, ArrowUpCircle, ArrowDownCircle,
+    Target, Flame, Gem, Shield, Activity, History, Trophy, Medal, CircleDot,
+    CheckCircle2, Swords, Map
 } from 'lucide-react';
 import { useState } from 'react';
 

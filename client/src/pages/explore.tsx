@@ -1255,7 +1255,7 @@ export default function Explore() {
       <TrendingEnergiesDialog
         open={activeFeature === 'trending'}
         onClose={() => setActiveFeature(null)}
-        profileData={profileData}
+        profileData={profileData || null}
       />
 
       <BestDaysDialog
@@ -1319,7 +1319,7 @@ export default function Explore() {
         open={activeFeature === 'lucky-number'}
         onClose={handleCloseDialog}
         lifePathNumber={lifePathNumber}
-        birthDate={birthDate?.toISOString()}
+        birthDate={birthDate}
       />
 
       <LetterologyDialog
@@ -1332,7 +1332,7 @@ export default function Explore() {
         open={activeFeature === 'matrix-numbers'}
         onClose={handleCloseDialog}
         lifePathNumber={lifePathNumber}
-        birthDate={birthDate?.toISOString()}
+        birthDate={birthDate}
       />
 
       <CueCardsDialog

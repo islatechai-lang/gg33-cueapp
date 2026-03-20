@@ -2099,7 +2099,7 @@ export async function registerRoutes(
        * Generates a deep, personalized explanation for why a specific Personal Day is high-rated
        * for a specific Life Path Number.
        */
-      function getPersonalizedReasoning(lp: number, pd: number): string {
+      const getPersonalizedReasoning = (lp: number, pd: number): string => {
         // Double Vibration / Alignment
         if (lp === pd) {
           return `This is a 'Mirror Day' of absolute alignment. As a Life Path ${lp}, you are naturally tuned to this vibration. Today, the external flow of the universe perfectly matches your internal soul frequency. It's a day of exponential power where your natural gifts aren't just supported—they are amplified. You don't have to swim against the current today; you ARE the current.`;
