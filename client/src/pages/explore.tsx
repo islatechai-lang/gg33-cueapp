@@ -1319,6 +1319,7 @@ export default function Explore() {
         open={activeFeature === 'lucky-number'}
         onClose={handleCloseDialog}
         lifePathNumber={lifePathNumber}
+        birthDate={birthDate?.toISOString()}
       />
 
       <LetterologyDialog
@@ -1331,6 +1332,7 @@ export default function Explore() {
         open={activeFeature === 'matrix-numbers'}
         onClose={handleCloseDialog}
         lifePathNumber={lifePathNumber}
+        birthDate={birthDate?.toISOString()}
       />
 
       <CueCardsDialog

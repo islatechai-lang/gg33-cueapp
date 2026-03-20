@@ -627,17 +627,30 @@ export async function registerRoutes(
     // To make it simple and deterministic given just LP, we use a standard progression:
     const personalYearNumber = reduceToSingleDigit(l + reduceToSingleDigit(year));
 
+    const yearTitles: Record<number, string> = { 1: 'New Beginnings', 2: 'Partnership & Patience', 3: 'Creative Expression', 4: 'Building Foundations', 5: 'Change & Freedom', 6: 'Love & Responsibility', 7: 'Introspection & Wisdom', 8: 'Abundance & Power', 9: 'Completion & Release' };
+    const luckyMonths = [reduceToSingleDigit(personalYearNumber + 1), reduceToSingleDigit(personalYearNumber + 5), reduceToSingleDigit(personalYearNumber + 9)];
+    const challengeMonths = [reduceToSingleDigit(personalYearNumber + 4), reduceToSingleDigit(personalYearNumber + 8)];
+
     res.json({
       year,
       personalYearNumber,
-      title: `The Year of ${personalYearNumber === 1 ? 'New Beginnings' : personalYearNumber === 9 ? 'Completion' : personalYearNumber === 4 ? 'Foundation' : personalYearNumber === 8 ? 'Abundance' : 'Growth'}`,
+      title: `The Year of ${yearTitles[personalYearNumber] || 'Growth'}`,
       description: `This year brings a powerful shift in your energetic resonance. With a Personal Year number of ${personalYearNumber}, you are entering a cycle focused on overarching growth aligned with your Life Path ${l}. Prepare to shed old patterns and embrace incoming cosmic opportunities.`,
       quarters: [
         { quarter: 'Q1 (Jan-Mar)', theme: 'Planting Seeds', advice: 'Focus on setting intentions and initiating new connections.' },
         { quarter: 'Q2 (Apr-Jun)', theme: 'Cultivation', advice: 'Nurture your projects. Patience is your strongest asset now.' },
         { quarter: 'Q3 (Jul-Sep)', theme: 'Harvest & Tests', advice: 'You will see the fruits of your labor, but expect unexpected challenges.' },
         { quarter: 'Q4 (Oct-Dec)', theme: 'Reflection', advice: 'Review the year, consolidate your gains, and prepare for the next cycle.' }
-      ]
+      ],
+      keyDates: [
+        { month: 'January', event: 'New Year energy reset — set your annual intention on the 1st', type: 'opportunity' },
+        { month: 'March', event: `Personal Month ${reduceToSingleDigit(personalYearNumber + 3)} brings an energy shift — pivot or accelerate`, type: 'turning-point' },
+        { month: 'June', event: 'Mid-year alignment check — reassess your trajectory', type: 'review' },
+        { month: 'September', event: `Personal Month ${reduceToSingleDigit(personalYearNumber + 9)} echoes your Personal Year — maximum amplitude`, type: 'peak' },
+        { month: 'December', event: 'Year completion — release what no longer serves you before the next cycle', type: 'release' }
+      ],
+      luckyMonths: luckyMonths.map(m => ({ month: m, name: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m - 1] || 'Dec' })),
+      challengeMonths: challengeMonths.map(m => ({ month: m, name: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][m - 1] || 'Dec' }))
     });
   });
 
@@ -673,6 +686,26 @@ export async function registerRoutes(
 
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+    const weekLabels = ['Week 1 (1st-7th)', 'Week 2 (8th-14th)', 'Week 3 (15th-21st)', 'Week 4 (22nd-End)'];
+    const weekThemes = [
+      { focus: 'Initiation', tip: 'Set your monthly intention. The first week carries the strongest seeding energy.' },
+      { focus: 'Building', tip: 'Double down on what you started. Momentum is building beneath the surface.' },
+      { focus: 'Testing', tip: 'Expect friction — this is the universe stress-testing your commitment.' },
+      { focus: 'Completion', tip: 'Harvest results and rest. Prepare mentally for the next monthly cycle.' }
+    ];
+    const luckyDays = [reduceToSingleDigit(personalMonthNumber), reduceToSingleDigit(personalMonthNumber + 9), reduceToSingleDigit(personalMonthNumber + 18)].filter(d => d >= 1 && d <= 28);
+    const affirmations: Record<number, string> = {
+      1: 'I am the architect of my reality. Every action I take creates my world.',
+      2: 'I attract harmonious partnerships that elevate my soul mission.',
+      3: 'My creative expression flows freely and touches everyone it meets.',
+      4: 'I build unshakable foundations that support generations.',
+      5: 'I embrace change with courage and excitement.',
+      6: 'Love flows through me and into everything I create.',
+      7: 'I trust my inner wisdom above all external noise.',
+      8: 'Abundance is my birthright. I am worthy of material and spiritual wealth.',
+      9: 'I release what no longer serves me with grace and gratitude.'
+    };
+
     res.json({
       monthName: months[month - 1],
       personalMonthNumber,
@@ -682,7 +715,10 @@ export async function registerRoutes(
         'Networking with high-vibration individuals',
         'Healing past relationship wounds'
       ],
-      challenges: ['Over-committing your energy', 'Ignoring intuitive red flags', 'Financial impulsivity']
+      challenges: ['Over-committing your energy', 'Ignoring intuitive red flags', 'Financial impulsivity'],
+      weeklyBreakdown: weekLabels.map((label, i) => ({ week: label, ...weekThemes[i] })),
+      affirmation: affirmations[personalMonthNumber] || affirmations[1],
+      luckyDays
     });
   });
 
@@ -725,10 +761,20 @@ export async function registerRoutes(
       envs = [{ type: 'Mountain & Grounded', description: 'Aligns with your analytical and structural soul urge.' }, { type: 'Quiet Retreats', description: 'Provides solitude for deep work.' }];
     }
 
+    const fengShuiTips = [
+      { area: 'Front Door', tip: `Paint or decorate with colors that resonate with Life Path ${l}. This is where energy enters your space.` },
+      { area: 'Bedroom', tip: 'Remove electronics and place your bed so it faces your personal power direction (based on your LP).' },
+      { area: 'Kitchen', tip: 'Keep the stove clean and all burners working — this directly affects your wealth frequency.' },
+      { area: 'Home Office', tip: `Place your desk facing the door. Position personal lucky objects related to number ${l} on the desk.` }
+    ];
+    const avoidHouseNumbers = [reduceToSingleDigit(10 - l), l === 8 ? 4 : l === 4 ? 8 : reduceToSingleDigit(l + 5)].filter((v, i, a) => a.indexOf(v) === i && v !== l);
+
     res.json({
       overview: `Your Life Path ${l} thrives in environments that balance stimulation with grounding. The energetic blueprint of your ideal home requires a specific mathematical resonance.`,
       environments: envs,
-      goodHouseNumbers: [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i)
+      goodHouseNumbers: [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i),
+      fengShuiTips,
+      avoidHouseNumbers
     });
   });
 
@@ -772,10 +818,16 @@ export async function registerRoutes(
       colors = ['Pearl White', 'Sapphire Blue', 'Soft Lavender'];
     }
 
+    const luckyPlateDigits = [l, reduceToSingleDigit(l + 3), reduceToSingleDigit(l * 3)].filter((v, i, a) => a.indexOf(v) === i);
+    const directions: Record<number, string> = { 1: 'North', 2: 'South-West', 3: 'East', 4: 'South', 5: 'All (your freedom number)', 6: 'North-West', 7: 'West', 8: 'North-East', 9: 'South-East' };
+
     res.json({
       overview: `A vehicle is an extension of your aura. For Life Path ${l}, your car needs to reflect your inner drive and provide the right energetic protection on the road.`,
       types,
-      colors
+      colors,
+      luckyPlateDigits,
+      idealDriveDirection: directions[l] || 'North',
+      avoidNote: `Avoid purchasing a vehicle on a day that reduces to ${reduceToSingleDigit(10 - l)} — this frequency conflicts with your Life Path.`
     });
   });
 
@@ -801,20 +853,152 @@ export async function registerRoutes(
   app.get("/api/explore/lucky-number/:lifePath", (req, res) => {
     const { lifePath } = req.params;
     const l = parseInt(lifePath) || 1;
+    const birthDate = req.query.birthDate as string || null;
 
-    // Primary is often the life path itself, or its reduced form if master
+    // Primary is the life path itself
     const primary = l;
 
-    // Secondary numbers derived mathematically without overlapping the primary
+    // Secondary numbers derived mathematically
     const secondary = [
       l === 1 ? 8 : reduceToSingleDigit(l + 7),
       reduceToSingleDigit(l * 2) === l ? reduceToSingleDigit(l + 3) : reduceToSingleDigit(l * 2),
       l === 9 ? 3 : reduceToSingleDigit(l + 4)
     ].filter((v, i, a) => a.indexOf(v) === i && v !== primary);
 
+    // Build calculation methods with step-by-step breakdowns
+    const calculations: any[] = [];
+
+    // Method 1: Life Path Method
+    calculations.push({
+      method: 'Life Path Number',
+      description: 'Your primary lucky number derived from your entire birth date',
+      result: l,
+      steps: [`Your Life Path = ${l}`, `This is your most powerful personal frequency`],
+      icon: 'star'
+    });
+
+    // Method 2: Birth Day Compound (the "Michael Jordan 23" method)
+    if (birthDate) {
+      const bd = new Date(birthDate);
+      if (!isNaN(bd.getTime())) {
+        const month = bd.getUTCMonth() + 1;
+        const day = bd.getUTCDate();
+        const year = bd.getUTCFullYear();
+        const lastDigitMonth = month % 10;
+        const lastDigitYear = year % 10;
+        const compound = lastDigitMonth * 10 + lastDigitYear;
+        const dayCompound = day;
+        calculations.push({
+          method: 'Birth Day Compound',
+          description: 'Last digit of your birth month combined with last digit of birth year (the "jersey number" method)',
+          result: compound,
+          steps: [
+            `Birth month: ${month} → last digit: ${lastDigitMonth}`,
+            `Birth year: ${year} → last digit: ${lastDigitYear}`,
+            `Compound: ${lastDigitMonth} and ${lastDigitYear} = ${compound}`,
+            `Example: Michael Jordan born 02/17/1963 → 2 and 3 = 23`
+          ],
+          icon: 'zap'
+        });
+
+        // Method 3: Fadic Number
+        const allDigits = `${month}${day}${year}`.split('').map(Number);
+        const fadicSum = allDigits.reduce((s, d) => s + d, 0);
+        const fadicReduced = reduceToSingleDigit(fadicSum, false);
+        calculations.push({
+          method: 'Fadic Number',
+          description: 'Sum of ALL digits in your birth date reduced to a single digit',
+          result: fadicReduced,
+          steps: [
+            `Birth date digits: ${allDigits.join(' + ')}`,
+            `Sum: ${fadicSum}`,
+            fadicSum > 9 ? `Reduced: ${fadicSum} → ${fadicReduced}` : `Already single digit: ${fadicReduced}`
+          ],
+          icon: 'hash'
+        });
+
+        // Method 4: Day of Birth Power
+        calculations.push({
+          method: 'Birth Day Number',
+          description: 'Your raw birth day carries its own lucky frequency',
+          result: dayCompound > 9 ? reduceToSingleDigit(dayCompound, true) : dayCompound,
+          steps: [
+            `Born on the ${day}${day === 1 ? 'st' : day === 2 ? 'nd' : day === 3 ? 'rd' : 'th'}`,
+            dayCompound > 9 ? `${day} → ${reduceToSingleDigit(dayCompound, true)} (reduced)` : `Single digit: ${dayCompound}`,
+            `This number reflects your natural talents and abilities`
+          ],
+          icon: 'calendar'
+        });
+
+        // Method 5: Karmic Debt Check
+        const rawLifePathSum = month + day + allDigits.slice(String(month).length + String(day).length).reduce((s, d) => s + d, 0);
+        const karmicNumbers = [13, 14, 16, 19];
+        const hasKarmic = karmicNumbers.find(k => fadicSum === k || rawLifePathSum === k || day === k);
+        calculations.push({
+          method: 'Karmic Debt Check',
+          description: 'Certain compound numbers (13, 14, 16, 19) carry special karmic significance',
+          result: hasKarmic || 'None',
+          steps: hasKarmic ? [
+            `Raw sum detected: ${hasKarmic}`,
+            `Karmic Debt ${hasKarmic}: ${hasKarmic === 13 ? 'Hard work and transformation required' : hasKarmic === 14 ? 'Lesson in freedom and moderation' : hasKarmic === 16 ? 'Ego dissolution and spiritual awakening' : 'Independence through selfless service'}`,
+            `This is not negative — it's your accelerated growth path`
+          ] : [
+            `No karmic debt numbers (13, 14, 16, 19) found in your birth date`,
+            `Your numerical path is unencumbered`,
+            `Focus on manifesting freely with your lucky numbers`
+          ],
+          icon: 'circle'
+        });
+      }
+    }
+
+    // If no birth date provided, add generic methods
+    if (calculations.length === 1) {
+      calculations.push({
+        method: 'Destiny Compound',
+        description: 'Secondary frequencies derived from your Life Path harmonics',
+        result: secondary.join(', '),
+        steps: [
+          `Life Path ${l} × 2 = ${l * 2} → reduced: ${reduceToSingleDigit(l * 2)}`,
+          `Life Path ${l} + 7 = ${l + 7} → reduced: ${reduceToSingleDigit(l + 7)}`,
+          `These numbers amplify your primary frequency`
+        ],
+        icon: 'grid'
+      });
+    }
+
+    // Power days: days of the month that resonate
+    const powerDays = [l, l + 9, l + 18].filter(d => d >= 1 && d <= 31);
+    powerDays.push(reduceToSingleDigit(l + 2) + 9);
+    powerDays.push(reduceToSingleDigit(l + 5) + 18);
+    const uniquePowerDays = Array.from(new Set(powerDays.filter(d => d >= 1 && d <= 31))).sort((a, b) => a - b);
+
+    // Avoid numbers
+    const avoidNumbers = [
+      l === 1 ? 6 : l === 2 ? 5 : l === 3 ? 8 : l === 4 ? 5 : l === 5 ? 4 : l === 6 ? 1 : l === 7 ? 2 : l === 8 ? 3 : 5,
+      reduceToSingleDigit(10 - l)
+    ].filter((v, i, a) => a.indexOf(v) === i && v !== l);
+
+    // Manifestation tips per LP
+    const tips: Record<number, string> = {
+      1: 'Write your goals on the 1st of each month. Your initiating energy is strongest at the start of cycles.',
+      2: 'Pair up with someone for manifestation work. Your power doubles in partnership.',
+      3: 'Speak your desires aloud — your voice carries creation frequency.',
+      4: 'Build a physical vision board. Your Earth energy needs tangible anchors.',
+      5: 'Change your environment when manifesting. Movement unlocks your frequency.',
+      6: 'Manifest through acts of service. What you give, returns amplified.',
+      7: 'Meditate on your numbers in solitude. Your inner world shapes outer reality.',
+      8: 'Write your lucky numbers on checks or financial documents. Your power is material.',
+      9: 'Release old desires to make room. Your number completes cycles before starting new ones.'
+    };
+
     res.json({
       primary,
       secondary,
+      calculations,
+      powerDays: uniquePowerDays,
+      avoidNumbers,
+      manifestationTip: tips[l] || tips[1],
       howToUse: 'Write your primary number on a piece of paper and keep it in your wallet. Use your secondary numbers when selecting dates, flight seat assignments, or times to initiate important emails.'
     });
   });
@@ -890,10 +1074,27 @@ export async function registerRoutes(
       'Z': 'Optimistic and hopeful. You see the light ahead.'
     };
 
+    // Calculate expression number (full first name sum reduced)
+    const totalSum = letters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
+    const expressionNumber = reduceToSingleDigit(totalSum, true);
+
+    // Vowel sum = Soul Urge Number
+    const vowelLetters = letters.filter((l: { char: string }) => vowels.includes(l.char));
+    const vowelSum = vowelLetters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
+    const soulUrgeNumber = reduceToSingleDigit(vowelSum, true);
+
+    // Consonant sum = Personality Number
+    const consonantLetters = letters.filter((l: { char: string }) => !vowels.includes(l.char));
+    const consonantSum = consonantLetters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
+    const personalityNumber = reduceToSingleDigit(consonantSum, true);
+
+    // Name energy rating
+    const nameEnergy = expressionNumber >= 7 ? 'High Power' : expressionNumber >= 4 ? 'Balanced' : 'Grounding';
+
     res.json({
       fullName,
       firstName,
-      letters: letters.slice(0, 15), // Show more letters
+      letters: letters.slice(0, 15),
       cornerstone: {
         char: letters[0].char,
         meaning: meanings[letters[0].char] || 'A unique starting vibration.'
@@ -911,6 +1112,27 @@ export async function registerRoutes(
                 'Understanding and esoteric wisdom.'
           }`
       } : null,
+      expressionNumber,
+      expressionBreakdown: {
+        totalSum,
+        reduced: expressionNumber,
+        meaning: `Your Expression Number ${expressionNumber} reveals the talents and abilities you were born with. This is the energy your name radiates to the world.`
+      },
+      soulUrgeNumber,
+      soulUrgeBreakdown: {
+        vowels: vowelLetters.map((l: { char: string; value: number }) => `${l.char}(${l.value})`).join(' + '),
+        sum: vowelSum,
+        reduced: soulUrgeNumber,
+        meaning: `Soul Urge ${soulUrgeNumber}: This is what truly motivates you at the deepest level — your innermost desires and dreams.`
+      },
+      personalityNumber,
+      personalityBreakdown: {
+        consonants: consonantLetters.map((l: { char: string; value: number }) => `${l.char}(${l.value})`).join(' + '),
+        sum: consonantSum,
+        reduced: personalityNumber,
+        meaning: `Personality ${personalityNumber}: This is the mask you show the world — how others perceive you before they know you deeply.`
+      },
+      nameEnergy,
       summary: `Analyzing "${firstName}": Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
     });
   });
@@ -942,21 +1164,46 @@ export async function registerRoutes(
 
     // Matrix Activation Ages are mathematically derived from Life Path and Universal Constants
     // Standard peaks are often multiples of the life path or harmonic intervals like 27, 36, 45, 54
-    const age1 = 27;
-    const age2 = 36;
-    const age3 = 45;
-    const age4 = 54;
+    const age1 = 18;
+    const age2 = 27;
+    const age3 = 36;
+    const age4 = 45;
+    const age5 = 54;
+    const age6 = 63;
+
+    // Determine current phase if birthDate is available
+    const birthDateStr = req.query.birthDate as string || null;
+    let currentPhase = null;
+    if (birthDateStr) {
+      const bd = new Date(birthDateStr);
+      if (!isNaN(bd.getTime())) {
+        const currentAge = new Date().getFullYear() - bd.getUTCFullYear();
+        const milestones = [age1, age2, age3, age4, age5, age6];
+        const nextMilestone = milestones.find(m => m > currentAge);
+        const prevMilestone = milestones.slice().reverse().find(m => m <= currentAge);
+        currentPhase = {
+          currentAge,
+          nextGateway: nextMilestone || 'Mastery achieved',
+          yearsToNext: nextMilestone ? nextMilestone - currentAge : 0,
+          lastGateway: prevMilestone || 'Not yet reached',
+          phase: currentAge < 18 ? 'Pre-Activation' : currentAge < 27 ? 'The Awakening' : currentAge < 36 ? 'The Ascension' : currentAge < 45 ? 'The Mastery' : currentAge < 54 ? 'The Integration' : currentAge < 63 ? 'The Wisdom' : 'The Transcendence'
+        };
+      }
+    }
 
     res.json({
       lifePath: l,
       intro: `Your Personal Matrix is the hidden mathematical code that activates at specific ages. As a Life Path ${l}, these "Matrix Gateways" are when your core frequency hits its maximum amplitude and reality becomes most malleable.`,
-      sequence: [age1, age2, age3, age4],
+      sequence: [age1, age2, age3, age4, age5, age6],
       milestones: [
-        { age: age1, title: 'The Reset', description: 'Your first major Matrix gateway where old karmic patterns are purged to make way for your true purpose.' },
-        { age: age2, title: 'The Peak', description: 'The absolute zenith of your earthly manifestation power. Your Life Path frequency is at its loudest.' },
-        { age: age3, title: 'The Shift', description: 'A period of profound internal restructuring where your secondary energy signatures begin to dominate.' },
-        { age: age4, title: 'The Master', description: 'Full integration of your numerical blueprint. You move from being a passenger to an architect of the matrix.' }
-      ]
+        { age: age1, title: 'The Awakening', description: 'The first whisper of your true purpose. Seeds of awareness are planted during this gateway.' },
+        { age: age2, title: 'The Reset', description: 'Your first major Matrix gateway where old karmic patterns are purged to make way for your true purpose.' },
+        { age: age3, title: 'The Peak', description: 'The absolute zenith of your earthly manifestation power. Your Life Path frequency is at its loudest.' },
+        { age: age4, title: 'The Shift', description: 'A period of profound internal restructuring where your secondary energy signatures begin to dominate.' },
+        { age: age5, title: 'The Master', description: 'Full integration of your numerical blueprint. You move from being a passenger to an architect of the matrix.' },
+        { age: age6, title: 'The Transcendence', description: 'Wisdom crystallizes. You become a frequency beacon for others walking the same Life Path.' }
+      ],
+      currentPhase
     });
   });
 
@@ -989,7 +1236,15 @@ export async function registerRoutes(
       { suit: 'SWORDS OF INTELLECT', type: 'action', cardName: 'The Alchemist', message: 'You have the power to transform current leaden circumstances into golden opportunities through a shift in perspective.', keyword: 'Transmutation' },
       { suit: 'CUPS OF EMOTION', type: 'intuition', cardName: 'The Deep Diver', message: 'Do not fear the emotional depths today. What surfaces is ready to be healed.', keyword: 'Subconscious' },
       { suit: 'WANDS OF FIRE', type: 'action', cardName: 'The Catalyst', message: 'Take the bold leap. The energetic currents are fully supporting dramatic forward movement.', keyword: 'Initiation' },
-      { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Architect', message: 'Slow down and secure your foundations. Quality over speed is your mantra right now.', keyword: 'Stability' }
+      { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Architect', message: 'Slow down and secure your foundations. Quality over speed is your mantra right now.', keyword: 'Stability' },
+      { suit: 'SWORDS OF INTELLECT', type: 'action', cardName: 'The Mirror', message: 'What you see in others right now is a direct reflection of what you need to heal within yourself.', keyword: 'Reflection' },
+      { suit: 'CUPS OF EMOTION', type: 'intuition', cardName: 'The River', message: 'Stop resisting the current of change. Surrender to the flow and you will arrive exactly where you need to be.', keyword: 'Surrender' },
+      { suit: 'WANDS OF FIRE', type: 'action', cardName: 'The Phoenix', message: 'What has burned down is making space for your most powerful rebirth. Rise now.', keyword: 'Rebirth' },
+      { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Seed', message: 'Something planted months ago is about to break through the surface. Patience is rewarded today.', keyword: 'Germination' },
+      { suit: 'SWORDS OF INTELLECT', type: 'action', cardName: 'The Decoder', message: 'Pay attention to patterns and synchronicities today. The universe is sending you encrypted messages.', keyword: 'Synchronicity' },
+      { suit: 'CUPS OF EMOTION', type: 'intuition', cardName: 'The Healer', message: 'Your presence alone is medicine for someone today. Show up fully and authentically.', keyword: 'Presence' },
+      { suit: 'WANDS OF FIRE', type: 'action', cardName: 'The Disruptor', message: 'Break one rule today that has been keeping you small. Your rebellion is divinely guided.', keyword: 'Liberation' },
+      { suit: 'PENTACLES OF EARTH', type: 'intuition', cardName: 'The Keeper', message: 'Protect your energy fiercely today. Not everyone deserves access to your inner world.', keyword: 'Boundaries' }
     ];
     res.json(cards[Math.floor(Math.random() * cards.length)]);
   });
@@ -1018,10 +1273,15 @@ export async function registerRoutes(
     res.json({
       intro: `As a Life Path ${l}, your dreamscape isn't just random brain static; it's a specific frequency receptor. You are highly prone to prophetic and lucid dreams right now.`,
       commonDreams: [
-        { symbol: 'Flying or Levitation', meaning: 'You are transcending a previous limitation or earthly worry.', shift: 'Your energy centers are opening.' },
-        { symbol: 'Water (Oceans/Rivers)', meaning: 'Your subconscious is processing dense emotional trauma from the past year.', shift: 'A major purification phase.' },
-        { symbol: 'Being Chased', meaning: 'You are avoiding a karmic lesson that your Life Path requires you to face.', shift: 'Time to ground and confront.' }
-      ]
+        { symbol: 'Flying or Levitation', meaning: 'You are transcending a previous limitation or earthly worry.', shift: 'Your energy centers are opening.', frequency: 'Very Common' },
+        { symbol: 'Water (Oceans/Rivers)', meaning: 'Your subconscious is processing dense emotional trauma from the past year.', shift: 'A major purification phase.', frequency: 'Common' },
+        { symbol: 'Being Chased', meaning: 'You are avoiding a karmic lesson that your Life Path requires you to face.', shift: 'Time to ground and confront.', frequency: 'Common' },
+        { symbol: 'Teeth Falling Out', meaning: 'Anxiety about loss of control or a major life transition that feels forced.', shift: 'Your identity is being restructured — surrender to the upgrade.', frequency: 'Very Common' },
+        { symbol: 'Deceased Loved Ones', meaning: 'A message from the ancestral realm. Pay attention to what they say or show you.', shift: 'The veil is thin for you right now. Record everything.', frequency: 'Significant' },
+        { symbol: 'Empty Houses / Unknown Rooms', meaning: 'Undiscovered parts of your psyche are ready to be explored and integrated.', shift: 'Hidden talents and memories are surfacing for activation.', frequency: 'Moderate' }
+      ],
+      lucidDreamTip: `As a Life Path ${l}, try setting an intention before sleep: "I will remember my dreams and receive guidance." Keep a journal by your bed and write immediately upon waking.`,
+      bestSleepHours: l <= 4 ? '10pm - 6am' : l <= 7 ? '11pm - 7am' : '9pm - 5am'
     });
   });
 
@@ -1057,12 +1317,33 @@ export async function registerRoutes(
     if (energySignature.includes('Fire') || l === 1 || l === 9) { hexCode = '#FF4500'; auraColor = 'Crimson Red'; }
     if (energySignature.includes('Air') || l === 3 || l === 5 || l === 7) { hexCode = '#E6E6FA'; auraColor = 'Lavender'; }
 
+    const chakras: Record<string, { name: string; status: string; tip: string }> = {
+      'Fire': { name: 'Solar Plexus (Manipura)', status: 'Dominant', tip: 'Your power center is naturally strong. Focus on heart chakra to balance.' },
+      'Water': { name: 'Sacral (Svadhisthana)', status: 'Dominant', tip: 'Your emotional center leads. Strengthen root chakra for grounding.' },
+      'Earth': { name: 'Root (Muladhara)', status: 'Dominant', tip: 'You are naturally grounded. Open your throat chakra for expression.' },
+      'Air': { name: 'Throat (Vishuddha)', status: 'Dominant', tip: 'Communication flows freely. Balance with sacral chakra for emotional depth.' }
+    };
+    const elKey = energySignature.includes('Water') ? 'Water' : energySignature.includes('Earth') ? 'Earth' : energySignature.includes('Air') ? 'Air' : 'Fire';
+    const crystalMap: Record<string, string[]> = {
+      'Fire': ['Carnelian', 'Red Jasper', 'Citrine'],
+      'Water': ['Blue Lace Agate', 'Moonstone', 'Aquamarine'],
+      'Earth': ['Black Tourmaline', 'Smoky Quartz', 'Tiger\'s Eye'],
+      'Air': ['Amethyst', 'Clear Quartz', 'Lapis Lazuli']
+    };
+
     res.json({
       auraColor,
       hexCode,
       highVibe: `When aligned, you operate as a pristine conduit of ${energySignature} energy. You attract synchronicity effortlessly and inspire those around you.`,
       lowVibe: `Under stress or poor energetic hygiene, you become drained, reactive, and physically susceptible to tension mapping in your lower back or neck.`,
-      regimen: `Daily 15-minute grounding meditations and avoiding highly processed low-frequency foods will keep your ${auraColor} aura resilient and bright.`
+      regimen: `Daily 15-minute grounding meditations and avoiding highly processed low-frequency foods will keep your ${auraColor} aura resilient and bright.`,
+      chakraAlignment: chakras[elKey] || chakras['Fire'],
+      crystals: crystalMap[elKey] || crystalMap['Fire'],
+      elementalBalance: {
+        primary: elKey,
+        complement: elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth',
+        advice: `To stay balanced, incorporate ${elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth'} element activities into your weekly routine.`
+      }
     });
   });
 
@@ -1090,36 +1371,54 @@ export async function registerRoutes(
     const l = parseInt(lifePath) || 1;
 
     let colors = [];
+    let avoidColors: string[] = [];
     if ([1, 9].includes(l)) {
       colors = [
         { name: 'Crimson Red', hex: '#DC143C', usage: 'Wear during important meetings', benefit: 'Enhances absolute authority and courage.' },
-        { name: 'Gold', hex: '#FFD700', usage: 'Decorate your workspace', benefit: 'Stimulates financial flow and confidence.' }
+        { name: 'Gold', hex: '#FFD700', usage: 'Decorate your workspace', benefit: 'Stimulates financial flow and confidence.' },
+        { name: 'Deep Purple', hex: '#4B0082', usage: 'Wear during meditation', benefit: 'Amplifies your natural leadership with spiritual depth.' },
+        { name: 'Burnt Orange', hex: '#CC5500', usage: 'Accessories & accents', benefit: 'Fuels creativity and ambition without overpowering.' }
       ];
+      avoidColors = ['Pale Pink', 'Baby Blue'];
     } else if ([2, 6].includes(l)) {
       colors = [
         { name: 'Soft Indigo', hex: '#4B0082', usage: 'Wear during deep conversations', benefit: 'Enhances intuition and emotional connection.' },
-        { name: 'Seafoam Green', hex: '#20B2AA', usage: 'Use in your bedroom', benefit: 'Promotes deep healing and peace.' }
+        { name: 'Seafoam Green', hex: '#20B2AA', usage: 'Use in your bedroom', benefit: 'Promotes deep healing and peace.' },
+        { name: 'Rose Quartz', hex: '#F7CAC9', usage: 'Everyday wear', benefit: 'Opens your heart center and attracts loving relationships.' },
+        { name: 'Soft Silver', hex: '#C0C0C0', usage: 'Jewelry & accessories', benefit: 'Enhances moon energy and intuitive receptivity.' }
       ];
+      avoidColors = ['Bright Red', 'Neon Yellow'];
     } else if ([3, 5].includes(l)) {
       colors = [
         { name: 'Vibrant Yellow', hex: '#FFFF00', usage: 'Wear when socializing', benefit: 'Magnetizes people to your energy field and enhances joy.' },
-        { name: 'Electric Blue', hex: '#7DF9FF', usage: 'Use for creative endeavors', benefit: 'Stimulates rapid communication and ideation.' }
+        { name: 'Electric Blue', hex: '#7DF9FF', usage: 'Use for creative endeavors', benefit: 'Stimulates rapid communication and ideation.' },
+        { name: 'Coral', hex: '#FF7F50', usage: 'Casual and social events', benefit: 'Boosts charisma and warmth in social situations.' },
+        { name: 'Turquoise', hex: '#40E0D0', usage: 'Travel & adventure', benefit: 'Aligns your throat chakra for authentic self-expression.' }
       ];
+      avoidColors = ['Dark Brown', 'Charcoal Grey'];
     } else if ([4, 8].includes(l)) {
       colors = [
         { name: 'Forest Green', hex: '#228B22', usage: 'Wear when handling finances', benefit: 'Grounds your energy into material reality.' },
-        { name: 'Earth Brown', hex: '#8B4513', usage: 'Decorate your home', benefit: 'Provides stability and structural strength.' }
+        { name: 'Earth Brown', hex: '#8B4513', usage: 'Decorate your home', benefit: 'Provides stability and structural strength.' },
+        { name: 'Navy Blue', hex: '#000080', usage: 'Professional settings', benefit: 'Projects authority and trustworthiness.' },
+        { name: 'Emerald', hex: '#50C878', usage: 'Goal-setting sessions', benefit: 'Attracts prosperity and long-term abundance.' }
       ];
+      avoidColors = ['Hot Pink', 'Neon Orange'];
     } else {
       colors = [
         { name: 'Amethyst', hex: '#9966CC', usage: 'Wear during meditation', benefit: 'Connects you to higher spiritual realms.' },
-        { name: 'Pearl White', hex: '#F0EAD6', usage: 'Use anywhere', benefit: 'Purifies your aura from lower vibrations.' }
+        { name: 'Pearl White', hex: '#F0EAD6', usage: 'Use anywhere', benefit: 'Purifies your aura from lower vibrations.' },
+        { name: 'Midnight Blue', hex: '#191970', usage: 'Evening and reflection', benefit: 'Deepens your connection to cosmic wisdom.' },
+        { name: 'Champagne', hex: '#F7E7CE', usage: 'Special occasions', benefit: 'Blends elegance with spiritual softness.' }
       ];
+      avoidColors = ['Bright Red', 'Electric Green'];
     }
 
     res.json({
       overview: `Colors are simply visible frequencies. For Life Path ${l}, wearing or surrounding yourself with these specific wavelengths hacks your energetic state.`,
-      colors
+      colors,
+      avoidColors,
+      combinationTip: `For maximum impact, combine ${colors[0].name} with ${colors[1].name}. This pairing creates a harmonic resonance that amplifies your Life Path ${l} frequency by aligning both your outer expression and inner state.`
     });
   });
 
@@ -1145,7 +1444,30 @@ export async function registerRoutes(
   app.get("/api/explore/vedic-astrology/:birthDate", (req, res) => {
     const birthDate = new Date(req.params.birthDate);
     const result = getVedicNakshatra(isNaN(birthDate.getTime()) ? new Date() : birthDate);
-    res.json(result);
+
+    const nakshatraGems: Record<string, string> = {
+      'Ashwini': 'Cat\'s Eye', 'Bharani': 'Diamond', 'Krittika': 'Ruby',
+      'Rohini': 'Pearl', 'Mrigashira': 'Coral', 'Ardra': 'Hessonite',
+      'Punarvasu': 'Yellow Sapphire', 'Pushya': 'Blue Sapphire', 'Ashlesha': 'Mercury Stone'
+    };
+    const nakshatraPlanets: Record<string, string> = {
+      'Ashwini': 'Ketu', 'Bharani': 'Venus', 'Krittika': 'Sun',
+      'Rohini': 'Moon', 'Mrigashira': 'Mars', 'Ardra': 'Rahu',
+      'Punarvasu': 'Jupiter', 'Pushya': 'Saturn', 'Ashlesha': 'Mercury'
+    };
+    const nakshatraMantras: Record<string, string> = {
+      'Ashwini': 'Om Ashwini Kumarabhyam Namah', 'Bharani': 'Om Yamaya Namah', 'Krittika': 'Om Agnaye Namah',
+      'Rohini': 'Om Brahmane Namah', 'Mrigashira': 'Om Somaya Namah', 'Ardra': 'Om Rudraya Namah',
+      'Punarvasu': 'Om Aditaye Namah', 'Pushya': 'Om Brihaspataye Namah', 'Ashlesha': 'Om Nagadevaya Namah'
+    };
+
+    res.json({
+      ...result,
+      rulingPlanet: nakshatraPlanets[result.nakshatra] || 'Ketu',
+      luckyGem: nakshatraGems[result.nakshatra] || 'Cat\'s Eye',
+      mantra: nakshatraMantras[result.nakshatra] || 'Om Namah Shivaya',
+      planetaryInfluence: `${nakshatraPlanets[result.nakshatra] || 'Ketu'} governs your Nakshatra, shaping your karmic lessons, relationships, and spiritual evolution. Wearing ${nakshatraGems[result.nakshatra] || 'Cat\'s Eye'} can strengthen this planetary connection.`
+    });
   });
 
   app.post("/api/explore/vedic-astrology/interact", async (req, res) => {
@@ -1187,18 +1509,51 @@ export async function registerRoutes(
     if ([7, 9].includes(lifePath)) { archetype = 'The Mystic Seeker'; element = 'Aether'; easternDesc = 'Philosophical depth and spiritual connection.'; }
     if ([11, 22, 33].includes(lifePath)) { archetype = 'The Master Teacher'; element = 'Spirit'; easternDesc = 'Incarnated for global impact and paradigm shifts.'; }
 
+    // Calculate actual Soul Urge and Personality from name
+    const vowelChars = ['A', 'E', 'I', 'O', 'U'];
+    const nameUpper = (user.fullName || '').replace(/[^a-zA-Z]/g, '').toUpperCase();
+    const nameLetters = nameUpper.split('');
+    const vowelVals = nameLetters.filter(c => vowelChars.includes(c)).map(c => pythagorean[c] || 0);
+    const consonantVals = nameLetters.filter(c => !vowelChars.includes(c)).map(c => pythagorean[c] || 0);
+    const soulUrgeNum = reduceToSingleDigit(vowelVals.reduce((s, v) => s + v, 0), true);
+    const personalityNum = reduceToSingleDigit(consonantVals.reduce((s, v) => s + v, 0), true);
+    const expressionNum = reduceToSingleDigit(nameLetters.map(c => pythagorean[c] || 0).reduce((s, v) => s + v, 0), true);
+
+    // Chinese zodiac animals
+    const zodiacAnimals = ['Monkey', 'Rooster', 'Dog', 'Pig', 'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake', 'Horse', 'Sheep'];
+    const chineseZodiac = zodiacAnimals[birthDate.getUTCFullYear() % 12];
+    // Chinese element
+    const chineseElements = ['Metal', 'Metal', 'Water', 'Water', 'Wood', 'Wood', 'Fire', 'Fire', 'Earth', 'Earth'];
+    const chineseElement = chineseElements[birthDate.getUTCFullYear() % 10];
+
     res.json({
       fullName: user.fullName || odisId,
       lifePath,
       archetype,
-      chineseZodiac: ['Monkey', 'Rooster', 'Dog', 'Pig', 'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake', 'Horse', 'Sheep'][birthDate.getUTCFullYear() % 12],
+      chineseZodiac,
+      chineseElement,
       easternDescription: easternDesc,
       element,
       summaryDirective: `To align your earthly actions with the higher frequency of ${archetype}, using your core ${element} energy.`,
       pillars: [
         { title: 'Destiny', value: lifePath.toString(), subtitle: archetype },
-        { title: 'Soul Urge', value: 'varies', subtitle: 'Inner Desire' }, // Would need full calculation
-        { title: 'Personality', value: 'varies', subtitle: 'Outer Expression' }
+        { title: 'Soul Urge', value: soulUrgeNum.toString(), subtitle: soulUrgeNum <= 3 ? 'Independence & Action' : soulUrgeNum <= 6 ? 'Harmony & Service' : 'Wisdom & Spiritual Growth' },
+        { title: 'Personality', value: personalityNum.toString(), subtitle: personalityNum <= 3 ? 'Dynamic Presence' : personalityNum <= 6 ? 'Approachable & Warm' : 'Mysterious & Deep' },
+        { title: 'Expression', value: expressionNum.toString(), subtitle: expressionNum <= 3 ? 'Natural Leader' : expressionNum <= 6 ? 'Creative Builder' : 'Visionary Thinker' }
+      ],
+      coreNumbers: {
+        lifePath,
+        soulUrge: soulUrgeNum,
+        personality: personalityNum,
+        expression: expressionNum
+      },
+      strengths: [
+        lifePath <= 3 ? 'Natural leadership and initiative' : lifePath <= 6 ? 'Deep empathy and creative vision' : 'Analytical brilliance and spiritual insight',
+        element === 'Fire' ? 'Unstoppable drive and passion' : element === 'Water' ? 'Emotional intelligence and healing' : element === 'Earth' ? 'Practical genius and material mastery' : element === 'Air' ? 'Communication and intellectual agility' : 'Transcendent awareness and teaching ability'
+      ],
+      growthAreas: [
+        lifePath <= 3 ? 'Learning patience and collaboration' : lifePath <= 6 ? 'Setting boundaries and self-care' : 'Opening up emotionally and trusting others',
+        element === 'Fire' ? 'Managing impulsivity' : element === 'Water' ? 'Avoiding emotional overwhelm' : element === 'Earth' ? 'Embracing change and flexibility' : element === 'Air' ? 'Grounding ideas into reality' : 'Balancing spirit with practical needs'
       ]
     });
   });
@@ -1243,12 +1598,26 @@ export async function registerRoutes(
       overview = 'Saturn is checking your homework. This is a time of incredible harvest, assuming you integrated the lessons of your first return.';
     }
 
+    // Build Saturn timeline
+    const timeline = [
+      { age: 7, title: 'First Square', description: 'First glimpse of responsibility and how you handle authority figures.', status: age >= 7 ? 'completed' : 'upcoming' },
+      { age: 14, title: 'Opposition', description: 'Rebellion against structures. Identity crisis and the need for independence.', status: age >= 14 ? 'completed' : 'upcoming' },
+      { age: 21, title: 'Second Square', description: 'Reality check on your path. Career and relationship decisions crystallize.', status: age >= 21 ? 'completed' : 'upcoming' },
+      { age: 29, title: 'First Saturn Return', description: 'THE major life audit. Everything not aligned with your true purpose is removed.', status: age >= 28 && age <= 30 ? 'active' : age > 30 ? 'completed' : 'upcoming' },
+      { age: 36, title: 'Third Square', description: 'Testing the structures you built post-return. Mid-life recalibration.', status: age >= 36 ? 'completed' : 'upcoming' },
+      { age: 44, title: 'Second Opposition', description: 'Deep questioning of legacy and purpose. What are you building for the long term?', status: age >= 44 ? 'completed' : 'upcoming' },
+      { age: 51, title: 'Fourth Square', description: 'Final preparation for the second return. Mastery or crisis — your choice.', status: age >= 51 ? 'completed' : 'upcoming' },
+      { age: 58, title: 'Second Saturn Return', description: 'The elder\'s initiation. Harvest of a lifetime of karmic work.', status: age >= 56 && age <= 60 ? 'active' : age > 60 ? 'completed' : 'upcoming' }
+    ];
+
     res.json({
       state,
       headline,
       overview,
       lesson,
       reward,
+      age,
+      timeline,
       nextMilestoneYear: new Date().getFullYear() + ((29.5 - (age % 29.5)) % 29.5 || 29.5).toFixed(0),
       nextMilestoneEvent: 'Major karmic review and structural upgrade of your life path.'
     });
