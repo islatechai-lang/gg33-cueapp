@@ -1,7 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
-import { startNotificationService } from "./notifications";
 import { createServer } from "http";
 
 const app = express();
@@ -82,8 +81,6 @@ app.use((req, res, next) => {
     },
     () => {
       log(`serving on port ${port}`);
-      // Start the daily notification service
-      startNotificationService();
     },
   );
 })();
