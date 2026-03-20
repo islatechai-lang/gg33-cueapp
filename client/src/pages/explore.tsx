@@ -241,16 +241,22 @@ function TrendingEnergiesDialog({ open, onClose, profileData }: { open: boolean;
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh]" data-testid="dialog-trending-energies">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-amber-9" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl" data-testid="dialog-trending-energies">
+        <div className="flex flex-col h-full max-h-[90vh]">
+        <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+        <DialogHeader className="p-0 space-y-1">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+            <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+            <TrendingUp className="w-6 h-6" />
+            </div>
             Trending Energies
           </DialogTitle>
-          <DialogDescription>What energy patterns are most active today</DialogDescription>
+          <DialogDescription className="text-gray-11 font-medium ml-12">What energy patterns are most active today</DialogDescription>
         </DialogHeader>
+        </div>
 
-        <ScrollArea className="max-h-[60vh] pr-4">
+        <ScrollArea className="flex-1">
+          <div className="p-6 space-y-8">
           {isLoading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -341,7 +347,9 @@ function TrendingEnergiesDialog({ open, onClose, profileData }: { open: boolean;
               )}
             </div>
           ) : null}
+          </div>
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog >
   );
@@ -554,16 +562,22 @@ function CelebrityMatchesDialog({ open, onClose, lifePathNumber, energySignature
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh]" data-testid="dialog-celebrity-matches">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Star className="w-5 h-5 text-amber-9" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl" data-testid="dialog-celebrity-matches">
+        <div className="flex flex-col h-full max-h-[90vh]">
+        <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+        <DialogHeader className="p-0 space-y-1">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+            <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+            <Star className="w-6 h-6" />
+            </div>
             Celebrity Matches
           </DialogTitle>
-          <DialogDescription>Famous people who share your energy signature</DialogDescription>
+          <DialogDescription className="text-gray-11 font-medium ml-12">Famous people who share your energy signature</DialogDescription>
         </DialogHeader>
+        </div>
 
-        <ScrollArea className="max-h-[60vh] pr-4">
+        <ScrollArea className="flex-1">
+          <div className="p-6 space-y-8">
           {isLoading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -622,7 +636,9 @@ function CelebrityMatchesDialog({ open, onClose, lifePathNumber, energySignature
               )}
             </div>
           ) : null}
+          </div>
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -652,16 +668,22 @@ function TravelDestinationsDialog({ open, onClose, lifePathNumber, element, birt
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh]" data-testid="dialog-travel-destinations">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-amber-9" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl" data-testid="dialog-travel-destinations">
+        <div className="flex flex-col h-full max-h-[90vh]">
+        <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+        <DialogHeader className="p-0 space-y-1">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+            <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+            <Globe className="w-6 h-6" />
+            </div>
             Travel Destinations
           </DialogTitle>
-          <DialogDescription>Countries that align with your zodiac energy</DialogDescription>
+          <DialogDescription className="text-gray-11 font-medium ml-12">Countries that align with your zodiac energy</DialogDescription>
         </DialogHeader>
+        </div>
 
-        <ScrollArea className="max-h-[60vh] pr-4">
+        <ScrollArea className="flex-1">
+          <div className="p-6 space-y-8">
           {isLoading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -756,7 +778,9 @@ function TravelDestinationsDialog({ open, onClose, lifePathNumber, element, birt
               )}
             </div>
           ) : null}
+          </div>
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -780,16 +804,22 @@ function RelationshipPatternsDialog({ open, onClose, lifePathNumber }: {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh]" data-testid="dialog-relationship-patterns">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-amber-9" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl" data-testid="dialog-relationship-patterns">
+        <div className="flex flex-col h-full max-h-[90vh]">
+        <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+        <DialogHeader className="p-0 space-y-1">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+            <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+            <Heart className="w-6 h-6" />
+            </div>
             Relationship Patterns
           </DialogTitle>
-          <DialogDescription>Understanding your compatibility tendencies</DialogDescription>
+          <DialogDescription className="text-gray-11 font-medium ml-12">Understanding your compatibility tendencies</DialogDescription>
         </DialogHeader>
+        </div>
 
-        <ScrollArea className="max-h-[60vh] pr-4">
+        <ScrollArea className="flex-1">
+          <div className="p-6 space-y-8">
           {isLoading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -910,7 +940,9 @@ function RelationshipPatternsDialog({ open, onClose, lifePathNumber }: {
               </div>
             </div>
           ) : null}
+          </div>
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -934,16 +966,22 @@ function CareerAlignmentDialog({ open, onClose, lifePathNumber }: {
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[85vh]" data-testid="dialog-career-alignment">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Briefcase className="w-5 h-5 text-amber-9" />
+      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl" data-testid="dialog-career-alignment">
+        <div className="flex flex-col h-full max-h-[90vh]">
+        <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+        <DialogHeader className="p-0 space-y-1">
+          <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+            <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+            <Briefcase className="w-6 h-6" />
+            </div>
             Career Alignment
           </DialogTitle>
-          <DialogDescription>Industries and roles that match your energy</DialogDescription>
+          <DialogDescription className="text-gray-11 font-medium ml-12">Industries and roles that match your energy</DialogDescription>
         </DialogHeader>
+        </div>
 
-        <ScrollArea className="max-h-[60vh] pr-4">
+        <ScrollArea className="flex-1">
+          <div className="p-6 space-y-8">
           {isLoading ? (
             <LoadingSkeleton />
           ) : error ? (
@@ -1016,7 +1054,9 @@ function CareerAlignmentDialog({ open, onClose, lifePathNumber }: {
               </div>
             </div>
           ) : null}
+          </div>
         </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );

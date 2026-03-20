@@ -140,15 +140,21 @@ export function YearlyForecastDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <CalendarDays className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <CalendarDays className="w-6 h-6" />
+                        </div>
                         Yearly Forecast
                     </DialogTitle>
-                    <DialogDescription>Cosmic themes and cycles for your year ahead</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Cosmic themes and cycles for your year ahead</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load yearly forecast" /> : data ? (
                         <div className="space-y-6">
                             <div className="flex flex-col gap-4 p-5 bg-amber-a2 rounded-xl border-2 border-amber-a4 shadow-inner">
@@ -187,7 +193,9 @@ export function YearlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -208,15 +216,21 @@ export function MonthlyForecastDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <CalendarRange className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <CalendarRange className="w-6 h-6" />
+                        </div>
                         Monthly Forecast
                     </DialogTitle>
-                    <DialogDescription>Detailed monthly predictions and guidance</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Detailed monthly predictions and guidance</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load monthly forecast" /> : data ? (
                         <div className="space-y-6">
                             <div className="text-center p-6 bg-amber-a2 rounded-xl border-2 border-amber-a4 shadow-inner">
@@ -253,7 +267,9 @@ export function MonthlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -274,15 +290,21 @@ export function HomePickerDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Home className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Home className="w-6 h-6" />
+                        </div>
                         Home Picker
                     </DialogTitle>
-                    <DialogDescription>Find environments and homes that match your vibe</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Find environments and homes that match your vibe</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load home picker" /> : data ? (
                         <div className="space-y-6">
                             <p className="text-gray-11 leading-relaxed">{data.overview}</p>
@@ -322,7 +344,9 @@ export function HomePickerDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -343,15 +367,21 @@ export function CarsDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Car className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Car className="w-6 h-6" />
+                        </div>
                         Vehicles
                     </DialogTitle>
-                    <DialogDescription>Vehicles that align with your energetic signature</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Vehicles that align with your energetic signature</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load cars insights" /> : data ? (
                         <div className="space-y-6">
                             <p className="text-gray-11 leading-relaxed bg-gray-a2 p-4 rounded-lg">{data.overview}</p>
@@ -390,7 +420,9 @@ export function CarsDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -411,15 +443,21 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Hash className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Hash className="w-6 h-6" />
+                        </div>
                         Lucky Numbers
                     </DialogTitle>
-                    <DialogDescription>Your personal numbers for manifestation</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Your personal numbers for manifestation</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load lucky numbers" /> : data ? (
                         <div className="space-y-6 text-center">
                             <div className="py-8 bg-amber-a2 rounded-2xl border-2 border-amber-a5 shadow-[inset_0_0_50px_rgba(251,191,36,0.1)]">
@@ -454,7 +492,9 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -475,15 +515,21 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-3xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-xl">
-                        <Type className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Type className="w-6 h-6" />
+                        </div>
                         Letterology: {data?.firstName}
                     </DialogTitle>
-                    <DialogDescription>Decoding the vibrational frequency of your first name</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Decoding the vibrational frequency of your first name</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load letterology" /> : data ? (
                         <div className="space-y-6">
                             <div className="flex justify-center flex-wrap gap-2 p-6 bg-gray-a2 rounded-xl">
@@ -529,7 +575,9 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -550,15 +598,21 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-xl">
-                        <Grid className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Grid className="w-6 h-6" />
+                        </div>
                         Personal Matrix Decoded
                     </DialogTitle>
-                    <DialogDescription>Ages of peak activation for your Life Path {lifePathNumber}</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Ages of peak activation for your Life Path {lifePathNumber}</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load matrix numbers" /> : data ? (
                         <div className="space-y-6">
                             <div className="p-4 bg-amber-900/10 border border-amber-500/20 rounded-xl text-amber-950 dark:text-amber-200 text-xs leading-relaxed">
@@ -593,7 +647,9 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -626,15 +682,20 @@ export function CueCardsDialog({ open, onClose }: any) {
                 onClose();
             }
         }}>
-            <DialogContent className="max-w-md max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Square className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-lg max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Square className="w-6 h-6" />
+                        </div>
                         Cue Cards
                     </DialogTitle>
-                    <DialogDescription>Daily guidance drawn from the cosmos</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Daily guidance drawn from the cosmos</DialogDescription>
                 </DialogHeader>
-                <div className="py-6 flex flex-col items-center">
+                </div>
+                <div className="p-6 py-6 flex flex-col items-center">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to draw a card" /> : data ? (
                         <div className="flex flex-col items-center w-full">
                             <div
@@ -687,6 +748,7 @@ export function CueCardsDialog({ open, onClose }: any) {
                         </div>
                     ) : null}
                 </div>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -706,15 +768,21 @@ export function DreamInterpreterDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Moon className="w-5 h-5 text-indigo-500" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Moon className="w-6 h-6" />
+                        </div>
                         Dream Symbolism
                     </DialogTitle>
-                    <DialogDescription>Common recurring themes tuned to your vibration</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Common recurring themes tuned to your vibration</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load dream interpreter" /> : data ? (
                         <div className="space-y-6">
                             <div className="p-4 bg-indigo-900/10 border border-indigo-500/20 rounded-xl text-indigo-950 dark:text-indigo-200 text-sm leading-relaxed">
@@ -746,7 +814,9 @@ export function DreamInterpreterDialog({ open, onClose, lifePathNumber }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -767,15 +837,21 @@ export function EnergyInsightsDialog({ open, onClose, lifePathNumber, energySign
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Zap className="w-6 h-6" />
+                        </div>
                         Energy Insights
                     </DialogTitle>
-                    <DialogDescription>Deep dive into your core energetic makeup</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Deep dive into your core energetic makeup</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load energy insights" /> : data ? (
                         <div className="space-y-6">
                             <div className="flex items-center justify-between p-6 bg-amber-a2 rounded-xl">
@@ -817,7 +893,9 @@ export function EnergyInsightsDialog({ open, onClose, lifePathNumber, energySign
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -838,15 +916,21 @@ export function ColorologyDialog({ open, onClose, lifePathNumber }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Palette className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Palette className="w-6 h-6" />
+                        </div>
                         Colorology
                     </DialogTitle>
-                    <DialogDescription>Colors that boost your aura and success</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Colors that boost your aura and success</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load colorology" /> : data ? (
                         <div className="space-y-6">
                             <p className="text-gray-11 text-sm bg-gray-a2 p-4 rounded-lg">{data.overview}</p>
@@ -865,7 +949,9 @@ export function ColorologyDialog({ open, onClose, lifePathNumber }: any) {
                             </div>
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -886,15 +972,21 @@ export function VedicAstrologyDialog({ open, onClose, birthDate }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Sun className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <Sun className="w-6 h-6" />
+                        </div>
                         Vedic Astrology Snapshot
                     </DialogTitle>
-                    <DialogDescription>Ancient Eastern astrological wisdom based on your birth date</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Ancient Eastern astrological wisdom based on your birth date</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load vedic astrology" /> : data ? (
                         <div className="space-y-6">
                             <div className="p-6 bg-gradient-to-tr from-amber-a2 to-red-a2 rounded-xl text-center border border-amber-a4">
@@ -928,7 +1020,9 @@ export function VedicAstrologyDialog({ open, onClose, birthDate }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -949,15 +1043,21 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-3xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <UserCircle className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <UserCircle className="w-6 h-6" />
+                        </div>
                         All About You: The Master Profile
                     </DialogTitle>
-                    <DialogDescription>A unified summary of your cosmic DNA</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">A unified summary of your cosmic DNA</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to compile your master profile" /> : data ? (
                         <div className="space-y-8">
                             <div className="text-center p-8 bg-black text-white rounded-2xl relative overflow-hidden shadow-2xl">
@@ -1015,7 +1115,9 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
@@ -1036,15 +1138,21 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
 
     return (
         <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-            <DialogContent className="max-w-2xl max-h-[85vh]">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <CircleDashed className="w-5 h-5 text-amber-9" />
+            <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden border-none bg-gray-1 shadow-2xl">
+                <div className="flex flex-col h-full max-h-[90vh]">
+                <div className="p-6 pb-4 bg-gradient-to-br from-amber-a3 to-transparent border-b border-amber-a4">
+                <DialogHeader className="p-0 space-y-1">
+                    <DialogTitle className="flex items-center gap-3 text-2xl font-black tracking-tight text-gray-12">
+                        <div className="p-2 bg-amber-9 rounded-lg text-white shadow-lg shadow-amber-9/20">
+                        <CircleDashed className="w-6 h-6" />
+                        </div>
                         Saturn Insights
                     </DialogTitle>
-                    <DialogDescription>Lessons and karmic cycles of your Saturn return</DialogDescription>
+                    <DialogDescription className="text-gray-11 font-medium ml-12">Lessons and karmic cycles of your Saturn return</DialogDescription>
                 </DialogHeader>
-                <ScrollArea className="max-h-[60vh] pr-4">
+                </div>
+                <ScrollArea className="flex-1">
+                    <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load saturn insights" /> : data ? (
                         <div className="space-y-6">
                             <div className="flex flex-col md:flex-row gap-6 p-6 bg-gray-a2 rounded-xl border-2 border-gray-a3">
@@ -1093,7 +1201,9 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                             />
                         </div>
                     ) : null}
+                    </div>
                 </ScrollArea>
+                </div>
             </DialogContent>
         </Dialog>
     );
