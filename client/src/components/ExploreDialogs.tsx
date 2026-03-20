@@ -194,7 +194,7 @@ export function YearlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                                     </h4>
                                     <div className="space-y-3">
                                         {data.keyDates.map((date: any, i: number) => (
-                                            <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+                                            <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 p-3 bg-gray-a2 rounded-lg border border-gray-a3">
                                                 <div className="w-full sm:w-24 shrink-0 font-bold text-sm text-gray-12 flex items-center">{date.month}</div>
                                                 <div className="flex-1 text-sm text-gray-11 leading-snug">{date.event}</div>
                                                 <Badge variant="secondary" className="w-fit self-start sm:self-center text-[10px] capitalize">{date.type}</Badge>
@@ -311,7 +311,7 @@ export function MonthlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                                     </h4>
                                     <div className="grid gap-2">
                                         {data.weeklyBreakdown.map((week: any, i: number) => (
-                                            <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+                                            <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-4 p-3 bg-gray-a2 rounded-lg border border-gray-a3">
                                                 <div className="w-full sm:w-32 shrink-0 flex items-center justify-between sm:block">
                                                     <span className="font-bold text-sm text-gray-12">{week.week.split(' ')[0]} {week.week.split(' ')[1]}</span>
                                                     <Badge variant="outline" className="text-[10px] ml-2">{week.focus}</Badge>
@@ -329,7 +329,7 @@ export function MonthlyForecastDialog({ open, onClose, lifePathNumber }: any) {
                                         <h5 className="font-bold text-amber-9 mb-2 flex items-center gap-2"><Sparkles className="w-4 h-4" /> Monthly Affirmation</h5>
                                         <p className="text-sm font-medium text-gray-12 italic">"{data.affirmation}"</p>
                                     </div>
-                                    <div className="p-5 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-5 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h5 className="font-bold text-gray-12 mb-3 flex items-center gap-2"><CalendarDays className="w-4 h-4" /> High ROI Days</h5>
                                         <div className="flex flex-wrap gap-2">
                                             {data.luckyDays.map((day: number, i: number) => (
@@ -510,7 +510,7 @@ export function CarsDialog({ open, onClose, lifePathNumber }: any) {
                                         <div className="text-sm text-gray-11 mb-3">{carType.reason}</div>
                                         <div className="flex flex-wrap gap-2 mt-auto">
                                             {carType.examples.map((ex: string, j: number) => (
-                                                <Badge variant="outline" key={j} className="text-xs bg-background/50">{ex}</Badge>
+                                                <Badge variant="outline" key={j} className="text-xs bg-gray-a2/50 border-amber-500/20">{ex}</Badge>
                                             ))}
                                         </div>
                                     </div>
@@ -900,7 +900,7 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber, birthDate }
                     <div className="p-6 space-y-8">
                     {isLoading ? <LoadingSkeleton /> : error ? <ErrorMessage text="Failed to load matrix numbers" /> : data ? (
                         <div className="space-y-6">
-                            <div className="p-4 bg-amber-900/10 border border-amber-500/20 rounded-xl text-amber-950 dark:text-amber-200 text-sm leading-relaxed">
+                            <div className="p-4 bg-amber-900/10 border border-amber-500/20 rounded-xl text-amber-11 dark:text-amber-200 text-sm leading-relaxed">
                                 {data.intro}
                             </div>
 
@@ -927,7 +927,7 @@ export function MatrixNumbersDialog({ open, onClose, lifePathNumber, birthDate }
                                     {data.milestones.map((m: any, i: number) => {
                                         const isCurrent = data.currentPhase && data.currentPhase.phase === m.title;
                                         return (
-                                            <div key={i} className={`relative z-10 flex gap-4 p-4 rounded-xl border shadow-sm transition-all group ${isCurrent ? 'bg-amber-50 dark:bg-amber-900/20 border-amber-400 dark:border-amber-600' : 'bg-background border-gray-a3 hover:border-amber-500/30'}`}>
+                                            <div key={i} className={`relative z-10 flex gap-4 p-4 rounded-xl border shadow-sm transition-all group ${isCurrent ? 'bg-amber-a2 border-amber-400 dark:border-amber-600' : 'bg-gray-a2 border-gray-a3 hover:border-amber-500/30'}`}>
                                                 <div className={`w-12 h-12 rounded-full flex flex-col items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform ${isCurrent ? 'bg-amber-500 text-white' : 'bg-amber-9 text-white'}`}>
                                                     <div className="text-[10px] font-bold uppercase leading-none">Age</div>
                                                     <div className="text-xl font-black leading-none">{m.age}</div>
@@ -1396,7 +1396,7 @@ export function VedicAstrologyDialog({ open, onClose, birthDate }: any) {
                                     </h4>
                                     <ul className="space-y-2">
                                         {data.traits.map((t: string, i: number) => (
-                                            <li key={i} className="flex gap-3 items-start text-sm bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-3 rounded-xl shadow-sm">
+                                            <li key={i} className="flex gap-3 items-start text-sm bg-gray-a2 border border-gray-a3 p-3 rounded-xl shadow-sm">
                                                 <div className="text-amber-500 mt-0.5">•</div>
                                                 <span className="leading-snug text-gray-11">{t}</span>
                                             </li>
@@ -1509,12 +1509,12 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
 
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div className="space-y-4">
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-4 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h4 className="font-bold text-gray-11 uppercase text-xs tracking-wider mb-2 flex items-center gap-2"><Activity className="w-3 h-3"/> Eastern Alignment</h4>
                                         <div className="text-lg font-bold text-gray-12">{data.chineseZodiac}</div>
                                         <div className="text-sm text-gray-11 mt-1">{data.easternDescription}</div>
                                     </div>
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-4 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h4 className="font-bold text-gray-11 uppercase text-xs tracking-wider mb-2 flex items-center gap-2"><Flame className="w-3 h-3"/> Primary Element</h4>
                                         <div className="text-lg font-bold text-gray-12">{data.element}</div>
                                     </div>
@@ -1553,20 +1553,20 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
                             <div>
                                 <h3 className="font-black text-lg border-b pb-2 mb-4 text-gray-12 flex items-center gap-2"><Grid className="w-5 h-5 text-indigo-500"/> Numerological Pillars</h3>
                                 <div className="grid sm:grid-cols-3 gap-4">
-                                    <div className="text-center space-y-2 p-4 bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                                    <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                         <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 flex items-center justify-center font-black text-xl">{data.lifePath}</div>
                                         <div className="font-bold text-sm text-gray-12">Life Path</div>
                                         <div className="text-xs text-gray-11">Life Purpose</div>
                                     </div>
                                     {data.soulUrgeNumber && (
-                                        <div className="text-center space-y-2 p-4 bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                                        <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                             <div className="mx-auto w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-black text-xl">{data.soulUrgeNumber}</div>
                                             <div className="font-bold text-sm text-gray-12">Soul Urge</div>
                                             <div className="text-xs text-gray-11">Inner Desire</div>
                                         </div>
                                     )}
                                     {data.personalityNumber && (
-                                        <div className="text-center space-y-2 p-4 bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                                        <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                             <div className="mx-auto w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-black text-xl">{data.personalityNumber}</div>
                                             <div className="font-bold text-sm text-gray-12">Personality</div>
                                             <div className="text-xs text-gray-11">Outer Expression</div>
@@ -1630,7 +1630,7 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                         <div className="space-y-6">
                             <div className="flex flex-col md:flex-row gap-6 p-6 bg-gradient-to-br from-gray-a2 to-transparent rounded-xl border-2 border-gray-a3 shadow-sm">
                                 <div className="shrink-0 flex flex-col items-center justify-center space-y-3">
-                                    <div className="w-24 h-24 rounded-full border-4 border-amber-9 border-dashed flex items-center justify-center bg-background shadow-inner relative overflow-hidden group">
+                                    <div className="w-24 h-24 rounded-full border-4 border-amber-9 border-dashed flex items-center justify-center bg-gray-a2 shadow-inner relative overflow-hidden group">
                                         <div className="absolute inset-0 bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         <span className="text-5xl font-serif text-amber-9 relative z-10 group-hover:scale-110 transition-transform duration-500">♄</span>
                                     </div>
@@ -1645,12 +1645,12 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-4">
-                                <div className="p-5 bg-gradient-to-br from-red-50 to-transparent dark:from-red-950/20 border border-red-200 dark:border-red-900/30 rounded-xl relative overflow-hidden">
+                                <div className="p-5 bg-gradient-to-br from-red-a2 to-transparent dark:from-red-950/20 border border-red-a3 dark:border-red-900/30 rounded-xl relative overflow-hidden">
                                      <div className="absolute top-0 right-0 p-3 opacity-10"><AlertTriangle className="w-16 h-16"/></div>
                                     <h4 className="font-bold text-red-800 dark:text-red-400 mb-3 flex items-center gap-2 relative z-10"><Swords className="w-4 h-4"/> The Lesson</h4>
                                     <p className="text-sm text-red-900/80 dark:text-red-300/80 leading-relaxed relative z-10">{data.lesson}</p>
                                 </div>
-                                <div className="p-5 bg-gradient-to-br from-green-50 to-transparent dark:from-green-950/20 border border-green-200 dark:border-green-900/30 rounded-xl relative overflow-hidden">
+                                <div className="p-5 bg-gradient-to-br from-green-a2 to-transparent dark:from-green-950/20 border border-green-a3 dark:border-green-900/30 rounded-xl relative overflow-hidden">
                                     <div className="absolute top-0 right-0 p-3 opacity-10"><Trophy className="w-16 h-16"/></div>
                                     <h4 className="font-bold text-green-800 dark:text-green-400 mb-3 flex items-center gap-2 relative z-10"><Medal className="w-4 h-4"/> The Reward</h4>
                                     <p className="text-sm text-green-900/80 dark:text-green-300/80 leading-relaxed relative z-10">{data.reward}</p>
@@ -1658,7 +1658,7 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                             </div>
 
                             {data.timeline && data.timeline.length > 0 && (
-                                <div className="p-5 bg-background border border-gray-a3 rounded-xl shadow-sm">
+                                <div className="p-5 bg-gray-a1 border border-gray-a3 rounded-xl shadow-sm">
                                     <h4 className="font-bold mb-4 flex items-center gap-2 text-gray-12 border-b pb-2">
                                         <History className="w-4 h-4 text-amber-500" /> Karmic Timeline
                                     </h4>
@@ -1672,10 +1672,10 @@ export function SaturnInsightsDialog({ open, onClose, birthDate }: any) {
                                             
                                             return (
                                                 <div key={i} className="relative z-10 flex gap-4 items-center group">
-                                                    <div className={`w-8 h-8 rounded-full bg-background flex items-center justify-center shrink-0 ${colorClass}`}>
-                                                        <Icon className="w-5 h-5 bg-background" />
+                                                    <div className={`w-8 h-8 rounded-full bg-gray-a2 flex items-center justify-center shrink-0 ${colorClass}`}>
+                                                        <Icon className="w-5 h-5 bg-gray-a2" />
                                                     </div>
-                                                    <div className={`flex-1 p-3 rounded-lg border transition-colors ${isActive ? 'bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-900/30 shadow-sm' : 'bg-transparent border-transparent group-hover:bg-gray-50 dark:group-hover:bg-gray-900'}`}>
+                                                    <div className={`flex-1 p-3 rounded-lg border transition-colors ${isActive ? 'bg-amber-a2 border-amber-200 dark:border-amber-900/30 shadow-sm' : 'bg-transparent border-transparent group-hover:bg-gray-a2'}`}>
                                                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
                                                             <div className={`font-bold text-sm ${isActive ? 'text-amber-900 dark:text-amber-100' : 'text-gray-12'}`}>{event.event}</div>
                                                             <div className="flex items-center gap-2">
