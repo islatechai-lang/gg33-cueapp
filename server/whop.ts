@@ -174,3 +174,48 @@ export async function getWhopUserProfile(userId: string): Promise<WhopUserProfil
 
   return null;
 }
+
+/**
+ * Creates a notification for a Whop user
+ * https://docs.whop.com/api-reference/notifications/create-notification
+ */
+export async function createWhopNotification(data: {
+  userId: string;
+  title: string;
+  content: string;
+  link?: string;
+}): Promise<boolean> {
+  if (!WHOP_API_KEY) {
+    console.warn("Whop API key missing - cannot send notification");
+    return false;
+  }
+
+  try {
+    const response = await fetch("https://api.whop.com/api/v1/notifications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${WHOP_API_KEY}`,
+      },
+      body: JSON.stringify({
+        recipient_id: data.userId,
+        title: data.title,
+        content: data.content,
+        link: data.link || "https://whop.com/cue-your-life", // Default app link
+        type: "custom"
+      }),
+    });
+
+    if (response.ok) {
+      console.log(`[Whop] Notification sent successfully to user ${data.userId}`);
+      return true;
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      console.error(`[Whop] Failed to send notification: ${response.status}`, errorData);
+      return false;
+    }
+  } catch (error) {
+    console.error("[Whop] Error sending notification:", error);
+    return false;
+  }
+}

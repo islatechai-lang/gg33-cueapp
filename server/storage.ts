@@ -20,6 +20,7 @@ export interface IStorage {
   // Daily Energy operations
   getDailyEnergy(odisId: string, date: string): Promise<DBDailyEnergy | null>;
   saveDailyEnergy(data: Omit<DBDailyEnergy, 'id' | 'createdAt'>): Promise<DBDailyEnergy>;
+  getUsersMissingDailyEnergy(date: string): Promise<DBUser[]>;
 
   // Personality Insight operations
   getPersonalityInsight(odisId: string): Promise<DBPersonalityInsight | null>;
@@ -412,6 +413,44 @@ export class MongoStorage implements IStorage {
     } catch (error) {
       console.error("Error saving daily energy:", error);
       throw error;
+    }
+  }
+
+  async getUsersMissingDailyEnergy(date: string): Promise<DBUser[]> {
+    const connected = await this.ensureConnected();
+    if (!connected) {
+      return [];
+    }
+
+    try {
+      // 1. Get all users who have a Whop ID (so we can notify them)
+      const usersWithWhop = await UserModel.find({ whopUserId: { $exists: true, $ne: null } });
+      
+      // 2. Get all DailyEnergy records for the given date
+      const energies = await DailyEnergyModel.find({ date });
+      const userIdsWithEnergy = new Set(energies.map(e => e.odisId));
+
+      // 3. Filter users who don't have a record for today
+      const missingUsers = usersWithWhop.filter(user => !userIdsWithEnergy.has(user.odisId));
+
+      return missingUsers.map(user => ({
+        id: user._id.toString(),
+        odisId: user.odisId,
+        whopUserId: user.whopUserId,
+        whopUsername: user.whopUsername,
+        whopProfilePictureUrl: user.whopProfilePictureUrl,
+        whopAccessLevel: user.whopAccessLevel,
+        fullName: user.fullName,
+        birthDate: user.birthDate,
+        birthTime: user.birthTime,
+        birthLocation: user.birthLocation,
+        isPro: user.isPro ?? false,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      }));
+    } catch (error) {
+      console.error("Error finding users missing daily energy:", error);
+      return [];
     }
   }
 
