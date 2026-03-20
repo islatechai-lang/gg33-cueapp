@@ -1553,6 +1553,9 @@ export async function registerRoutes(
         personality: personalityNum,
         expression: expressionNum
       },
+      soulUrgeNumber: soulUrgeNum,
+      personalityNumber: personalityNum,
+      expressionNumber: expressionNum,
       strengths: [
         lifePath <= 3 ? 'Natural leadership and initiative' : lifePath <= 6 ? 'Deep empathy and creative vision' : 'Analytical brilliance and spiritual insight',
         element === 'Fire' ? 'Unstoppable drive and passion' : element === 'Water' ? 'Emotional intelligence and healing' : element === 'Earth' ? 'Practical genius and material mastery' : element === 'Air' ? 'Communication and intellectual agility' : 'Transcendent awareness and teaching ability'

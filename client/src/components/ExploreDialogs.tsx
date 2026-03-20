@@ -1552,7 +1552,7 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
 
                             <div>
                                 <h3 className="font-black text-lg border-b pb-2 mb-4 text-gray-12 flex items-center gap-2"><Grid className="w-5 h-5 text-indigo-500"/> Numerological Pillars</h3>
-                                <div className="grid sm:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                                     <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                         <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 flex items-center justify-center font-black text-xl">{data.lifePath}</div>
                                         <div className="font-bold text-sm text-gray-12">Life Path</div>
@@ -1569,7 +1569,14 @@ export function AllAboutYouDialog({ open, onClose, profileData }: any) {
                                         <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                             <div className="mx-auto w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-black text-xl">{data.personalityNumber}</div>
                                             <div className="font-bold text-sm text-gray-12">Personality</div>
-                                            <div className="text-xs text-gray-11">Outer Expression</div>
+                                            <div className="text-xs text-gray-11">Physical Mask</div>
+                                        </div>
+                                    )}
+                                    {data.expressionNumber && (
+                                        <div className="text-center space-y-2 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
+                                            <div className="mx-auto w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 flex items-center justify-center font-black text-xl">{data.expressionNumber}</div>
+                                            <div className="font-bold text-sm text-gray-12">Expression</div>
+                                            <div className="text-xs text-gray-11">Public Mission</div>
                                         </div>
                                     )}
                                 </div>
