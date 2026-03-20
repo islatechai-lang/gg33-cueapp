@@ -11,7 +11,7 @@ import {
     Star, Compass, Heart, Globe, TrendingUp, Users, Check, MapPin, Briefcase,
     Sparkles, Loader2, AlertTriangle, Stars, ArrowUpCircle, ArrowDownCircle,
     Target, Flame, Gem, Shield, Activity, History, Trophy, Medal, CircleDot,
-    CheckCircle2, Swords, Map
+    CheckCircle2, Swords, Map, Calculator, Calendar
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -442,9 +442,9 @@ export function HomePickerDialog({ open, onClose, lifePathNumber }: any) {
                                     </h4>
                                     <div className="grid gap-3">
                                         {data.fengShuiTips.map((tip: any, i: number) => (
-                                            <div key={i} className="flex gap-4 p-4 bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm hover:border-amber-500/30 transition-colors">
+                                            <div key={i} className="flex gap-4 p-4 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm hover:border-amber-500/30 transition-colors">
                                                 <div className="w-24 shrink-0 font-bold text-sm text-gray-12">{tip.area}</div>
-                                                <div className="w-px bg-gray-200 dark:bg-gray-800 hidden sm:block"></div>
+                                                <div className="w-px bg-gray-a3 hidden sm:block"></div>
                                                 <div className="flex-1 text-sm text-gray-11 leading-relaxed">{tip.tip}</div>
                                             </div>
                                         ))}
@@ -635,7 +635,7 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber, birthDate }: 
                                     </h4>
                                     <div className="flex flex-wrap gap-4">
                                         {data.secondary.map((num: number, i: number) => (
-                                            <div key={i} className="w-16 h-16 rounded-2xl bg-background border-2 border-amber-500/20 shadow-sm flex items-center justify-center text-2xl font-black text-amber-11">
+                                            <div key={i} className="w-16 h-16 rounded-2xl bg-gray-a2 border-2 border-amber-500/20 shadow-sm flex items-center justify-center text-2xl font-black text-amber-11">
                                                 {num}
                                             </div>
                                         ))}
@@ -654,7 +654,7 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber, birthDate }: 
                                     
                                     <div className="grid md:grid-cols-2 gap-4">
                                         {data.calculations.map((calc: any, i: number) => (
-                                            <div key={i} className="bg-background border border-gray-a3 rounded-xl p-5 hover:border-amber-500/30 transition-colors shadow-sm relative overflow-hidden group">
+                                            <div key={i} className="bg-gray-a2 border border-gray-a3 rounded-xl p-5 hover:border-amber-500/30 transition-colors shadow-sm relative overflow-hidden group">
                                                 <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/50" />
                                                 <div className="flex justify-between items-start mb-3">
                                                     <div>
@@ -666,7 +666,7 @@ export function LuckyNumberDialog({ open, onClose, lifePathNumber, birthDate }: 
                                                     </div>
                                                 </div>
                                                 
-                                                <div className="mt-4 space-y-2 bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-200 dark:border-gray-800">
+                                                <div className="mt-4 space-y-2 bg-black/20 p-3 rounded-lg border border-gray-a3">
                                                     {calc.steps.map((step: string, j: number) => (
                                                         <div key={j} className="text-xs text-gray-11 flex items-start gap-2">
                                                             <div className="text-amber-500/70 mt-0.5">•</div>
@@ -813,15 +813,15 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
 
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div className="space-y-4">
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-4 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h4 className="font-bold text-sm text-gray-12 mb-2 flex items-center gap-2"><Type className="w-4 h-4 text-amber-500" /> Expression Breakdown</h4>
                                         <p className="text-xs text-gray-11 leading-relaxed">{data.expressionBreakdown}</p>
                                     </div>
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-4 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h4 className="font-bold text-sm text-gray-12 mb-2 flex items-center gap-2"><Heart className="w-4 h-4 text-rose-500" /> Soul Urge Breakdown</h4>
                                         <p className="text-xs text-gray-11 leading-relaxed">{data.soulUrgeBreakdown}</p>
                                     </div>
-                                    <div className="p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl">
+                                    <div className="p-4 bg-gray-a2 border border-gray-a3 rounded-xl">
                                         <h4 className="font-bold text-sm text-gray-12 mb-2 flex items-center gap-2"><UserCircle className="w-4 h-4 text-emerald-500" /> Personality Breakdown</h4>
                                         <p className="text-xs text-gray-11 leading-relaxed">{data.personalityBreakdown}</p>
                                     </div>
@@ -831,15 +831,15 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
                                     <h4 className="font-bold mb-2 border-b pb-2 text-gray-12 flex items-center gap-2">
                                         <Grid className="w-4 h-4 text-indigo-500" /> Structural Pillars
                                     </h4>
-                                    <div className="p-4 bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-900/30 rounded-lg">
-                                        <div className="text-[10px] text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider mb-1">Cornerstone (Start)</div>
-                                        <div className="text-xl font-bold mb-2 text-amber-900 dark:text-amber-100">"{data.cornerstone.char}"</div>
-                                        <div className="text-xs text-amber-800/80 dark:text-amber-200/80 leading-relaxed">{data.cornerstone.meaning}</div>
+                                    <div className="p-4 bg-amber-a2 border border-amber-a3 rounded-lg">
+                                        <div className="text-[10px] text-amber-11 font-bold uppercase tracking-wider mb-1">Cornerstone (Start)</div>
+                                        <div className="text-xl font-bold mb-2 text-amber-12">"{data.cornerstone.char}"</div>
+                                        <div className="text-xs text-amber-11/80 leading-relaxed">{data.cornerstone.meaning}</div>
                                     </div>
-                                    <div className="p-4 bg-indigo-50/50 dark:bg-indigo-900/10 border border-indigo-200 dark:border-indigo-900/30 rounded-lg">
-                                        <div className="text-[10px] text-indigo-700 dark:text-indigo-400 font-bold uppercase tracking-wider mb-1">Capstone (Finish)</div>
-                                        <div className="text-xl font-bold mb-2 text-indigo-900 dark:text-indigo-100">"{data.capstone.char}"</div>
-                                        <div className="text-xs text-indigo-800/80 dark:text-indigo-200/80 leading-relaxed">{data.capstone.meaning}</div>
+                                    <div className="p-4 bg-indigo-a2 border border-indigo-a3 rounded-lg">
+                                        <div className="text-[10px] text-indigo-11 font-bold uppercase tracking-wider mb-1">Capstone (Finish)</div>
+                                        <div className="text-xl font-bold mb-2 text-indigo-12">"{data.capstone.char}"</div>
+                                        <div className="text-xs text-indigo-11/80 leading-relaxed">{data.capstone.meaning}</div>
                                     </div>
                                 </div>
                             </div>
@@ -1206,8 +1206,9 @@ export function EnergyInsightsDialog({ open, onClose, lifePathNumber, energySign
                                             <h4 className="font-bold flex items-center gap-2 mb-2 text-gray-12">
                                                 <Target className="w-4 h-4 text-purple-500" /> Core Chakra Alignment
                                             </h4>
-                                            <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl">
+                                            <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-xl space-y-1">
                                                 <div className="text-sm font-bold text-purple-700 dark:text-purple-400">{data.chakraAlignment}</div>
+                                                <div className="text-[10px] text-purple-600/70 dark:text-purple-400/70 leading-tight italic">{data.chakraTip}</div>
                                             </div>
                                         </div>
                                     )}
@@ -1231,7 +1232,7 @@ export function EnergyInsightsDialog({ open, onClose, lifePathNumber, energySign
                                     </h4>
                                     <div className="grid sm:grid-cols-2 gap-3">
                                         {data.crystals.map((c: any, i: number) => (
-                                            <div key={i} className="flex gap-3 p-3 bg-background border border-gray-200 dark:border-gray-800 rounded-xl shadow-sm">
+                                            <div key={i} className="flex gap-3 p-3 bg-gray-a2 border border-gray-a3 rounded-xl shadow-sm">
                                                 <div className="font-bold text-sm text-gray-12">{c.stone}</div>
                                                 <div className="w-px bg-gray-200 dark:bg-gray-800"></div>
                                                 <div className="text-xs text-gray-11 flex-1">{c.reason}</div>

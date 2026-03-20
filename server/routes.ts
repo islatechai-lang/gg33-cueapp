@@ -767,12 +767,14 @@ export async function registerRoutes(
       { area: 'Kitchen', tip: 'Keep the stove clean and all burners working — this directly affects your wealth frequency.' },
       { area: 'Home Office', tip: `Place your desk facing the door. Position personal lucky objects related to number ${l} on the desk.` }
     ];
-    const avoidHouseNumbers = [reduceToSingleDigit(10 - l), l === 8 ? 4 : l === 4 ? 8 : reduceToSingleDigit(l + 5)].filter((v, i, a) => a.indexOf(v) === i && v !== l);
+    const goodHouseNumbers = [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i);
+    const avoidHouseNumbersRaw = [reduceToSingleDigit(10 - l), l === 8 ? 4 : l === 4 ? 8 : reduceToSingleDigit(l + 5)].filter((v, i, a) => a.indexOf(v) === i && v !== l);
+    const avoidHouseNumbers = avoidHouseNumbersRaw.filter(v => !goodHouseNumbers.includes(v));
 
     res.json({
       overview: `Your Life Path ${l} thrives in environments that balance stimulation with grounding. The energetic blueprint of your ideal home requires a specific mathematical resonance.`,
       environments: envs,
-      goodHouseNumbers: [l, reduceToSingleDigit(l + 2), reduceToSingleDigit(l + 4), 11, 22].filter((v, i, a) => a.indexOf(v) === i),
+      goodHouseNumbers,
       fengShuiTips,
       avoidHouseNumbers
     });
@@ -1113,25 +1115,11 @@ export async function registerRoutes(
           }`
       } : null,
       expressionNumber,
-      expressionBreakdown: {
-        totalSum,
-        reduced: expressionNumber,
-        meaning: `Your Expression Number ${expressionNumber} reveals the talents and abilities you were born with. This is the energy your name radiates to the world.`
-      },
+      expressionBreakdown: `Sum of all characters (${totalSum}) reduced to ${expressionNumber}. ${expressionNumber}: Your Expression Number reveals the talents and abilities you were born with.`,
       soulUrgeNumber,
-      soulUrgeBreakdown: {
-        vowels: vowelLetters.map((l: { char: string; value: number }) => `${l.char}(${l.value})`).join(' + '),
-        sum: vowelSum,
-        reduced: soulUrgeNumber,
-        meaning: `Soul Urge ${soulUrgeNumber}: This is what truly motivates you at the deepest level — your innermost desires and dreams.`
-      },
+      soulUrgeBreakdown: `Sum of vowels (${vowelSum}) reduced to ${soulUrgeNumber}. Soul Urge ${soulUrgeNumber}: This is what truly motivates you at the deepest level — your innermost desires and dreams.`,
       personalityNumber,
-      personalityBreakdown: {
-        consonants: consonantLetters.map((l: { char: string; value: number }) => `${l.char}(${l.value})`).join(' + '),
-        sum: consonantSum,
-        reduced: personalityNumber,
-        meaning: `Personality ${personalityNumber}: This is the mask you show the world — how others perceive you before they know you deeply.`
-      },
+      personalityBreakdown: `Sum of consonants (${consonantSum}) reduced to ${personalityNumber}. Personality ${personalityNumber}: This is the mask you show the world — how others perceive you before they know you deeply.`,
       nameEnergy,
       summary: `Analyzing "${firstName}": Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
     });
@@ -1324,11 +1312,27 @@ export async function registerRoutes(
       'Air': { name: 'Throat (Vishuddha)', status: 'Dominant', tip: 'Communication flows freely. Balance with sacral chakra for emotional depth.' }
     };
     const elKey = energySignature.includes('Water') ? 'Water' : energySignature.includes('Earth') ? 'Earth' : energySignature.includes('Air') ? 'Air' : 'Fire';
-    const crystalMap: Record<string, string[]> = {
-      'Fire': ['Carnelian', 'Red Jasper', 'Citrine'],
-      'Water': ['Blue Lace Agate', 'Moonstone', 'Aquamarine'],
-      'Earth': ['Black Tourmaline', 'Smoky Quartz', 'Tiger\'s Eye'],
-      'Air': ['Amethyst', 'Clear Quartz', 'Lapis Lazuli']
+    const crystalData: Record<string, { stone: string; reason: string }[]> = {
+      'Fire': [
+        { stone: 'Carnelian', reason: 'Anchors your drive and boosts vitality.' },
+        { stone: 'Citrine', reason: 'Magnifies your solar plexus power and wealth flow.' },
+        { stone: 'Sunstone', reason: 'Keeps your inner fire radiant and optimistic.' }
+      ],
+      'Water': [
+        { stone: 'Moonstone', reason: 'Balances your emotional tides and intuition.' },
+        { stone: 'Sodalite', reason: 'Brings logic and peace to your empathetic field.' },
+        { stone: 'Aquamarine', reason: 'Purifies your communication and calms the soul.' }
+      ],
+      'Earth': [
+        { stone: 'Black Tourmaline', reason: 'Grounds your energy into material stability.' },
+        { stone: 'Smoky Quartz', reason: 'Transmutes stress into practical action.' },
+        { stone: 'Tiger\'s Eye', reason: 'Harmonizes your willpower with structural reality.' }
+      ],
+      'Air': [
+        { stone: 'Amethyst', reason: 'Refines your mental clarity and spiritual vision.' },
+        { stone: 'Lapis Lazuli', reason: 'Empowers your voice and authentic expression.' },
+        { stone: 'Clear Quartz', reason: 'Amplifies your fast-moving intellectual electrical field.' }
+      ]
     };
 
     res.json({
@@ -1337,13 +1341,11 @@ export async function registerRoutes(
       highVibe: `When aligned, you operate as a pristine conduit of ${energySignature} energy. You attract synchronicity effortlessly and inspire those around you.`,
       lowVibe: `Under stress or poor energetic hygiene, you become drained, reactive, and physically susceptible to tension mapping in your lower back or neck.`,
       regimen: `Daily 15-minute grounding meditations and avoiding highly processed low-frequency foods will keep your ${auraColor} aura resilient and bright.`,
-      chakraAlignment: chakras[elKey] || chakras['Fire'],
-      crystals: crystalMap[elKey] || crystalMap['Fire'],
-      elementalBalance: {
-        primary: elKey,
-        complement: elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth',
-        advice: `To stay balanced, incorporate ${elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth'} element activities into your weekly routine.`
-      }
+      chakraAlignment: chakras[elKey]?.name || 'Solar Plexus',
+      chakraTip: chakras[elKey]?.tip || 'Balance your core.',
+      crystals: crystalData[elKey] || crystalData['Fire'],
+      elementalBalance: `Primary: ${elKey}. Complement: ${elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth'}. Advice: incorporate more activities related to your complement.`,
+      elementalAdvice: `To stay balanced, incorporate ${elKey === 'Fire' ? 'Water' : elKey === 'Water' ? 'Fire' : elKey === 'Earth' ? 'Air' : 'Earth'} element activities into your weekly routine.`
     });
   });
 
