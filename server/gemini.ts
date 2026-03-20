@@ -678,3 +678,49 @@ export async function* generateChatResponseStream(
 
   throw lastError || new Error("All models failed for chat stream");
 }
+
+/**
+ * Generates personalized Saturn insights based on birth date
+ */
+export async function generateSaturnInsights(birthDate: string): Promise<any> {
+  const prompt = `You are a master astrologer specializing in Saturn's influence and karmic lessons. 
+  Based on the birth date ${birthDate}, provide a deep, personalized insight into their Saturn energy.
+  
+  Focus on:
+  1. Their core Saturnian challenge or life discipline.
+  2. How they can master their time and structure.
+  3. A brief "Saturn Timeline" with 3 key life milestones (ages 28-30, 56-60, and one other age specific to their chart).
+  
+  Style: Authoritative yet supportive, wise, and grounded. Use "You" and "Your".
+  
+  Return ONLY valid JSON:
+  {
+    "overview": "A detailed 3-4 sentence paragraph about their Saturn energy.",
+    "coreChallenge": "One sentence about their biggest karmic hurdle.",
+    "masteryAdvice": "Actionable advice on how to work with Saturn rather than against it.",
+    "timeline": [
+      {"age": "28-30", "insight": "First Saturn Return..."},
+      {"age": "...", "insight": "..."},
+      {"age": "...", "insight": "..."}
+    ]
+  }`;
+
+  try {
+    const rawText = await generateWithFallback(prompt);
+    const cleanJson = cleanJsonResponse(rawText);
+    return JSON.parse(cleanJson);
+  } catch (error) {
+    console.error("Error generating saturn insights:", error);
+    // Return a fallback structure to prevent UI crashes
+    return {
+      overview: "Saturn's influence is a guiding force of structure and discipline in your life. It represents the boundaries you must master and the legacy you build through commitment.",
+      coreChallenge: "Finding the balance between personal ambition and karmic responsibility.",
+      masteryAdvice: "Focus on consistent effort and long-term goals. Patience is your greatest ally when working with Saturnian energy.",
+      timeline: [
+        { age: "28-30", insight: "First Saturn Return: A period of significant restructuring, maturity, and stepping into your true authority." },
+        { age: "44-45", insight: "Saturn Opposition: A mid-life phase for evaluation and tightening the structure of your life's work." },
+        { age: "58-60", insight: "Second Saturn Return: A time of harvest, culmination, and sharing your accumulated wisdom with others." }
+      ]
+    };
+  }
+}
