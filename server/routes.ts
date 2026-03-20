@@ -7,6 +7,8 @@ import { parsedCues, totalCuesCount, type ParsedCue } from "./cuesData";
 import { Resend } from 'resend';
 import { parseUTCDate } from '../shared/dateUtils';
 import { reduceToSingleDigit, getLifePath, getVedicNakshatra, pythagorean } from './exploreUtils';
+import { sendDailyEnergyReminders } from "./notifications"; // Added for notification trigger
+import { generateSaturnInsights } from "./gemini"; // Added for Saturn Insights
 
 export async function registerRoutes(
   httpServer: Server,
@@ -383,6 +385,30 @@ export async function registerRoutes(
     } catch (error) {
       console.error("Error generating compatibility insights:", error);
       res.status(500).json({ error: "Failed to generate compatibility insights" });
+    }
+  });
+
+  // Saturn Insights
+  app.get("/api/explore/saturn-insights/:birthDate", async (req, res) => {
+    try {
+      const { birthDate } = req.params;
+      const SaturnInsights = await generateSaturnInsights(birthDate);
+      res.json(SaturnInsights);
+    } catch (error) {
+      console.error("Error generating saturn insights:", error);
+      res.status(500).json({ error: "Failed to generate saturn insights" });
+    }
+  });
+
+  // Manual Notification Trigger
+  app.post("/api/admin/trigger-notifications", async (_req, res) => {
+    try {
+      console.log("[Admin] Manual notification trigger received");
+      await sendDailyEnergyReminders();
+      res.json({ success: true, message: "Notification process triggered" });
+    } catch (error: any) {
+      console.error("Error triggering notifications:", error);
+      res.status(500).json({ success: false, error: error.message });
     }
   });
 
