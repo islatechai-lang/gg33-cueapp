@@ -790,22 +790,22 @@ export function LetterologyDialog({ open, onClose, profileData }: any) {
 
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div className="p-4 bg-amber-a2 border border-amber-a4 rounded-xl text-center shadow-sm">
-                                    <div className="text-[10px] text-amber-11 font-bold uppercase tracking-wider mb-2">Expression</div>
+                                    <div className="text-[10px] text-amber-11 font-bold uppercase tracking-wider mb-2">Full Expression</div>
                                     <div className="text-3xl font-black text-amber-9 mb-1">{data.expressionNumber}</div>
                                     <div className="text-[10px] text-amber-11/80 leading-tight">Total Name Frequency</div>
                                 </div>
                                 <div className="p-4 bg-indigo-a2 border border-indigo-a4 rounded-xl text-center shadow-sm">
                                     <div className="text-[10px] text-indigo-11 font-bold uppercase tracking-wider mb-2">Soul Urge</div>
                                     <div className="text-3xl font-black text-indigo-9 mb-1">{data.soulUrgeNumber}</div>
-                                    <div className="text-[10px] text-indigo-11/80 leading-tight">Inner Desire Theme</div>
+                                    <div className="text-[10px] text-indigo-11/80 leading-tight">Full Name: Inner Desire</div>
                                 </div>
                                 <div className="p-4 bg-emerald-a2 border border-emerald-a4 rounded-xl text-center shadow-sm">
                                     <div className="text-[10px] text-emerald-11 font-bold uppercase tracking-wider mb-2">Personality</div>
                                     <div className="text-3xl font-black text-emerald-9 mb-1">{data.personalityNumber}</div>
-                                    <div className="text-[10px] text-emerald-11/80 leading-tight">Outer Perception</div>
+                                    <div className="text-[10px] text-emerald-11/80 leading-tight">Full Name: Outer Perception</div>
                                 </div>
                                 <div className="p-4 bg-rose-a2 border border-rose-a4 rounded-xl text-center shadow-sm">
-                                    <div className="text-[10px] text-rose-11 font-bold uppercase tracking-wider mb-2">Name Energy</div>
+                                    <div className="text-[10px] text-rose-11 font-bold uppercase tracking-wider mb-2">Composite Energy</div>
                                     <div className="text-3xl font-black text-rose-9 mb-1 uppercase text-lg flex items-center justify-center h-9">{data.nameEnergy}</div>
                                     <div className="text-[10px] text-rose-11/80 leading-tight">Vibrational Rating</div>
                                 </div>

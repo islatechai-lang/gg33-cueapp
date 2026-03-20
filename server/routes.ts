@@ -1076,18 +1076,22 @@ export async function registerRoutes(
       'Z': 'Optimistic and hopeful. You see the light ahead.'
     };
 
-    // Calculate expression number (full first name sum reduced)
-    const totalSum = letters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
-    const expressionNumber = reduceToSingleDigit(totalSum, true);
+    // Use the full name for the core 3 pillars (to match user profile)
+    const cleanFullName = (req.query.name as string || '').replace(/[^a-zA-Z]/g, '').toUpperCase();
+    const fullNameLetters = cleanFullName.split('');
 
-    // Vowel sum = Soul Urge Number
-    const vowelLetters = letters.filter((l: { char: string }) => vowels.includes(l.char));
-    const vowelSum = vowelLetters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
+    // Calculate expression number (FULL NAME sum reduced)
+    const totalFullNameSum = fullNameLetters.reduce((sum: number, char: string) => sum + (pythagorean[char] || 0), 0);
+    const expressionNumber = reduceToSingleDigit(totalFullNameSum, true);
+
+    // Vowel sum = Soul Urge Number (FULL NAME)
+    const fullNameVowels = fullNameLetters.filter((char: string) => vowels.includes(char));
+    const vowelSum = fullNameVowels.reduce((sum: number, char: string) => sum + (pythagorean[char] || 0), 0);
     const soulUrgeNumber = reduceToSingleDigit(vowelSum, true);
 
-    // Consonant sum = Personality Number
-    const consonantLetters = letters.filter((l: { char: string }) => !vowels.includes(l.char));
-    const consonantSum = consonantLetters.reduce((sum: number, l: { char: string; value: number }) => sum + l.value, 0);
+    // Consonant sum = Personality Number (FULL NAME)
+    const fullNameConsonants = fullNameLetters.filter((char: string) => !vowels.includes(char));
+    const consonantSum = fullNameConsonants.reduce((sum: number, char: string) => sum + (pythagorean[char] || 0), 0);
     const personalityNumber = reduceToSingleDigit(consonantSum, true);
 
     // Name energy rating
@@ -1115,13 +1119,13 @@ export async function registerRoutes(
           }`
       } : null,
       expressionNumber,
-      expressionBreakdown: `Sum of all characters (${totalSum}) reduced to ${expressionNumber}. ${expressionNumber}: Your Expression Number reveals the talents and abilities you were born with.`,
+      expressionBreakdown: `Sum of full name letters (${totalFullNameSum}) reduced to ${expressionNumber}. ${expressionNumber}: Your Expression Number reveals the talents and abilities you were born with.`,
       soulUrgeNumber,
-      soulUrgeBreakdown: `Sum of vowels (${vowelSum}) reduced to ${soulUrgeNumber}. Soul Urge ${soulUrgeNumber}: This is what truly motivates you at the deepest level — your innermost desires and dreams.`,
+      soulUrgeBreakdown: `Sum of vowels in full name (${vowelSum}) reduced to ${soulUrgeNumber}. Soul Urge ${soulUrgeNumber}: This is what truly motivates you at the deepest level — your innermost desires and dreams.`,
       personalityNumber,
-      personalityBreakdown: `Sum of consonants (${consonantSum}) reduced to ${personalityNumber}. Personality ${personalityNumber}: This is the mask you show the world — how others perceive you before they know you deeply.`,
+      personalityBreakdown: `Sum of consonants in full name (${consonantSum}) reduced to ${personalityNumber}. Personality ${personalityNumber}: This is the mask you show the world — how others perceive you before they know you deeply.`,
       nameEnergy,
-      summary: `Analyzing "${firstName}": Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
+      summary: `Analyzing "${firstName}" within the context of your full vibrational signature: Your name starts with the ${letters[0].char} (Cornerstone), showing how you start things, and ends with ${letters[letters.length - 1].char} (Capstone), showing how you finish. This creates a powerful ${letters[0].value} to ${letters[letters.length - 1].value} numerical transit in everything you do.`
     });
   });
 
