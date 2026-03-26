@@ -253,7 +253,7 @@ export function DailyEnergy({ profile }: DailyEnergyProps) {
                   Do Today
                 </h4>
                 <ul className="space-y-2">
-                  {(displayData?.dos || ['Focus on priorities', 'Stay grounded', 'Trust intuition']).slice(0, 4).map((item, i) => (
+                  {(displayData?.dos || ['Focus on your core priorities', 'Stay grounded in your truth', 'Trust your inner intuition']).map((item, i) => (
                     <li key={i} className="text-2 text-gray-11 flex items-start gap-2">
                       <span className="text-green-9 mt-0.5">•</span>
                       {item}
@@ -268,7 +268,7 @@ export function DailyEnergy({ profile }: DailyEnergyProps) {
                   Avoid Today
                 </h4>
                 <ul className="space-y-2">
-                  {(displayData?.donts || ['Rushing decisions', 'Overcommitting', 'Ignoring rest']).slice(0, 3).map((item, i) => (
+                  {(displayData?.donts || ['Rushing into major decisions', 'Overcommitting your energy', 'Ignoring the need for rest']).map((item, i) => (
                     <li key={i} className="text-2 text-gray-11 flex items-start gap-2">
                       <span className="text-red-9 mt-0.5">•</span>
                       {item}
