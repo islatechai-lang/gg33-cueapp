@@ -62,7 +62,6 @@ export function Navigation() {
               </div>
               <div className="flex flex-col justify-center min-w-0">
                 <span className="text-3 font-semibold gradient-text leading-none">GG33</span>
-                <span className="text-0 text-gray-10 leading-none mt-0.5">Just Cue It</span>
               </div>
             </NavLink>
 
