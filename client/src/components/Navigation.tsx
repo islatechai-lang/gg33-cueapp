@@ -58,7 +58,7 @@ export function Navigation() {
             {/* Logo Section - properly aligned */}
             <NavLink to="/" className="flex items-center gap-2.5 group flex-shrink-0" data-testid="link-logo">
               <div className="w-9 h-9 rounded-lg overflow-hidden shadow-md group-hover:shadow-glow transition-shadow">
-                <img src="/images/logo.png" alt="GG33" className="w-full h-full object-cover" />
+                <img src="/images/logo.png?v=1" alt="GG33" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col justify-center min-w-0">
                 <span className="text-3 font-semibold gradient-text leading-none">GG33</span>
