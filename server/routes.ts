@@ -3074,9 +3074,11 @@ export async function registerRoutes(
       if (whopUserId === 'user_gPT4lCtHrnQZj' || 
           whopUserId === 'user_Ax0gbiirHXs1G' || 
           whopUserId === 'user_2MuiDqjP6bDzN' || 
+          whopUserId === 'user_fXle2wr73Jt2t' ||
           req.query.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' ||
           req.query.odisId === 'odis_600d1bd4-bd60-46ed-8d43-d463218128b1' ||
-          req.query.odisId === 'odis_2827b3cb-26b7-4ac6-9100-2ffcf0dcdb63') {
+          req.query.odisId === 'odis_2827b3cb-26b7-4ac6-9100-2ffcf0dcdb63' ||
+          req.query.odisId === 'odis_af728c65-76e4-4c20-8fc3-84b0d10bf851') {
         console.log(`[Whop Membership] Bypassing membership check for tester: ${whopUserId}`);
         return res.json({
           hasMembership: true,
