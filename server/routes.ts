@@ -3071,7 +3071,12 @@ export async function registerRoutes(
       const WHOP_COMPANY_ID = process.env.WHOP_COMPANY_ID;
 
       // Bypass for specific tester credentials
-      if (whopUserId === 'user_gPT4lCtHrnQZj' || req.query.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6') {
+      if (whopUserId === 'user_gPT4lCtHrnQZj' || 
+          whopUserId === 'user_Ax0gbiirHXs1G' || 
+          whopUserId === 'user_2MuiDqjP6bDzN' || 
+          req.query.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' ||
+          req.query.odisId === 'odis_600d1bd4-bd60-46ed-8d43-d463218128b1' ||
+          req.query.odisId === 'odis_2827b3cb-26b7-4ac6-9100-2ffcf0dcdb63') {
         console.log(`[Whop Membership] Bypassing membership check for tester: ${whopUserId}`);
         return res.json({
           hasMembership: true,

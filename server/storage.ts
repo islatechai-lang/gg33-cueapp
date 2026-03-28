@@ -70,7 +70,12 @@ export class MongoStorage implements IStorage {
         birthDate: user.birthDate,
         birthTime: user.birthTime,
         birthLocation: user.birthLocation,
-        isPro: (user.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' || user.whopUserId === 'user_gPT4lCtHrnQZj') ? true : (user.isPro ?? false),
+        isPro: (user.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' || 
+                user.odisId === 'odis_600d1bd4-bd60-46ed-8d43-d463218128b1' ||
+                user.odisId === 'odis_2827b3cb-26b7-4ac6-9100-2ffcf0dcdb63' ||
+                user.whopUserId === 'user_gPT4lCtHrnQZj' ||
+                user.whopUserId === 'user_Ax0gbiirHXs1G' ||
+                user.whopUserId === 'user_2MuiDqjP6bDzN') ? true : (user.isPro ?? false),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       };
@@ -101,7 +106,12 @@ export class MongoStorage implements IStorage {
         birthDate: user.birthDate,
         birthTime: user.birthTime,
         birthLocation: user.birthLocation,
-        isPro: (user.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' || user.whopUserId === 'user_gPT4lCtHrnQZj') ? true : (user.isPro ?? false),
+        isPro: (user.odisId === 'odis_e4ef0aac-e27c-498d-a6be-ea5a248fd1b6' || 
+                user.odisId === 'odis_600d1bd4-bd60-46ed-8d43-d463218128b1' ||
+                user.odisId === 'odis_2827b3cb-26b7-4ac6-9100-2ffcf0dcdb63' ||
+                user.whopUserId === 'user_gPT4lCtHrnQZj' ||
+                user.whopUserId === 'user_Ax0gbiirHXs1G' ||
+                user.whopUserId === 'user_2MuiDqjP6bDzN') ? true : (user.isPro ?? false),
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       };
