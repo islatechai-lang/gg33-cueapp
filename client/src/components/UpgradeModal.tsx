@@ -5,7 +5,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Crown, Check, Sparkles, Users, Database, Compass, MessageCircle, GraduationCap, Hash, Clock, Zap, Lock, Loader2, Sun } from 'lucide-react';
+import { Crown, Check, Sparkles, Users, Database, Compass, MessageCircle, GraduationCap, Hash, Clock, Zap, Lock, Loader2, Sun, Stars } from 'lucide-react';
 import proBgImage from '@assets/generated_images/clean_minimal_sacred_geometry_background.png';
 import { iframeSdk } from '@/lib/whop-iframe';
 import { apiRequest, queryClient } from '@/lib/queryClient';
@@ -19,6 +19,7 @@ interface UpgradeModalProps {
 
 const benefits = [
   { icon: Users, label: 'Compatibility Analysis', description: 'Discover relationship dynamics' },
+  { icon: Stars, label: 'Astrology Birth Chart', description: 'Personalized interactive natal map' },
   { icon: Database, label: 'Cues Database', description: '22,000+ cues library' },
   { icon: Compass, label: 'Explore Modules', description: 'All numerology modules' },
   { icon: MessageCircle, label: 'CueChats AI', description: 'Personalized AI guidance' },

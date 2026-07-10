@@ -10,11 +10,13 @@ import { Button } from '@/components/ui/button';
 import { 
   Stars, AlertTriangle, Compass, Sun, Moon, Sparkles, 
   Flame, Globe, Zap, Heart, MessageSquare, BookOpen, 
-  Activity, Shield, Trophy, Layout, Landmark, HelpCircle, UserCircle
+  Activity, Shield, Trophy, Layout, Landmark, HelpCircle, UserCircle,
+  Lock, Crown, Check, Loader2
 } from 'lucide-react';
 import { calculateBirthChart, ELEMENT_FOR_SIGN, ELEMENT_COLORS, PLANET_GLYPHS, PLANET_COLORS } from '@/lib/astrology';
 import { BirthChart } from '@/components/BirthChart';
 import { parseUTCDate } from '@shared/dateUtils';
+import { UpgradeModal } from '@/components/UpgradeModal';
 
 const ODIS_ID_KEY = 'gg33-odis-id';
 
@@ -112,10 +114,10 @@ function getPlanetHouse(planetLongitude: number, ascendant: number): number {
   const diff = (planetLongitude - ascendant + 360) % 360;
   return Math.floor(diff / 30) + 1;
 }
-
 export default function BirthChartPage() {
   const savedOdisId = typeof window !== 'undefined' ? localStorage.getItem(ODIS_ID_KEY) : null;
   const [activeTab, setActiveTab] = useState<'chart' | 'houses' | 'aspects' | 'energy'>('chart');
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const { data: profileResponse, isLoading } = useQuery<any>({
     queryKey: ['/api/profile', savedOdisId],
@@ -128,6 +130,25 @@ export default function BirthChartPage() {
     enabled: !!savedOdisId,
     staleTime: 1000 * 60 * 5,
   });
+
+  const { data: membership, isLoading: isMembershipLoading } = useQuery<any>({
+    queryKey: ['/api/membership'],
+    staleTime: 1000 * 60 * 5,
+  });
+
+  const isPro = membership?.hasMembership ?? false;
+
+  if (isLoading || isMembershipLoading) {
+    return (
+      <>
+        <StarField />
+        <Navigation />
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-amber-9 animate-spin" />
+        </div>
+      </>
+    );
+  }
 
   const profileData = profileResponse?.user || (profileResponse && profileResponse.birthDate ? profileResponse : null);
 
@@ -214,8 +235,61 @@ export default function BirthChartPage() {
             </p>
           </div>
 
-          {/* No Profile Registered */}
-          {!savedOdisId && (
+          {/* Locked View if Not Pro */}
+          {!isPro ? (
+            <Card variant="glow" className="text-center max-w-lg mx-auto border-amber-9/30 relative overflow-hidden">
+              <div className="absolute top-0 right-0 -mt-6 -mr-6 w-32 h-32 bg-amber-9/10 rounded-full blur-2xl animate-pulse" />
+              <CardContent className="py-12 px-6 sm:px-8 space-y-6 relative z-10">
+                <div className="relative w-20 h-20 mx-auto">
+                  <div className="absolute inset-0 bg-amber-9/10 rounded-full blur-md animate-ping" />
+                  <div className="relative w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center border border-amber-9/30 shadow-lg shadow-amber-9/20">
+                    <Lock className="w-9 h-9 text-black font-black" />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <h3 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center justify-center gap-2">
+                    <Crown className="w-5 h-5 text-amber-9 shrink-0 animate-bounce" />
+                    Unlock Your Birth Chart
+                  </h3>
+                  <p className="text-gray-11 text-sm max-w-md mx-auto leading-relaxed">
+                    Get access to your complete personalized astronomical map, planetary coordinates, interactive aspects grid, and cosmic balances.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto text-left py-3 border-y border-gray-a2">
+                  <div className="flex items-center gap-2.5 text-sm text-gray-12">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Concentric Natal Wheel</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm text-gray-12">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>All 12 Houses Decoded</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm text-gray-12">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>45+ Personal Aspects</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-sm text-gray-12">
+                    <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>Cosmic Energy Balance</span>
+                  </div>
+                </div>
+
+                <Button 
+                  variant="gold" 
+                  size="lg" 
+                  className="w-full text-base font-black shadow-lg shadow-amber-9/10"
+                  onClick={() => setShowUpgradeModal(true)}
+                >
+                  Upgrade to Pro
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {/* No Profile Registered */}
+              {!savedOdisId && (
             <Card variant="glow" className="text-center max-w-md mx-auto">
               <CardContent className="py-12 space-y-6">
                 <div className="w-16 h-16 mx-auto bg-amber-9/10 rounded-full flex items-center justify-center border border-amber-9/20">
@@ -454,7 +528,7 @@ export default function BirthChartPage() {
                               </div>
                             </div>
                             {planets.length > 0 ? (
-                              <Badge variant="gold" size="sm">
+                              <Badge variant="default" size="sm">
                                 {planets.length} {planets.length === 1 ? 'placement' : 'placements'}
                               </Badge>
                             ) : (
@@ -650,8 +724,12 @@ export default function BirthChartPage() {
               )}
             </div>
           )}
+            </>
+          )}
         </div>
       </main>
+
+      <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
     </>
   );
 }
