@@ -393,42 +393,54 @@ export default function BirthChartPage() {
               </div>
 
               {/* Navigation Tabs */}
-              <div className="flex border-b border-gray-a3 gap-1 overflow-x-auto pb-px">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 p-1.5 bg-gray-a2/20 border border-gray-a3 rounded-2xl shadow-lg">
                 <Button
                   variant={activeTab === 'chart' ? 'gold' : 'ghost'}
                   onClick={() => setActiveTab('chart')}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-amber-9"
-                  data-state={activeTab === 'chart' ? 'active' : ''}
+                  className={`rounded-xl py-3.5 px-4 transition-all duration-300 w-full flex items-center justify-center gap-2 border-none ${
+                    activeTab === 'chart'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black shadow-lg shadow-amber-500/10 scale-[1.02] hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-black'
+                      : 'text-gray-11 hover:text-white hover:bg-gray-a2'
+                  }`}
                 >
-                  <Stars className="w-4 h-4 mr-2" />
-                  Natal Wheel & Placements
+                  <Stars className="w-4 h-4 shrink-0" />
+                  <span className="font-bold text-sm">Natal Wheel</span>
                 </Button>
                 <Button
                   variant={activeTab === 'houses' ? 'gold' : 'ghost'}
                   onClick={() => setActiveTab('houses')}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-amber-9"
-                  data-state={activeTab === 'houses' ? 'active' : ''}
+                  className={`rounded-xl py-3.5 px-4 transition-all duration-300 w-full flex items-center justify-center gap-2 border-none ${
+                    activeTab === 'houses'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black shadow-lg shadow-amber-500/10 scale-[1.02] hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-black'
+                      : 'text-gray-11 hover:text-white hover:bg-gray-a2'
+                  }`}
                 >
-                  <Layout className="w-4 h-4 mr-2" />
-                  Houses Decoded
+                  <Layout className="w-4 h-4 shrink-0" />
+                  <span className="font-bold text-sm">Houses Decoded</span>
                 </Button>
                 <Button
                   variant={activeTab === 'aspects' ? 'gold' : 'ghost'}
                   onClick={() => setActiveTab('aspects')}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-amber-9"
-                  data-state={activeTab === 'aspects' ? 'active' : ''}
+                  className={`rounded-xl py-3.5 px-4 transition-all duration-300 w-full flex items-center justify-center gap-2 border-none ${
+                    activeTab === 'aspects'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black shadow-lg shadow-amber-500/10 scale-[1.02] hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-black'
+                      : 'text-gray-11 hover:text-white hover:bg-gray-a2'
+                  }`}
                 >
-                  <Activity className="w-4 h-4 mr-2" />
-                  Aspects Explained
+                  <Activity className="w-4 h-4 shrink-0" />
+                  <span className="font-bold text-sm">Aspects Explained</span>
                 </Button>
                 <Button
                   variant={activeTab === 'energy' ? 'gold' : 'ghost'}
                   onClick={() => setActiveTab('energy')}
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-amber-9"
-                  data-state={activeTab === 'energy' ? 'active' : ''}
+                  className={`rounded-xl py-3.5 px-4 transition-all duration-300 w-full flex items-center justify-center gap-2 border-none ${
+                    activeTab === 'energy'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-black font-black shadow-lg shadow-amber-500/10 scale-[1.02] hover:bg-gradient-to-r hover:from-amber-500 hover:to-orange-500 hover:text-black'
+                      : 'text-gray-11 hover:text-white hover:bg-gray-a2'
+                  }`}
                 >
-                  <Flame className="w-4 h-4 mr-2" />
-                  Cosmic Energy Balance
+                  <Flame className="w-4 h-4 shrink-0" />
+                  <span className="font-bold text-sm">Cosmic Energy</span>
                 </Button>
               </div>
 
