@@ -197,9 +197,11 @@ export function BirthChart({ chartData }: BirthChartProps) {
             const angle1 = toChartAngle(aspect.planet1Longitude, asc);
             const angle2 = toChartAngle(aspect.planet2Longitude, asc);
 
-            // Aspect lines end at the inner planet radius
-            const startPt = toSvgCoords(angle1, 140, cx, cy);
-            const endPt = toSvgCoords(angle2, 140, cx, cy);
+            const r1 = (planetRadii[aspect.planet1] || 190) - 14;
+            const r2 = (planetRadii[aspect.planet2] || 190) - 14;
+
+            const startPt = toSvgCoords(angle1, r1, cx, cy);
+            const endPt = toSvgCoords(angle2, r2, cx, cy);
 
             let strokeColor = '#38BDF8'; // Blue for harmonious (sextile/trine)
             if (aspect.type === 'square' || aspect.type === 'opposition') {
