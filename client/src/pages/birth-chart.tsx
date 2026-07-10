@@ -508,6 +508,21 @@ export default function BirthChartPage() {
                       </div>
                     </CardContent>
                   </Card>
+
+                  {/* Bottom Navigation */}
+                  <div className="flex justify-end pt-4 border-t border-gray-a2">
+                    <Button
+                      variant="gold"
+                      onClick={() => {
+                        setActiveTab('houses');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-5 py-2.5 font-black text-sm"
+                    >
+                      Next: Houses Decoded
+                      <span>→</span>
+                    </Button>
+                  </div>
                 </div>
               )}
 
@@ -573,6 +588,32 @@ export default function BirthChartPage() {
                         </Card>
                       );
                     })}
+                  </div>
+
+                  {/* Bottom Navigation */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-a2 gap-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setActiveTab('chart');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-white bg-transparent"
+                    >
+                      <span>←</span>
+                      Back
+                    </Button>
+                    <Button
+                      variant="gold"
+                      onClick={() => {
+                        setActiveTab('aspects');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-5 py-2.5 font-black text-sm"
+                    >
+                      Next: Aspects Explained
+                      <span>→</span>
+                    </Button>
                   </div>
                 </div>
               )}
@@ -647,6 +688,32 @@ export default function BirthChartPage() {
                       )}
                     </CardContent>
                   </Card>
+
+                  {/* Bottom Navigation */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-a2 gap-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setActiveTab('houses');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-white bg-transparent"
+                    >
+                      <span>←</span>
+                      Back
+                    </Button>
+                    <Button
+                      variant="gold"
+                      onClick={() => {
+                        setActiveTab('energy');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-5 py-2.5 font-black text-sm"
+                    >
+                      Next: Cosmic Energy
+                      <span>→</span>
+                    </Button>
+                  </div>
                 </div>
               )}
 
@@ -732,6 +799,21 @@ export default function BirthChartPage() {
                       {DOMINANT_ENERGY_TEXTS[elementAndModalityStats.dominantElement]}. You can balance this dominant energy by cultivating and working with the traits of its polar opposite element.
                     </CardContent>
                   </Card>
+
+                  {/* Bottom Navigation */}
+                  <div className="flex items-center justify-start pt-4 border-t border-gray-a2 gap-4">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setActiveTab('aspects');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-white bg-transparent"
+                    >
+                      <span>←</span>
+                      Back to Aspects
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
