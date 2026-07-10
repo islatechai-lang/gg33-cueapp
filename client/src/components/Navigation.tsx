@@ -86,7 +86,7 @@ export function Navigation() {
                       </Badge>
                     )}
                     {item.to === '/birth-chart' && (
-                      <Badge className="bg-emerald-600 text-white border-none px-1 py-0 h-3.5 text-[8px] font-black uppercase tracking-tighter shadow-sm shadow-emerald-600/20 animate-pulse">
+                      <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-none px-1 py-0 h-3.5 text-[8px] font-black uppercase tracking-tighter shadow-sm shadow-orange-500/40 animate-pulse">
                         New
                       </Badge>
                     )}
@@ -147,7 +147,7 @@ export function Navigation() {
                         </Badge>
                       )}
                       {item.to === '/birth-chart' && (
-                        <Badge className="bg-emerald-600 text-white border-none px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter animate-pulse">
+                        <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white border-none px-2 py-0.5 text-[10px] font-black uppercase tracking-tighter shadow-sm shadow-orange-500/40 animate-pulse">
                           New
                         </Badge>
                       )}
