@@ -75,7 +75,7 @@ export default function BirthChartPage() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const profileData = profileResponse?.user;
+  const profileData = profileResponse?.user || (profileResponse && profileResponse.birthDate ? profileResponse : null);
 
   const chartData = useMemo(() => {
     if (!profileData?.birthDate) return null;
