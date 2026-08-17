@@ -1,15 +1,38 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Gemini AI integration for personalized numerology insights
-// Following @google/genai SDK pattern from integration blueprint
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+// Gemini / Vertex AI integration for personalized numerology insights
+const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || "gg33-core";
+const GCP_LOCATION = process.env.GCP_LOCATION || "us-central1";
 
-// Model configuration with fallback
-// Model configuration with multi-level fallback
+// Parse credentials if provided via env var on Render / hosting
+let credentials: any = undefined;
+if (process.env.GCP_SERVICE_ACCOUNT_KEY) {
+  try {
+    credentials = JSON.parse(process.env.GCP_SERVICE_ACCOUNT_KEY);
+  } catch (e) {
+    console.warn("Failed to parse GCP_SERVICE_ACCOUNT_KEY as JSON:", e);
+  }
+}
+
+// Initialize with Vertex AI (uses $300 GCP credits) or fallback to Gemini API Key
+const ai = new GoogleGenAI(
+  credentials || process.env.USE_VERTEX_AI !== "false"
+    ? {
+        vertexAI: true,
+        project: GCP_PROJECT_ID,
+        location: GCP_LOCATION,
+        ...(credentials ? { googleAuthOptions: { credentials } } : {}),
+      }
+    : {
+        apiKey: process.env.GEMINI_API_KEY || "",
+      }
+);
+
+// Model configuration with multi-level fallback (Vertex AI standard names)
 const MODELS = [
-  "gemini-3-flash-preview",
+  "gemini-2.5-flash",
   "gemini-2.5-pro",
-  "gemini-flash-latest"
+  "gemini-1.5-flash"
 ];
 
 const PRIMARY_MODEL = MODELS[0];
