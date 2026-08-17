@@ -28,11 +28,12 @@ const ai = new GoogleGenAI(
       }
 );
 
-// Model configuration with multi-level fallback (Vertex AI standard names)
+// Model configuration with fallback
+// Model configuration with multi-level fallback
 const MODELS = [
-  "gemini-2.5-flash",
+  "gemini-3-flash-preview",
   "gemini-2.5-pro",
-  "gemini-1.5-flash"
+  "gemini-flash-latest"
 ];
 
 const PRIMARY_MODEL = MODELS[0];
