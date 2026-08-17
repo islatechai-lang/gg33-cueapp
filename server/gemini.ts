@@ -1,48 +1,14 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Gemini / Vertex AI integration for personalized numerology insights
-const GCP_PROJECT_ID = process.env.GCP_PROJECT_ID || "gg33-core";
-const GCP_LOCATION = process.env.GCP_LOCATION || "us-central1";
+// Gemini AI integration for personalized numerology insights
+// Following @google/genai SDK pattern from integration blueprint
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-let clientOptions: any;
-
-if (process.env.GCP_SERVICE_ACCOUNT_KEY) {
-  try {
-    const creds = JSON.parse(process.env.GCP_SERVICE_ACCOUNT_KEY);
-    console.log(`[Gemini/Vertex] Using Vertex AI with service account for project: ${creds.project_id || GCP_PROJECT_ID}`);
-    clientOptions = {
-      vertexAI: true,
-      project: creds.project_id || GCP_PROJECT_ID,
-      location: GCP_LOCATION,
-      googleAuthOptions: {
-        credentials: creds,
-      },
-    };
-  } catch (e) {
-    console.error("[Gemini/Vertex] Error parsing GCP_SERVICE_ACCOUNT_KEY JSON:", e);
-  }
-}
-
-if (!clientOptions) {
-  if (process.env.GEMINI_API_KEY) {
-    console.log("[Gemini] Initializing with AI Studio GEMINI_API_KEY");
-    clientOptions = { apiKey: process.env.GEMINI_API_KEY };
-  } else {
-    console.log("[Gemini/Vertex] Falling back to default Vertex AI configuration");
-    clientOptions = {
-      vertexAI: true,
-      project: GCP_PROJECT_ID,
-      location: GCP_LOCATION,
-    };
-  }
-}
-
-const ai = new GoogleGenAI(clientOptions);
-
+// Model configuration with fallback
 // Model configuration with multi-level fallback
 const MODELS = [
-  "gemini-3.6-flash",
   "gemini-3-flash-preview",
+  "gemini-2.5-pro",
   "gemini-flash-latest"
 ];
 
