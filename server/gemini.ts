@@ -41,10 +41,9 @@ const ai = new GoogleGenAI(clientOptions);
 
 // Model configuration with multi-level fallback
 const MODELS = [
-  "gemini-2.5-flash",
-  "gemini-2.5-pro",
-  "gemini-2.0-flash",
-  "gemini-1.5-flash"
+  "gemini-3.6-flash",
+  "gemini-3-flash-preview",
+  "gemini-flash-latest"
 ];
 
 const PRIMARY_MODEL = MODELS[0];
