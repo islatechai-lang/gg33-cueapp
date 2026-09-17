@@ -248,12 +248,8 @@ export default function CueChats() {
     setShowPreview(false);
     setShowHistory(false);
 
-    if (convo.systemContext) {
-      setChatSession({
-        systemContext: convo.systemContext,
-        firstName: 'Friend',
-      });
-    } else if (!chatSession && savedOdisId) {
+    // Refresh with the latest persona systemContext if odisId exists
+    if (savedOdisId) {
       try {
         const response = await fetch('/api/chat/init', {
           method: 'POST',
@@ -269,8 +265,19 @@ export default function CueChats() {
           });
         }
       } catch (e) {
-        console.error("Failed to re-init chat session:", e);
+        console.error("Failed to refresh chat session on load:", e);
+        if (convo.systemContext) {
+          setChatSession({
+            systemContext: convo.systemContext,
+            firstName: 'Friend',
+          });
+        }
       }
+    } else if (convo.systemContext) {
+      setChatSession({
+        systemContext: convo.systemContext,
+        firstName: 'Friend',
+      });
     }
     setTimeout(() => inputRef.current?.focus(), 100);
   };
@@ -303,8 +310,8 @@ export default function CueChats() {
       return;
     }
 
-    if (file.size > 8 * 1024 * 1024) {
-      setError('Image size must be less than 8MB.');
+    if (file.size > 20 * 1024 * 1024) {
+      setError('Image size must be less than 20MB.');
       return;
     }
 
@@ -312,14 +319,52 @@ export default function CueChats() {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      const base64Parts = result.split(',');
-      const base64Data = base64Parts[1] || '';
-      
-      setSelectedImage({
-        data: base64Data,
-        mimeType: file.type,
-        previewUrl: result,
-      });
+      const img = new window.Image();
+      img.onload = () => {
+        const maxDim = 1600;
+        let width = img.width;
+        let height = img.height;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+          const compressedDataUrl = canvas.toDataURL(mime, 0.85);
+          const base64Data = compressedDataUrl.split(',')[1] || '';
+          setSelectedImage({
+            data: base64Data,
+            mimeType: mime,
+            previewUrl: compressedDataUrl,
+          });
+        } else {
+          const base64Parts = result.split(',');
+          setSelectedImage({
+            data: base64Parts[1] || '',
+            mimeType: file.type,
+            previewUrl: result,
+          });
+        }
+      };
+      img.onerror = () => {
+        const base64Parts = result.split(',');
+        setSelectedImage({
+          data: base64Parts[1] || '',
+          mimeType: file.type,
+          previewUrl: result,
+        });
+      };
+      img.src = result;
     };
     reader.readAsDataURL(file);
     e.target.value = '';

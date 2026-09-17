@@ -477,10 +477,11 @@ export async function registerRoutes(
 
       // Validate optional image payload
       let chatImage: ChatImage | undefined = undefined;
-      if (image && typeof image.data === 'string' && typeof image.mimeType === 'string') {
+      if (image && typeof image.data === 'string' && typeof image.mimeType === 'string' && image.data.trim().length > 0) {
+        const cleanMime = image.mimeType.split(';')[0].trim().toLowerCase();
         chatImage = {
-          data: image.data,
-          mimeType: image.mimeType,
+          data: image.data.trim(),
+          mimeType: cleanMime,
         };
       }
 

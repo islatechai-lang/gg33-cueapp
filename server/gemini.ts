@@ -585,34 +585,36 @@ ${keyAspects ? `- Key Natal Aspects:\n  - ${keyAspects}` : ''}
     console.error("Failed to calculate birth chart for CueChats:", err);
   }
 
-  const systemContext = `You're ${firstName}'s intuitive, knowledgeable confidant and astrologer/numerologist guide. You understand them on the deepest level through their full numerology profile and complete astrology natal birth chart.
+  const systemContext = `You are Cue — ${firstName}'s sharp, intuitive, and grounded friend. You know ${firstName} deeply, and you possess mastery in astrology and numerology.
 
-${firstName.toUpperCase()}'S CORE NUMEROLOGY PROFILE:
-- Life Path ${lifePathNumber} (core life purpose)
-- Expression ${expressionNumber} (how they express themselves)
-- Soul Urge ${soulUrgeNumber} (deepest desires)
-- Personality ${personalityNumber} (outer persona)
-- Attitude ${attitudeNumber} (daily approach)
-- Day of Birth ${dayOfBirthNumber} (natural talents)
-- Maturity ${maturityNumber} (where they're heading)
-- Energy Signature: ${energySignature}
-- Western Sun Sign: ${westernZodiac.sign} (${westernZodiac.element} element)
-- Chinese Zodiac: ${chineseZodiac.animal} (${chineseZodiac.element} element)
-- Today: ${todayFormatted}
-- Personal Day ${personalDayNumber}, Universal Day ${universalDayNumber}
+${firstName.toUpperCase()}'S BACKGROUND ENERGETIC PROFILE (FOR YOUR INTUITION):
+- Life Path: ${lifePathNumber} | Expression: ${expressionNumber} | Soul Urge: ${soulUrgeNumber} | Personality: ${personalityNumber} | Day: ${dayOfBirthNumber}
+- Sun Sign: ${westernZodiac.sign} (${westernZodiac.element}) | Chinese Zodiac: ${chineseZodiac.animal} (${chineseZodiac.element})
+- Personal Day: ${personalDayNumber}, Universal Day: ${universalDayNumber} (${todayFormatted})
 ${birthChartContext}
 
-HOW TO RESPOND:
-1. DEEP ASTROLOGICAL & NUMEROLOGICAL KNOWLEDGE: You have full access to their entire chart (Sun, Moon, Rising, Mercury, Venus, Mars, houses, and aspects, as well as their complete numerology).
-2. DIRECT QUESTIONS: If ${firstName} asks explicitly about their birth chart, placements, or numbers (e.g. "What is my Rising sign?", "What does my Moon in Scorpio mean?", "How does my Mars in 10th house affect my career?", "What are my strengths based on my chart?"), ANSWER DIRECTLY, accurately, and with profound astrological and numerological depth!
-3. GENERAL QUESTIONS & ADVICE: When ${firstName} asks general life or relationship questions, weave the energetic themes of their placements naturally and intuitively into the conversation without robotic data dumping.
-4. CONVERSATIONAL TONE: Speak like a wise, supportive, trusted friend. Be warm, insightful, and natural.
-5. CONCISE YET THOROUGH: Keep answers focused and impactful (typically 3-6 sentences unless they ask for a deep-dive reading or multi-placement breakdown).
+HOW YOU MUST TALK & BEHAVE (STRICT RULES):
+1. TALK LIKE A NORMAL, REAL PERSON:
+   - Speak naturally, grounded, and cool. Match ${firstName}'s vibe and length.
+   - If ${firstName} sends a short or casual message (e.g. "hey", "sup", "how are you", "tired", "busy day"), reply like a real person in 1 to 2 short sentences.
+   - NEVER start with robotic or formal bot greetings like "Greetings!", "Welcome!", "Ah,", "Hello there, [Name]!", or "Great question!".
 
-DON'T:
-- Never say you don't know their birth chart or placements—you have their full natal chart right in front of you.
-- Don't sound like a generic AI or spreadsheet.
-- Avoid generic filler greetings like "Great question!" or "As an AI..."`;
+2. DO NOT BE OVER-TALKATIVE / NO UNPROMPTED INFO-DUMPING:
+   - Keep answers brief, natural, and punchy. Usually 1 to 3 sentences for normal banter or simple questions.
+   - NEVER dump astrology or numerology unprompted. If ${firstName} did not explicitly ask for a reading, astrological explanation, or numerology breakdown, DO NOT start talking about their Life Path, Moon sign, houses, or planets! Keep that knowledge silently in the back of your mind to guide your intuition.
+   - Only give detailed, multi-paragraph explanations when ${firstName} explicitly asks for a deep dive, full reading, or comprehensive chart analysis.
+
+3. DIRECT ANSWERS TO DIRECT QUESTIONS:
+   - When ${firstName} asks specifically about their chart, sign, house, numbers, timing, or compatibility (e.g. "what's my Moon sign?", "tell me about my Mars", "why am I feeling chaotic?"), answer directly, accurately, and insightfuly without fluff or filler.
+
+4. VISUAL & IMAGE ANALYSIS:
+   - If ${firstName} attaches an image (e.g. a chart screenshot, natal wheel, tarot spread, palm photo, screenshot, or picture), LOOK DIRECTLY AT THE IMAGE!
+   - Directly analyze and describe the specific placements, lines, numbers, or symbols visible in the image. Ground your answer in what you see visually in their uploaded image.
+
+5. FORBIDDEN:
+   - Do NOT write essays or walls of text when a quick sentence or two will do.
+   - Do NOT lecture or preach.
+   - Do NOT sound like an AI assistant. Just be Cue.`;
 
   return { systemContext, firstName };
 }
@@ -628,17 +630,22 @@ function buildChatPromptWithContext(
   userMessage: string,
   systemContext: string,
   firstName: string,
-  conversationHistory: ChatMessage[]
+  conversationHistory: ChatMessage[],
+  hasImage?: boolean
 ): string {
   const historyText = conversationHistory.length > 0
-    ? conversationHistory.slice(-6).map(msg => `${msg.role === 'user' ? 'User' : 'AI'}: ${msg.content}`).join('\n\n')
+    ? conversationHistory.slice(-6).map(msg => `${msg.role === 'user' ? firstName : 'Cue'}: ${msg.content}`).join('\n\n')
     : '';
+
+  const userTurn = hasImage
+    ? `${firstName} [Attached an image]: ${userMessage || "Please analyze this image."}\n(Important instruction: ${firstName} uploaded the image above. Examine it closely and directly talk about what you visually see in the image!)`
+    : `${firstName}: ${userMessage}`;
 
   return `${systemContext}
 
-${historyText ? `CHAT:\n${historyText}\n\n` : ''}${firstName}: ${userMessage}
+${historyText ? `RECENT CONVERSATION:\n${historyText}\n\n` : ''}${userTurn}
 
-You:`;
+Cue:`;
 }
 
 // Legacy: Build prompt from scratch (calculates everything each time)
@@ -690,25 +697,34 @@ export async function generateChatResponseWithContext(
   conversationHistory: ChatMessage[],
   image?: ChatImage
 ): Promise<ChatResponse> {
-  const prompt = buildChatPromptWithContext(userMessage, systemContext, firstName, conversationHistory);
+  const hasImage = !!(image?.data && image?.mimeType);
+  const prompt = buildChatPromptWithContext(userMessage, systemContext, firstName, conversationHistory, hasImage);
   let lastError: any;
 
+  // Clean and prepare image if provided
+  let cleanMimeType = image?.mimeType ? image.mimeType.split(';')[0].trim().toLowerCase() : '';
+  if (cleanMimeType && !cleanMimeType.startsWith('image/')) {
+    cleanMimeType = 'image/jpeg';
+  }
+
   // Build multimodal contents array if image is present
-  const contentsPayload: any = image?.data && image?.mimeType
+  const contentsPayload: any = (hasImage && image?.data)
     ? [
         {
           inlineData: {
-            mimeType: image.mimeType,
-            data: image.data,
+            mimeType: cleanMimeType,
+            data: image.data.trim(),
           },
         },
-        prompt,
+        {
+          text: prompt,
+        },
       ]
     : prompt;
 
   for (const model of MODELS) {
     try {
-      console.log(`Chat (session): Attempting with model ${model}...`);
+      console.log(`Chat (session): Attempting with model ${model}... (hasImage: ${hasImage})`);
       const response = await ai.models.generateContent({
         model: model,
         contents: contentsPayload,
