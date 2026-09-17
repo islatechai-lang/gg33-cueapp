@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { calculateBirthChart, type BirthChartData } from "../shared/astrology";
 
 // Gemini AI integration for personalized numerology insights
 // Following @google/genai SDK pattern from integration blueprint
@@ -531,9 +532,56 @@ export function buildUserContext(profile: ChatUserProfile): { systemContext: str
   const maturityNumber = calculateMaturityNumber(lifePathNumber, expressionNumber);
   const energySignature = calculateEnergySignature(birthDate);
 
-  const systemContext = `You're ${firstName}'s intuitive, knowledgeable friend. You understand them deeply through their numerology and astrology chart, but you speak naturally, not like a technical reader.
+  // Compute full astrology birth chart
+  let birthChartContext = "";
+  try {
+    const chart = calculateBirthChart(
+      birthDate,
+      profile.birthTime || '12:00',
+      profile.birthLocation || ''
+    );
 
-${firstName.toUpperCase()}'S FULL PROFILE (Internal Knowledge):
+    // Format Planets with sign, degree, and house position
+    const planetsSummary = chart.planets.map(p => {
+      // Find house placement for planet
+      const houseIndex = chart.houses.findIndex((h, idx) => {
+        const nextHouse = chart.houses[(idx + 1) % 12];
+        if (h.longitude <= nextHouse.longitude) {
+          return p.longitude >= h.longitude && p.longitude < nextHouse.longitude;
+        } else {
+          // Wrap around 360
+          return p.longitude >= h.longitude || p.longitude < nextHouse.longitude;
+        }
+      });
+      const houseNum = houseIndex !== -1 ? houseIndex + 1 : undefined;
+      const houseStr = houseNum ? ` in ${houseNum}${getOrdinal(houseNum)} House` : '';
+      const retroStr = p.retrograde ? ' (Retrograde)' : '';
+      return `${p.name}: ${p.sign} at ${p.degree}°${p.minute}'${houseStr}${retroStr}`;
+    }).join('\n  - ');
+
+    // Format top major aspects (up to 8 tightest aspects)
+    const keyAspects = chart.aspects.slice(0, 8).map(a => 
+      `${a.planet1} ${a.type} ${a.planet2} (orb ${a.orb.toFixed(1)}°, ${a.harmonious ? 'Harmonious' : 'Challenging'})`
+    ).join('\n  - ');
+
+    birthChartContext = `
+${firstName.toUpperCase()}'S COMPLETE NATAL BIRTH CHART:
+- Big Three:
+  - Sun in ${chart.planets.find(p => p.name === 'Sun')?.sign || westernZodiac.sign}
+  - Moon in ${chart.planets.find(p => p.name === 'Moon')?.sign || 'Unknown'}
+  - Rising / Ascendant (ASC): ${chart.ascendantSign} (Calculated with ${chart.hasBirthTime ? 'exact birth time ' + profile.birthTime : 'noon estimate'})
+  - Midheaven (MC): ${chart.midheavenSign}
+- Planetary Placements:
+  - ${planetsSummary}
+${keyAspects ? `- Key Natal Aspects:\n  - ${keyAspects}` : ''}
+- Chart Details: Birth Time: ${profile.birthTime || 'Not specified (noon default used)'} | Location: ${profile.birthLocation || 'Not specified'}`;
+  } catch (err) {
+    console.error("Failed to calculate birth chart for CueChats:", err);
+  }
+
+  const systemContext = `You're ${firstName}'s intuitive, knowledgeable confidant and astrologer/numerologist guide. You understand them on the deepest level through their full numerology profile and complete astrology natal birth chart.
+
+${firstName.toUpperCase()}'S CORE NUMEROLOGY PROFILE:
 - Life Path ${lifePathNumber} (core life purpose)
 - Expression ${expressionNumber} (how they express themselves)
 - Soul Urge ${soulUrgeNumber} (deepest desires)
@@ -542,25 +590,31 @@ ${firstName.toUpperCase()}'S FULL PROFILE (Internal Knowledge):
 - Day of Birth ${dayOfBirthNumber} (natural talents)
 - Maturity ${maturityNumber} (where they're heading)
 - Energy Signature: ${energySignature}
-- Western: ${westernZodiac.sign} (${westernZodiac.element} element)
-- Chinese: ${chineseZodiac.animal} (${chineseZodiac.element} element)
+- Western Sun Sign: ${westernZodiac.sign} (${westernZodiac.element} element)
+- Chinese Zodiac: ${chineseZodiac.animal} (${chineseZodiac.element} element)
 - Today: ${todayFormatted}
 - Personal Day ${personalDayNumber}, Universal Day ${universalDayNumber}
+${birthChartContext}
 
 HOW TO RESPOND:
-1. USE THEIR DATA IMPLICITLY: Use their chart to provide deep, personalized insights, but AVOID explicitly reciting their numbers or signs (e.g., instead of "Because you are a Life Path 1," say "Your natural drive for leadership really stands out here...").
-2. CONVERSATIONAL TONE: Speak like a wise, supportive friend. Be warm, insightful, and use their name naturally.
-3. BE INTUITIVE: Focus on their energy and characteristics. If they ask for advice, tie it to their strengths and challenges from their profile without being clinical.
-4. BE CONCISE: Keep responses to 3-5 sentences unless they ask for a deep dive. Use lists only when it adds clarity.
-5. TIMING: For questions about "when" or "today," use their Personal Day ${personalDayNumber} and Universal Day ${universalDayNumber} logic to guide them, but frame it as "The energy today suggests..." rather than "It's Personal Day ${personalDayNumber}."
+1. DEEP ASTROLOGICAL & NUMEROLOGICAL KNOWLEDGE: You have full access to their entire chart (Sun, Moon, Rising, Mercury, Venus, Mars, houses, and aspects, as well as their complete numerology).
+2. DIRECT QUESTIONS: If ${firstName} asks explicitly about their birth chart, placements, or numbers (e.g. "What is my Rising sign?", "What does my Moon in Scorpio mean?", "How does my Mars in 10th house affect my career?", "What are my strengths based on my chart?"), ANSWER DIRECTLY, accurately, and with profound astrological and numerological depth!
+3. GENERAL QUESTIONS & ADVICE: When ${firstName} asks general life or relationship questions, weave the energetic themes of their placements naturally and intuitively into the conversation without robotic data dumping.
+4. CONVERSATIONAL TONE: Speak like a wise, supportive, trusted friend. Be warm, insightful, and natural.
+5. CONCISE YET THOROUGH: Keep answers focused and impactful (typically 3-6 sentences unless they ask for a deep-dive reading or multi-placement breakdown).
 
 DON'T:
-- Recite their numbers or "Life Path X" in every sentence.
-- Sound like a formal advisor or a spreadsheet.
-- Give vague, generic advice that could apply to anyone.
-- Use predictable GPT-style greetings like "Great question!" or "I'd be happy to help."`;
+- Never say you don't know their birth chart or placements—you have their full natal chart right in front of you.
+- Don't sound like a generic AI or spreadsheet.
+- Avoid generic filler greetings like "Great question!" or "As an AI..."`;
 
   return { systemContext, firstName };
+}
+
+function getOrdinal(n: number): string {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
 }
 
 // Build prompt using pre-computed context (for session-based chat - more efficient)
