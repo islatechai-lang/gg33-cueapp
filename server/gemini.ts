@@ -485,9 +485,15 @@ function calculateEnergySignature(birthDate: Date): string {
   return `${element} ${energyMap[lifePathNumber] || 'Energy'}`;
 }
 
+export interface ChatImage {
+  data: string;     // base64 encoded string
+  mimeType: string; // e.g. "image/jpeg", "image/png", "image/webp"
+}
+
 export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+  image?: ChatImage;
 }
 
 export interface ChatUserProfile {
@@ -681,17 +687,31 @@ export async function generateChatResponseWithContext(
   userMessage: string,
   systemContext: string,
   firstName: string,
-  conversationHistory: ChatMessage[]
+  conversationHistory: ChatMessage[],
+  image?: ChatImage
 ): Promise<ChatResponse> {
   const prompt = buildChatPromptWithContext(userMessage, systemContext, firstName, conversationHistory);
   let lastError: any;
+
+  // Build multimodal contents array if image is present
+  const contentsPayload: any = image?.data && image?.mimeType
+    ? [
+        {
+          inlineData: {
+            mimeType: image.mimeType,
+            data: image.data,
+          },
+        },
+        prompt,
+      ]
+    : prompt;
 
   for (const model of MODELS) {
     try {
       console.log(`Chat (session): Attempting with model ${model}...`);
       const response = await ai.models.generateContent({
         model: model,
-        contents: prompt,
+        contents: contentsPayload,
       });
 
       const rawText = response.text || "";

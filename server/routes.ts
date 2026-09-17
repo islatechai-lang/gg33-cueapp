@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage, generateOdisId } from "./storage";
 import { whopAuthMiddleware, requireWhopAuth, checkAccess, getWhopUserProfile, type WhopRequest } from "./whop";
-import { generatePersonalityInsights, generateDailyEnergy, generateCompatibilityInsights, generateChatResponse, generateChatResponseWithContext, generateChatResponseStream, buildUserContext, generateWithFallback, type UserNumerologyProfile, type CompatibilityProfile, type ChatMessage } from "./gemini";
+import { generatePersonalityInsights, generateDailyEnergy, generateCompatibilityInsights, generateChatResponse, generateChatResponseWithContext, generateChatResponseStream, buildUserContext, generateWithFallback, type UserNumerologyProfile, type CompatibilityProfile, type ChatMessage, type ChatImage } from "./gemini";
 import { parsedCues, totalCuesCount, type ParsedCue } from "./cuesData";
 import { Resend } from 'resend';
 import { parseUTCDate } from '../shared/dateUtils';
@@ -455,7 +455,7 @@ export async function registerRoutes(
 
   // CueChats - Session-based chat (uses pre-computed context - more efficient)
   app.post("/api/chat/session", async (req, res) => {
-    const { message, systemContext, firstName, conversationHistory } = req.body;
+    const { message, systemContext, firstName, conversationHistory, image } = req.body;
 
     if (!message || !systemContext || !firstName) {
       return res.status(400).json({ error: "Missing required data. Please start a new chat." });
@@ -475,11 +475,21 @@ export async function registerRoutes(
         }
       }
 
+      // Validate optional image payload
+      let chatImage: ChatImage | undefined = undefined;
+      if (image && typeof image.data === 'string' && typeof image.mimeType === 'string') {
+        chatImage = {
+          data: image.data,
+          mimeType: image.mimeType,
+        };
+      }
+
       const response = await generateChatResponseWithContext(
         message,
         systemContext,
         firstName,
-        normalizedHistory
+        normalizedHistory,
+        chatImage
       );
 
       res.json({ response: response.message });

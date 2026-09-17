@@ -7,12 +7,22 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UpgradeModal } from '@/components/UpgradeModal';
-import { MessageCircle, Send, Bot, User, AlertCircle, RotateCcw, Sparkles, Plus, Play, Lock, Crown } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, AlertCircle, RotateCcw, Sparkles, Plus, Play, Lock, Crown, Paperclip, X, Image as ImageIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+interface ChatImage {
+  data: string;     // base64 without prefix or raw base64
+  mimeType: string; // e.g. "image/jpeg", "image/png"
+  previewUrl: string;
+}
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+  image?: {
+    previewUrl?: string;
+    mimeType?: string;
+  };
   error?: boolean;
 }
 
@@ -149,7 +159,7 @@ function ChatBubble({ msg, index, isExample = false }: { msg: ChatMessage; index
         </div>
       )}
       <div
-        className={`max-w-[80%] p-4 rounded-lg ${
+        className={`max-w-[80%] p-4 rounded-lg flex flex-col gap-2 ${
           msg.role === 'user'
             ? 'bg-amber-9 text-gray-1 rounded-tr-sm'
             : msg.error
@@ -157,6 +167,15 @@ function ChatBubble({ msg, index, isExample = false }: { msg: ChatMessage; index
               : 'bg-gray-a3 rounded-tl-sm'
         }`}
       >
+        {msg.image?.previewUrl && (
+          <div className="rounded overflow-hidden max-h-60 border border-white/10">
+            <img 
+              src={msg.image.previewUrl} 
+              alt="Uploaded chart or image" 
+              className="max-h-60 w-auto object-contain rounded" 
+            />
+          </div>
+        )}
         <MarkdownContent content={msg.content} className={`text-2 ${msg.error ? 'text-red-400' : ''}`} />
       </div>
       {msg.role === 'user' && (
@@ -171,6 +190,7 @@ function ChatBubble({ msg, index, isExample = false }: { msg: ChatMessage; index
 export default function CueChats() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [selectedImage, setSelectedImage] = useState<ChatImage | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -179,6 +199,41 @@ export default function CueChats() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file (PNG, JPG, WebP).');
+      return;
+    }
+
+    if (file.size > 8 * 1024 * 1024) {
+      setError('Image size must be less than 8MB.');
+      return;
+    }
+
+    setError(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      // Extract pure base64 data without "data:image/xyz;base64," prefix
+      const base64Parts = result.split(',');
+      const base64Data = base64Parts[1] || '';
+      
+      setSelectedImage({
+        data: base64Data,
+        mimeType: file.type,
+        previewUrl: result,
+      });
+    };
+    reader.readAsDataURL(file);
+
+    // Reset the input value so the same file can be chosen again if needed
+    e.target.value = '';
+  };
 
   const savedOdisId = localStorage.getItem('gg33-odis-id');
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
@@ -242,13 +297,23 @@ export default function CueChats() {
   };
 
   const sendMessage = async () => {
-    if (!chatSession || !inputValue.trim()) return;
+    if (!chatSession || (!inputValue.trim() && !selectedImage)) return;
 
-    const userMessage = inputValue.trim();
+    const userMessage = inputValue.trim() || (selectedImage ? "Please analyze this image based on my chart." : "");
+    const imageToSend = selectedImage;
+    
     setInputValue('');
+    setSelectedImage(null);
     setError(null);
     
-    const newUserMessage: ChatMessage = { role: 'user', content: userMessage };
+    const newUserMessage: ChatMessage = { 
+      role: 'user', 
+      content: userMessage,
+      image: imageToSend ? {
+        previewUrl: imageToSend.previewUrl,
+        mimeType: imageToSend.mimeType,
+      } : undefined,
+    };
     setMessages(prev => [...prev, newUserMessage]);
     setIsLoading(true);
 
@@ -268,6 +333,10 @@ export default function CueChats() {
           systemContext: chatSession.systemContext,
           firstName: chatSession.firstName,
           conversationHistory,
+          image: imageToSend ? {
+            data: imageToSend.data,
+            mimeType: imageToSend.mimeType,
+          } : undefined,
         }),
         credentials: 'include',
       });
@@ -458,12 +527,61 @@ export default function CueChats() {
               )}
 
               {!showPreview && (
-                <div className="p-4 border-t border-gray-5/50 bg-gray-a2">
-                  <div className="flex gap-3">
+                <div className="p-4 border-t border-gray-5/50 bg-gray-a2 flex flex-col gap-2">
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                    className="hidden"
+                  />
+
+                  {/* Selected image preview bar */}
+                  {selectedImage && (
+                    <div className="flex items-center gap-2 bg-gray-a3 p-2 rounded-md border border-white/10 w-fit max-w-full">
+                      <div className="relative w-12 h-12 rounded overflow-hidden flex-shrink-0 border border-amber-9/30">
+                        <img 
+                          src={selectedImage.previewUrl} 
+                          alt="Attachment preview" 
+                          className="w-full h-full object-cover" 
+                        />
+                      </div>
+                      <div className="flex flex-col text-xs pr-2 overflow-hidden">
+                        <span className="text-gray-12 font-medium truncate">Image attached</span>
+                        <span className="text-gray-10 text-[10px]">Gemini will analyze this</span>
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-gray-11 hover:text-white rounded-full ml-1"
+                        onClick={() => setSelectedImage(null)}
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className="flex gap-2">
+                    {/* Paperclip / Image upload button */}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="text-gray-11 hover:text-amber-9 flex-shrink-0"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isLoading}
+                      title="Upload chart, palm, tarot or screenshot"
+                      data-testid="button-upload-image"
+                    >
+                      <Paperclip className="w-4 h-4" />
+                    </Button>
+
                     <Input
                       ref={inputRef}
                       variant="frosted"
-                      placeholder="Ask about your energy, compatibility, decisions..."
+                      placeholder={selectedImage ? "Add a question about this image (or press Send)..." : "Ask about your energy, compatibility, decisions..."}
                       className="flex-1"
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
@@ -475,7 +593,7 @@ export default function CueChats() {
                       variant="gold" 
                       size="icon" 
                       onClick={sendMessage}
-                      disabled={isLoading || !inputValue.trim()}
+                      disabled={isLoading || (!inputValue.trim() && !selectedImage)}
                       data-testid="button-send-message"
                     >
                       {isLoading ? (
