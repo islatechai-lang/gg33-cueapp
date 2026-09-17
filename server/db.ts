@@ -151,3 +151,50 @@ export interface DBPersonalityInsight {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// Chat Conversation Schema - stores persistent chat sessions & message history
+const chatMessageSchema = new mongoose.Schema({
+  role: { type: String, enum: ['user', 'assistant'], required: true },
+  content: { type: String, required: true },
+  image: {
+    previewUrl: { type: String },
+    mimeType: { type: String },
+  },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const chatConversationSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true, index: true },
+  odisId: { type: String, required: true, index: true },
+  title: { type: String, default: "New Reading" },
+  messages: [chatMessageSchema],
+  systemContext: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
+chatConversationSchema.pre("save", function () {
+  this.updatedAt = new Date();
+});
+
+export const ChatConversationModel = mongoose.model("ChatConversation", chatConversationSchema);
+
+export interface DBChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  image?: {
+    previewUrl?: string;
+    mimeType?: string;
+  };
+  createdAt?: Date;
+}
+
+export interface DBChatConversation {
+  id: string;
+  odisId: string;
+  title: string;
+  messages: DBChatMessage[];
+  systemContext?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}

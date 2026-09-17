@@ -499,6 +499,76 @@ export async function registerRoutes(
     }
   });
 
+  // CueChats - List user's saved conversations
+  app.get("/api/chat/conversations/:odisId", async (req, res) => {
+    const { odisId } = req.params;
+    if (!odisId) {
+      return res.status(400).json({ error: "Missing odisId" });
+    }
+
+    try {
+      const conversations = await storage.listConversations(odisId);
+      res.json({ conversations });
+    } catch (error) {
+      console.error("Error listing chat conversations:", error);
+      res.status(500).json({ error: "Failed to list conversations" });
+    }
+  });
+
+  // CueChats - Get single conversation by ID
+  app.get("/api/chat/conversation/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+      const conversation = await storage.getConversation(id);
+      if (!conversation) {
+        return res.status(404).json({ error: "Conversation not found" });
+      }
+      res.json({ conversation });
+    } catch (error) {
+      console.error("Error getting chat conversation:", error);
+      res.status(500).json({ error: "Failed to get conversation" });
+    }
+  });
+
+  // CueChats - Save/Sync conversation
+  app.post("/api/chat/conversation/save", async (req, res) => {
+    const { id, odisId, title, messages, systemContext } = req.body;
+    if (!id || !odisId || !Array.isArray(messages)) {
+      return res.status(400).json({ error: "Missing required conversation fields" });
+    }
+
+    try {
+      const saved = await storage.saveConversation({
+        id,
+        odisId,
+        title: title || "New Reading",
+        messages,
+        systemContext,
+      });
+      res.json({ success: true, conversation: saved });
+    } catch (error) {
+      console.error("Error saving chat conversation:", error);
+      res.status(500).json({ error: "Failed to save conversation" });
+    }
+  });
+
+  // CueChats - Delete conversation
+  app.delete("/api/chat/conversation/:id", async (req, res) => {
+    const { id } = req.params;
+    const { odisId } = req.body;
+    if (!id || !odisId) {
+      return res.status(400).json({ error: "Missing id or odisId" });
+    }
+
+    try {
+      const success = await storage.deleteConversation(id, odisId);
+      res.json({ success });
+    } catch (error) {
+      console.error("Error deleting chat conversation:", error);
+      res.status(500).json({ error: "Failed to delete conversation" });
+    }
+  });
+
   // CueChats - Legacy AI Chat endpoint (kept for backward compatibility)
   app.post("/api/chat", async (req, res) => {
     const { odisId, message, conversationHistory } = req.body;

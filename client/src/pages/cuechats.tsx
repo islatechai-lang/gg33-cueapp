@@ -7,13 +7,21 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UpgradeModal } from '@/components/UpgradeModal';
-import { MessageCircle, Send, Bot, User, AlertCircle, RotateCcw, Sparkles, Plus, Play, Lock, Crown, Paperclip, X, Image as ImageIcon } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, AlertCircle, RotateCcw, Sparkles, Plus, Play, Lock, Crown, Paperclip, X, Image as ImageIcon, History, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface ChatImage {
   data: string;     // base64 without prefix or raw base64
   mimeType: string; // e.g. "image/jpeg", "image/png"
   previewUrl: string;
+}
+
+interface SavedConversation {
+  id: string;
+  title: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+  systemContext?: string;
 }
 
 interface ChatMessage {
@@ -195,11 +203,96 @@ export default function CueChats() {
   const [isInitializing, setIsInitializing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [chatSession, setChatSession] = useState<ChatSession | null>(null);
+  const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [conversations, setConversations] = useState<SavedConversation[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const [showPreview, setShowPreview] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const savedOdisId = localStorage.getItem('gg33-odis-id');
+  const { data: profileData } = useQuery<{ isPro?: boolean }>({
+    queryKey: ['/api/profile', savedOdisId],
+    enabled: !!savedOdisId,
+  });
+  const isPro = profileData?.isPro ?? false;
+
+  const fetchConversations = async () => {
+    if (!savedOdisId) return;
+    setIsLoadingHistory(true);
+    try {
+      const res = await fetch(`/api/chat/conversations/${savedOdisId}`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.conversations) {
+        setConversations(data.conversations);
+      }
+    } catch (err) {
+      console.error("Failed to fetch conversation history:", err);
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  };
+
+  useEffect(() => {
+    if (savedOdisId && isPro) {
+      fetchConversations();
+    }
+  }, [savedOdisId, isPro]);
+
+  const loadConversation = async (convo: SavedConversation) => {
+    setCurrentConversationId(convo.id);
+    setMessages(convo.messages || []);
+    setShowPreview(false);
+    setShowHistory(false);
+
+    if (convo.systemContext) {
+      setChatSession({
+        systemContext: convo.systemContext,
+        firstName: 'Friend',
+      });
+    } else if (!chatSession && savedOdisId) {
+      try {
+        const response = await fetch('/api/chat/init', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ odisId: savedOdisId }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (data.success && data.systemContext) {
+          setChatSession({
+            systemContext: data.systemContext,
+            firstName: data.firstName,
+          });
+        }
+      } catch (e) {
+        console.error("Failed to re-init chat session:", e);
+      }
+    }
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const deleteConversation = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!savedOdisId) return;
+    try {
+      await fetch(`/api/chat/conversation/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ odisId: savedOdisId }),
+        credentials: 'include',
+      });
+      setConversations(prev => prev.filter(c => c.id !== id));
+      if (currentConversationId === id) {
+        startNewChat();
+      }
+    } catch (err) {
+      console.error("Failed to delete conversation:", err);
+    }
+  };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -219,7 +312,6 @@ export default function CueChats() {
     const reader = new FileReader();
     reader.onload = () => {
       const result = reader.result as string;
-      // Extract pure base64 data without "data:image/xyz;base64," prefix
       const base64Parts = result.split(',');
       const base64Data = base64Parts[1] || '';
       
@@ -230,17 +322,8 @@ export default function CueChats() {
       });
     };
     reader.readAsDataURL(file);
-
-    // Reset the input value so the same file can be chosen again if needed
     e.target.value = '';
   };
-
-  const savedOdisId = localStorage.getItem('gg33-odis-id');
-  const { data: profileData } = useQuery<{ isPro?: boolean }>({
-    queryKey: ['/api/profile', savedOdisId],
-    enabled: !!savedOdisId,
-  });
-  const isPro = profileData?.isPro ?? false;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -345,7 +428,41 @@ export default function CueChats() {
       
       if (data.response) {
         const assistantMessage: ChatMessage = { role: 'assistant', content: data.response };
+        const updatedMessages = [...messages, newUserMessage, assistantMessage];
         setMessages(prev => [...prev, assistantMessage]);
+
+        // Auto-save to conversation history
+        const convoId = currentConversationId || `chat_${Date.now()}`;
+        if (!currentConversationId) {
+          setCurrentConversationId(convoId);
+        }
+
+        if (savedOdisId) {
+          // Derive a concise title from the first message or preserve existing
+          const existingConvo = conversations.find(c => c.id === convoId);
+          const firstUserMsg = updatedMessages.find(m => m.role === 'user');
+          const title = existingConvo?.title || (firstUserMsg ? (firstUserMsg.content.slice(0, 35) + (firstUserMsg.content.length > 35 ? "..." : "")) : "Astrology Reading");
+
+          fetch('/api/chat/conversation/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: convoId,
+              odisId: savedOdisId,
+              title,
+              messages: updatedMessages.map(m => ({
+                role: m.role,
+                content: m.content,
+                image: m.image ? {
+                  previewUrl: m.image.previewUrl,
+                  mimeType: m.image.mimeType,
+                } : undefined,
+              })),
+              systemContext: chatSession.systemContext,
+            }),
+            credentials: 'include',
+          }).then(() => fetchConversations()).catch(err => console.error("Error auto-saving conversation:", err));
+        }
       } else {
         throw new Error('No response received');
       }
@@ -372,8 +489,10 @@ export default function CueChats() {
   };
 
   const startNewChat = async () => {
+    setCurrentConversationId(null);
     setMessages([]);
     setInputValue('');
+    setSelectedImage(null);
     setError(null);
     setChatSession(null);
     await startChat();
@@ -415,36 +534,136 @@ export default function CueChats() {
                     </CardDescription>
                   </div>
                 </div>
-                {!showPreview && (
+                <div className="flex items-center gap-2">
                   <Button
-                    variant="gold"
+                    variant="outline"
                     size="sm"
-                    onClick={startNewChat}
-                    disabled={isLoading || isInitializing}
-                    data-testid="button-new-chat"
+                    onClick={() => {
+                      if (!isPro) {
+                        setShowUpgradeModal(true);
+                        return;
+                      }
+                      setShowHistory(prev => !prev);
+                      if (!showHistory) fetchConversations();
+                    }}
+                    title="Chat History"
+                    data-testid="button-toggle-history"
                   >
-                    {isInitializing ? (
-                      <>
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                          className="mr-1"
-                        >
-                          <Sparkles className="w-4 h-4" />
-                        </motion.div>
-                        Loading...
-                      </>
-                    ) : (
-                      <>
-                        <Plus className="w-4 h-4 mr-1" />
-                        New Chat
-                      </>
+                    <History className="w-4 h-4 mr-1 text-amber-9" />
+                    <span className="hidden sm:inline">History</span>
+                    {conversations.length > 0 && (
+                      <span className="ml-1 px-1.5 py-0.5 rounded-full text-[10px] bg-amber-9/20 text-amber-9 border border-amber-9/30">
+                        {conversations.length}
+                      </span>
                     )}
                   </Button>
-                )}
+
+                  {!showPreview && (
+                    <Button
+                      variant="gold"
+                      size="sm"
+                      onClick={startNewChat}
+                      disabled={isLoading || isInitializing}
+                      data-testid="button-new-chat"
+                    >
+                      {isInitializing ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="mr-1"
+                          >
+                            <Sparkles className="w-4 h-4" />
+                          </motion.div>
+                          Loading...
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-4 h-4 mr-1" />
+                          New Chat
+                        </>
+                      )}
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardHeader>
             <CardContent className="p-0">
+              {showHistory && (
+                <div className="border-b border-gray-5/50 bg-gray-2/80 p-4 backdrop-blur-md">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <History className="w-4 h-4 text-amber-9" />
+                      <h3 className="text-sm font-semibold text-gray-12">Conversation History</h3>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 px-2 text-xs text-gray-11 hover:text-white"
+                      onClick={() => setShowHistory(false)}
+                      data-testid="button-close-history"
+                    >
+                      <X className="w-3.5 h-3.5 mr-1" /> Close
+                    </Button>
+                  </div>
+                  
+                  {isLoadingHistory ? (
+                    <div className="py-6 flex items-center justify-center text-xs text-gray-11 gap-2">
+                      <Sparkles className="w-3.5 h-3.5 animate-spin text-amber-9" />
+                      Loading your conversations...
+                    </div>
+                  ) : conversations.length === 0 ? (
+                    <div className="py-6 text-center text-xs text-gray-11">
+                      No saved conversations yet. Start chatting to save your readings!
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                      {conversations.map((convo) => {
+                        const isCurrent = convo.id === currentConversationId;
+                        const formattedDate = new Date(convo.updatedAt).toLocaleDateString(undefined, {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        });
+
+                        return (
+                          <div
+                            key={convo.id}
+                            onClick={() => loadConversation(convo)}
+                            className={`group flex items-center justify-between p-2.5 rounded-lg border text-left cursor-pointer transition-colors ${
+                              isCurrent 
+                                ? 'border-amber-9/50 bg-amber-9/10 text-amber-9'
+                                : 'border-white/5 bg-gray-a2 hover:bg-gray-a3 hover:border-white/10'
+                            }`}
+                            data-testid={`convo-item-${convo.id}`}
+                          >
+                            <div className="flex flex-col min-w-0 flex-1 pr-2">
+                              <span className="text-xs font-medium text-gray-12 truncate group-hover:text-amber-9 transition-colors">
+                                {convo.title || 'Astrology Reading'}
+                              </span>
+                              <span className="text-[10px] text-gray-10 flex items-center gap-1 mt-0.5">
+                                {formattedDate} • {convo.messages?.length || 0} messages
+                              </span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-7 w-7 text-gray-11 hover:text-red-400 opacity-60 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                              title="Delete conversation"
+                              onClick={(e) => deleteConversation(convo.id, e)}
+                              data-testid={`button-delete-convo-${convo.id}`}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div className={`${showPreview ? '' : 'h-96 overflow-y-auto custom-scrollbar'} p-6 space-y-4`}>
                 {showPreview ? (
                   <>

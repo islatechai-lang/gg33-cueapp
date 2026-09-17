@@ -1,4 +1,4 @@
-import { connectDB, UserModel, DailyEnergyModel, PersonalityInsightModel, type DBUser, type DBDailyEnergy, type DBPersonalityInsight } from "./db";
+import { connectDB, UserModel, DailyEnergyModel, PersonalityInsightModel, ChatConversationModel, type DBUser, type DBDailyEnergy, type DBPersonalityInsight, type DBChatConversation, type DBChatMessage } from "./db";
 import crypto from "crypto";
 
 export interface LessonProgress {
@@ -30,6 +30,12 @@ export interface IStorage {
   // Course Progress operations (in-memory)
   getCourseProgress(courseId: string): Promise<LessonProgress[]>;
   markLessonComplete(courseId: string, lessonId: string): Promise<void>;
+
+  // Chat Conversation operations
+  listConversations(odisId: string): Promise<DBChatConversation[]>;
+  getConversation(id: string): Promise<DBChatConversation | null>;
+  saveConversation(data: { id: string; odisId: string; title: string; messages: DBChatMessage[]; systemContext?: string }): Promise<DBChatConversation>;
+  deleteConversation(id: string, odisId: string): Promise<boolean>;
 }
 
 function generateOdisId(): string {
@@ -600,6 +606,125 @@ export class MongoStorage implements IStorage {
       this.progressStore.set(courseId, new Set());
     }
     this.progressStore.get(courseId)!.add(lessonId);
+  }
+
+  // Chat Conversation operations
+  async listConversations(odisId: string): Promise<DBChatConversation[]> {
+    const connected = await this.ensureConnected();
+    if (!connected) return [];
+
+    try {
+      const convos = await ChatConversationModel.find({ odisId }).sort({ updatedAt: -1 }).limit(30);
+      return convos.map(c => ({
+        id: c.id,
+        odisId: c.odisId,
+        title: c.title,
+        messages: c.messages.map((m: any) => ({
+          role: m.role,
+          content: m.content,
+          image: m.image ? {
+            previewUrl: m.image.previewUrl,
+            mimeType: m.image.mimeType,
+          } : undefined,
+          createdAt: m.createdAt,
+        })),
+        systemContext: c.systemContext || undefined,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+      }));
+    } catch (error) {
+      console.error("Error listing chat conversations:", error);
+      return [];
+    }
+  }
+
+  async getConversation(id: string): Promise<DBChatConversation | null> {
+    const connected = await this.ensureConnected();
+    if (!connected) return null;
+
+    try {
+      const c = await ChatConversationModel.findOne({ id });
+      if (!c) return null;
+
+      return {
+        id: c.id,
+        odisId: c.odisId,
+        title: c.title,
+        messages: c.messages.map((m: any) => ({
+          role: m.role,
+          content: m.content,
+          image: m.image ? {
+            previewUrl: m.image.previewUrl,
+            mimeType: m.image.mimeType,
+          } : undefined,
+          createdAt: m.createdAt,
+        })),
+        systemContext: c.systemContext || undefined,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+      };
+    } catch (error) {
+      console.error("Error getting chat conversation:", error);
+      return null;
+    }
+  }
+
+  async saveConversation(data: { id: string; odisId: string; title: string; messages: DBChatMessage[]; systemContext?: string }): Promise<DBChatConversation> {
+    const connected = await this.ensureConnected();
+    if (!connected) {
+      throw new Error("Database not connected");
+    }
+
+    try {
+      const c = await ChatConversationModel.findOneAndUpdate(
+        { id: data.id },
+        { 
+          $set: {
+            odisId: data.odisId,
+            title: data.title,
+            messages: data.messages,
+            ...(data.systemContext ? { systemContext: data.systemContext } : {}),
+            updatedAt: new Date(),
+          },
+          $setOnInsert: { createdAt: new Date() }
+        },
+        { upsert: true, new: true }
+      );
+
+      return {
+        id: c.id,
+        odisId: c.odisId,
+        title: c.title,
+        messages: c.messages.map((m: any) => ({
+          role: m.role,
+          content: m.content,
+          image: m.image ? {
+            previewUrl: m.image.previewUrl,
+            mimeType: m.image.mimeType,
+          } : undefined,
+          createdAt: m.createdAt,
+        })),
+        systemContext: c.systemContext || undefined,
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt,
+      };
+    } catch (error) {
+      console.error("Error saving chat conversation:", error);
+      throw error;
+    }
+  }
+
+  async deleteConversation(id: string, odisId: string): Promise<boolean> {
+    const connected = await this.ensureConnected();
+    if (!connected) return false;
+
+    try {
+      const result = await ChatConversationModel.deleteOne({ id, odisId });
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error("Error deleting chat conversation:", error);
+      return false;
+    }
   }
 }
 
