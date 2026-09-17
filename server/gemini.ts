@@ -395,16 +395,29 @@ function calculateDayOfBirthNumber(birthDate: Date): number {
   return reduceToSingleDigit(birthDate.getUTCDate(), true);
 }
 
+function calculatePersonalYearNumber(birthDate: Date): number {
+  const today = new Date();
+  const birthMonth = birthDate.getUTCMonth() + 1;
+  const birthDay = birthDate.getUTCDate();
+  const currentYear = today.getUTCFullYear();
+
+  return reduceToSingleDigit(birthMonth + birthDay + currentYear, true);
+}
+
+function calculatePersonalMonthNumber(birthDate: Date): number {
+  const today = new Date();
+  const personalYear = calculatePersonalYearNumber(birthDate);
+  const currentMonth = today.getUTCMonth() + 1;
+
+  return reduceToSingleDigit(personalYear + currentMonth, true);
+}
+
 function calculatePersonalDayNumber(birthDate: Date): number {
   const today = new Date();
-  const month = today.getUTCMonth() + 1;
-  const day = today.getUTCDate();
-  const year = today.getUTCFullYear();
+  const personalMonth = calculatePersonalMonthNumber(birthDate);
+  const currentDay = today.getUTCDate();
 
-  const lifePathNumber = calculateLifePathNumber(birthDate);
-  const universalDayNumber = reduceToSingleDigit(month + day + reduceToSingleDigit(year.toString().split('').reduce((sum, d) => sum + parseInt(d), 0), false), false);
-
-  return reduceToSingleDigit(lifePathNumber + universalDayNumber, true);
+  return reduceToSingleDigit(personalMonth + currentDay, true);
 }
 
 function calculateUniversalDayNumber(): number {
