@@ -59,11 +59,11 @@ export function Navigation() {
           <div className="flex items-center justify-between h-14 gap-4">
             {/* Logo Section - properly aligned */}
             <NavLink to="/" className="flex items-center gap-2.5 group flex-shrink-0" data-testid="link-logo">
-              <div className="w-9 h-9 rounded-lg overflow-hidden shadow-md group-hover:shadow-glow transition-shadow">
-                <img src="/images/logo.png?v=1" alt="GG33" className="w-full h-full object-cover" />
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-8 to-amber-10 flex items-center justify-center shadow-md shadow-amber-9/20 group-hover:shadow-glow transition-all">
+                <span className="text-4 font-black text-gray-1 tracking-tighter">N</span>
               </div>
               <div className="flex flex-col justify-center min-w-0">
-                <span className="text-3 font-semibold gradient-text leading-none">GG33</span>
+                <span className="text-3 font-semibold gradient-text leading-none">NumAstro</span>
               </div>
             </NavLink>
 

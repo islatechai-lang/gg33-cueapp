@@ -18,7 +18,7 @@ import { BirthChart } from '@/components/BirthChart';
 import { parseUTCDate } from '@shared/dateUtils';
 import { UpgradeModal } from '@/components/UpgradeModal';
 
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 // Simplified interpretive insights for premium feel
 const SUN_INSIGHTS: Record<string, string> = {
@@ -115,7 +115,7 @@ function getPlanetHouse(planetLongitude: number, ascendant: number): number {
   return Math.floor(diff / 30) + 1;
 }
 export default function BirthChartPage() {
-  const savedOdisId = typeof window !== 'undefined' ? localStorage.getItem(ODIS_ID_KEY) : null;
+  const savedOdisId = typeof window !== 'undefined' ? (localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id')) : null;
   const [activeTab, setActiveTab] = useState<'chart' | 'houses' | 'aspects' | 'energy'>('chart');
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 

@@ -17,33 +17,33 @@ export interface Course {
 
 export const courses: Course[] = [
   {
-    id: 'intro-gg33',
-    title: 'Introduction to GG33',
-    description: 'Learn the basics of combining Chinese Astrology with Numerology',
+    id: 'intro-numastro',
+    title: 'Introduction to NumAstro',
+    description: 'Learn the fundamentals of combining Chinese Astrology with Numerology',
     duration: '15 min',
     free: true,
     lessons: [
       {
         id: 'intro-1',
-        title: 'What is GG33?',
+        title: 'What is NumAstro?',
         duration: '3 min',
-        content: `GG33 is a unique system that combines the ancient wisdom of Chinese Astrology with the mathematical precision of Numerology to create a comprehensive understanding of human energy patterns.
+        content: `NumAstro is a comprehensive system that combines the ancient wisdom of Chinese Astrology with the mathematical precision of Numerology to create a profound understanding of human energy patterns.
 
-Created by Gary "The Numbers Guy," this system provides insights into personality traits, life purpose, compatibility, and optimal timing for important decisions.
+This system provides deep insights into personality traits, life purpose, relationship compatibility, and optimal timing for important decisions.
 
-The "33" in GG33 represents the Master Number, symbolizing the highest level of spiritual awareness and teaching ability. This system aims to help you master your own energy and understand the energies of others.`,
+NumAstro aims to help you master your own energy, decode cosmic cycles, and understand the energetic vibrations of yourself and others.`,
         keyPoints: [
-          'GG33 combines Chinese Astrology and Numerology',
-          'Created by Gary "The Numbers Guy"',
+          'NumAstro combines Chinese Astrology and Numerology',
           'Provides insights into personality, purpose, and compatibility',
-          '33 represents the Master Number of spiritual awareness'
+          'Decode personal and universal energy cycles for optimal timing',
+          'A modern framework for self-mastery and cosmic alignment'
         ]
       },
       {
         id: 'intro-2',
         title: 'The Two Pillars: Numerology & Chinese Astrology',
         duration: '3 min',
-        content: `GG33 stands on two powerful pillars of ancient wisdom:
+        content: `NumAstro stands on two powerful pillars of ancient wisdom:
 
 **Numerology** - The study of numbers and their spiritual significance. Your birth date contains powerful numbers that reveal your life path, personality traits, and destiny. Key numbers include your Life Path Number, Expression Number, and Personal Year.
 
@@ -691,9 +691,9 @@ You can also support your element by incorporating colors, foods, and activities
     lessons: [
       {
         id: 'compat-1',
-        title: 'Understanding Compatibility in GG33',
+        title: 'Understanding Compatibility in NumAstro',
         duration: '4 min',
-        content: `Compatibility in GG33 is measured through multiple factors, creating a comprehensive picture of how two energies interact.
+        content: `Compatibility in NumAstro is measured through multiple factors, creating a comprehensive picture of how two energies interact.
 
 **Key Compatibility Factors:**
 1. Life Path Number compatibility
@@ -804,7 +804,7 @@ Understanding elemental dynamics helps navigate emotional patterns in relationsh
         id: 'compat-5',
         title: 'Reading a Compatibility Report',
         duration: '4 min',
-        content: `When analyzing a GG33 compatibility report, look for:
+        content: `When analyzing a NumAstro compatibility report, look for:
 
 **Overall Score:** A percentage showing general harmony. Above 70% indicates strong natural compatibility.
 
@@ -1587,7 +1587,7 @@ A complete report synthesizes all elements into actionable guidance.`,
         id: 'adv-13',
         title: 'Integrating Numerology with Chinese Astrology',
         duration: '4 min',
-        content: `GG33's power comes from combining both systems:
+        content: `NumAstro's power comes from combining both systems:
 
 **Integration Points:**
 - Life Path + Zodiac Animal = Complete personality
@@ -1650,9 +1650,9 @@ Daily practice develops intuitive numerology sense.`,
       },
       {
         id: 'adv-15',
-        title: 'Becoming a GG33 Practitioner',
+        title: 'Becoming a NumAstro Practitioner',
         duration: '4 min',
-        content: `To master GG33 and guide others:
+        content: `To master NumAstro and guide others:
 
 **Knowledge Requirements:**
 - All core numerology calculations
@@ -1673,7 +1673,7 @@ Daily practice develops intuitive numerology sense.`,
 - Refer to professionals when needed
 
 **Your Journey:**
-GG33 is a path of self-discovery first. Master yourself before guiding others.
+NumAstro is a path of self-discovery first. Master yourself before guiding others.
 
 Congratulations on completing Advanced Numerology!`,
         keyPoints: [
@@ -2595,7 +2595,7 @@ Following this blueprint for even one complete 9-year cycle creates a compound e
         id: 'py-1',
         title: 'The 9-Year Cycle Explained',
         duration: '5 min',
-        content: `Life does not move in a straight line; it moves in waves. In GG33, we track these waves through the 9-year Universal and Personal cycles.
+        content: `Life does not move in a straight line; it moves in waves. In NumAstro, we track these waves through the 9-year Universal and Personal cycles.
 
 **How to Calculate Your Personal Year:**
 1. Your Day of Birth
@@ -2788,7 +2788,7 @@ The 6 year forces you to build a foundation strong enough to handle the harvest 
         id: 'py-9',
         title: 'Tracking Multiple Cycles Simultaneously',
         duration: '10 min',
-        content: `Mastery in GG33 requires tracking the "Triple Stack": Your Personal Year, Personal Month, and Personal Day simultaneously.
+        content: `Mastery in NumAstro requires tracking the "Triple Stack": Your Personal Year, Personal Month, and Personal Day simultaneously.
 
 **Reading the Triple Stack:**
 Imagine a slot machine with three wheels.
@@ -3473,7 +3473,7 @@ When bad energy is coming your way (e.g., a challenging year), you can "redirect
       },
       {
         id: 'mh-4',
-        title: 'The GG33 Master Mindset',
+        title: 'The NumAstro Master Mindset',
         duration: '15 min',
         content: `The final lesson in the Study Zone. Moving from a "Victim" of the numbers to a "Master" of the matrix.
 
@@ -3485,7 +3485,7 @@ When bad energy is coming your way (e.g., a challenging year), you can "redirect
 **The Path Forward:**
 You now have the keys to the kingdom. Use this wisdom to help yourself, build your family, and serve your community. The matrix is just a game of numbers. Once you know the rules, you can decide how to play.
 
-Welcome to the elite circle of GG33 practitioners.`,
+Welcome to the elite circle of NumAstro practitioners.`,
         keyPoints: [
           'Shift from being a victim to a master of path',
           'Timing is often more important than pure skill',

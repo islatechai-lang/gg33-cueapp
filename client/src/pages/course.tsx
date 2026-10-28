@@ -13,7 +13,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient, apiRequest } from '@/lib/queryClient';
 import { useWhopContext } from '@/context/WhopContext';
 
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 export default function Course() {
   const { courseId } = useParams<{ courseId: string }>();
@@ -22,7 +22,7 @@ export default function Course() {
   const course = getCourseById(courseId || '');
   const { basePath } = useWhopContext();
 
-  const savedOdisId = localStorage.getItem(ODIS_ID_KEY);
+  const savedOdisId = localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id');
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
     queryKey: ['/api/profile', savedOdisId],
     enabled: !!savedOdisId,

@@ -19,7 +19,7 @@ import {
   DreamInterpreterDialog, EnergyInsightsDialog, ColorologyDialog,
   VedicAstrologyDialog, AllAboutYouDialog, SaturnInsightsDialog
 } from '@/components/ExploreDialogs';
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 type FeatureType = 'trending' | 'best-days' | 'celebrity' | 'travel' | 'relationship' | 'career' | 'yearly-forecast' | 'monthly-forecast' | 'home-picker' | 'cars' | 'lucky-number' | 'letterology' | 'matrix-numbers' | 'cue-cards' | 'dream-interpreter' | 'energy-insights' | 'colorology' | 'vedic-astrology' | 'all-about-you' | 'saturn-insights' | null;
 
@@ -1096,7 +1096,7 @@ export default function Explore() {
   const [showProfilePrompt, setShowProfilePrompt] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  const savedOdisId = typeof window !== 'undefined' ? localStorage.getItem(ODIS_ID_KEY) : null;
+  const savedOdisId = typeof window !== 'undefined' ? (localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id')) : null;
 
   const { data: profileData, isLoading: isProfileLoading } = useQuery<ProfileData & { isPro?: boolean } | null>({
     queryKey: ['/api/profile', savedOdisId],

@@ -17,7 +17,7 @@ interface MembershipInfo {
   manageUrl: string | null;
 }
 
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 interface WhopUserData {
   profilePictureUrl: string | null;
@@ -29,7 +29,7 @@ export default function Home() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [pendingProfile, setPendingProfile] = useState<ProfileData | null>(null);
 
-  const savedOdisId = localStorage.getItem(ODIS_ID_KEY);
+  const savedOdisId = localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id');
   const [odisId, setOdisId] = useState<string | null>(savedOdisId);
 
   const { data: profileData, isLoading: isProfileLoading, isFetched: isProfileFetched } = useQuery({

@@ -188,7 +188,7 @@ export default function Cues() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const pageSize = 24;
 
-  const savedOdisId = localStorage.getItem('gg33-odis-id');
+  const savedOdisId = localStorage.getItem('numastro-odis-id') || localStorage.getItem('gg33-odis-id');
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
     queryKey: ['/api/profile', savedOdisId],
     enabled: !!savedOdisId,

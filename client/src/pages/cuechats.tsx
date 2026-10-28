@@ -213,7 +213,7 @@ export default function CueChats() {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const savedOdisId = localStorage.getItem('gg33-odis-id');
+  const savedOdisId = localStorage.getItem('numastro-odis-id') || localStorage.getItem('gg33-odis-id');
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
     queryKey: ['/api/profile', savedOdisId],
     enabled: !!savedOdisId,
@@ -386,7 +386,7 @@ export default function CueChats() {
       return;
     }
     
-    const odisId = localStorage.getItem('gg33-odis-id');
+    const odisId = localStorage.getItem('numastro-odis-id') || localStorage.getItem('gg33-odis-id');
     
     if (!odisId) {
       setError('Please create your profile first to use CueChats');

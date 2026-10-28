@@ -1,4 +1,4 @@
-// GG33 Comprehensive Numerology & Astrology Calculation System
+// NumAstro Comprehensive Numerology & Astrology Calculation System
 
 // ============================================
 // TYPES & INTERFACES

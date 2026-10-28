@@ -2998,7 +2998,7 @@ export async function registerRoutes(
           </div>
           
           <p style="color: #888; font-size: 12px; margin-top: 30px;">
-            This notification was sent from GG33 Pro Upgrade System
+            This notification was sent from NumAstro Pro Upgrade System
           </p>
         </div>
       `;
@@ -3006,7 +3006,7 @@ export async function registerRoutes(
       const { data, error } = await resend.emails.send({
         from: fromEmail,
         to: notificationEmail,
-        subject: `GG33 Pro Upgrade Click - ${username || fullName || userId || 'Unknown User'}`,
+        subject: `NumAstro Pro Upgrade Click - ${username || fullName || userId || 'Unknown User'}`,
         html: emailHtml,
       });
 

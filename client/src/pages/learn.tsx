@@ -11,13 +11,13 @@ import { BookOpen, Play, Clock, Star, Lock, Sparkles } from 'lucide-react';
 import { courses } from '@/lib/courses-data';
 import { useWhopContext } from '@/context/WhopContext';
 
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 export default function Learn() {
   const { basePath } = useWhopContext();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  const savedOdisId = localStorage.getItem(ODIS_ID_KEY);
+  const savedOdisId = localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id');
   const { data: profileData } = useQuery<{ isPro?: boolean }>({
     queryKey: ['/api/profile', savedOdisId],
     enabled: !!savedOdisId,
@@ -37,7 +37,7 @@ export default function Learn() {
               Study Zone
             </Badge>
             <h1 className="text-6 md:text-7 font-semibold mb-4">
-              <span className="gradient-text">Learn</span> the GG33 System
+              <span className="gradient-text">Learn</span> the NumAstro System
             </h1>
             <p className="text-gray-11 text-3 max-w-2xl mx-auto">
               Master the art of using numerology and astrology for life decisions through our structured courses.
@@ -135,7 +135,7 @@ export default function Learn() {
                   Unlock All Courses
                 </h3>
                 <p className="text-gray-11 text-2 mb-6 max-w-md mx-auto">
-                  Upgrade to Pro to access all premium courses and become a GG33 master.
+                  Upgrade to Pro to access all premium courses and become a NumAstro master.
                 </p>
                 <Button
                   variant="gold"

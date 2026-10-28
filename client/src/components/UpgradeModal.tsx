@@ -188,7 +188,7 @@ export function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
                 <Crown className="w-14 h-14 text-white" />
               </div>
               
-              <h2 className="text-7 font-bold text-white mb-2">GG33 Pro</h2>
+              <h2 className="text-7 font-bold text-white mb-2">NumAstro Pro</h2>
               <p className="text-3 text-gray-11 mb-8">Unlock everything</p>
               
               <div className="flex items-center justify-center gap-3 mb-3">

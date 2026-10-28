@@ -1,4 +1,4 @@
-# GG33 Frosted UI Design Guidelines
+# NumAstro Frosted UI Design Guidelines
 
 ## Design Approach
 **Frosted UI Design System** - A glass morphism-based design language inspired by Whop's design system, featuring 12-step Radix color scales, subtle gradients, and modern visual hierarchy optimized for dark mode.

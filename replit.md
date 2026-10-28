@@ -1,8 +1,8 @@
-# GG33 - Cue Your Life (Whop App)
+# NumAstro - Numerology & Astrology (Whop App)
 
 ## Overview
 
-GG33 is a spiritual numerology and Chinese astrology web application that helps users make informed decisions about relationships, business, and life events by combining Western numerology calculations with Chinese zodiac systems. The platform provides personalized energy profiles, compatibility analysis, daily energy readings, and access to a database of 22,000+ pre-calculated "cues" (brands, locations, people, and events with their energy signatures).
+NumAstro is a spiritual numerology and Chinese astrology web application that helps users make informed decisions about relationships, business, and life events by combining Western numerology calculations with Chinese zodiac systems. The platform provides personalized energy profiles, compatibility analysis, daily energy readings, and access to a database of 22,000+ pre-calculated "cues" (brands, locations, people, and events with their energy signatures).
 
 **Whop Integration**: This app is designed to work as a Whop app with proper authentication and views for both customers (Experience View) and admins (Dashboard View).
 

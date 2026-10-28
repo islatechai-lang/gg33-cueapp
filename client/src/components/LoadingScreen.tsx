@@ -8,7 +8,7 @@ interface LoadingScreenProps {
   profile?: ProfileData;
 }
 
-const PERSONALITY_CACHE_KEY = 'gg33-personality-insights';
+const PERSONALITY_CACHE_KEY = 'numastro-personality-insights';
 
 const loadingStages = [
   { message: 'Mapping your numerology grid...', icon: Star, duration: 800 },

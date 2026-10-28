@@ -51,6 +51,7 @@ export default function Compatibility() {
 
   useEffect(() => {
     if (meData?.user?.odisId) {
+      localStorage.setItem('numastro-odis-id', meData.user.odisId);
       localStorage.setItem('gg33-odis-id', meData.user.odisId);
     }
   }, [meData]);

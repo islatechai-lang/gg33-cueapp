@@ -192,13 +192,13 @@ function MaturityDetail({ content }: { content: MaturityContent }) {
   );
 }
 
-const ODIS_ID_KEY = 'gg33-odis-id';
+const ODIS_ID_KEY = 'numastro-odis-id';
 
 export default function NumberDetailPage() {
   const [, setLocation] = useLocation();
   const [type, setType] = useState<NumberType | null>(null);
   const [number, setNumber] = useState<number | null>(null);
-  const savedOdisId = localStorage.getItem(ODIS_ID_KEY);
+  const savedOdisId = localStorage.getItem(ODIS_ID_KEY) || localStorage.getItem('gg33-odis-id');
 
   const { data: profileData, isLoading: isProfileLoading } = useQuery({
     queryKey: ['/api/profile', savedOdisId],

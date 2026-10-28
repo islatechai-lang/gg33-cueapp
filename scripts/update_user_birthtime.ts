@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { UserModel, connectDB } from "../server/db";
 
 /**
- * Script to update a user's birth time in the GG33 MongoDB database.
+ * Script to update a user's birth time in the NumAstro MongoDB database.
  * 
  * Usage:
  * 1. Ensure MONGODB_URI is set in your environment/secrets.
