@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as Sonner } from "sonner";
 import { WhopProvider } from "@/context/WhopContext";
+import { ThemeProvider, useTheme } from "@/context/ThemeContext";
 import Home from "@/pages/home";
 import Compatibility from "@/pages/compatibility";
 import Cues from "@/pages/cues";
@@ -97,16 +98,26 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const { theme } = useTheme();
+
+  return (
+    <div className={`${theme} min-h-screen bg-background text-foreground transition-colors duration-200`}>
+      <Router />
+      <Toaster />
+      <Sonner position="top-right" theme={theme} />
+    </div>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <div className="dark min-h-screen bg-background">
-          <Router />
-        </div>
-        <Toaster />
-        <Sonner position="top-right" theme="dark" />
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <AppContent />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

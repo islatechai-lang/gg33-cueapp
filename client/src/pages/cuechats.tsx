@@ -644,7 +644,7 @@ export default function CueChats() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 px-2 text-xs text-gray-11 hover:text-white"
+                      className="h-7 px-2 text-xs text-gray-11 hover:text-gray-12"
                       onClick={() => setShowHistory(false)}
                       data-testid="button-close-history"
                     >
@@ -819,7 +819,7 @@ export default function CueChats() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-gray-11 hover:text-white rounded-full ml-1"
+                        className="h-6 w-6 text-gray-11 hover:text-gray-12 rounded-full ml-1"
                         onClick={() => setSelectedImage(null)}
                       >
                         <X className="w-3.5 h-3.5" />

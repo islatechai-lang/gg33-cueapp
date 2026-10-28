@@ -276,6 +276,237 @@
   --elevate-2: rgba(255,255,255, .09);
 }
 
+html.light, body.light, .light {
+  --button-outline: rgba(0,0,0, .08);
+  --badge-outline: rgba(0,0,0, .06);
+  --opaque-button-border-intensity: -9;
+  --elevate-1: rgba(0,0,0, .03);
+  --elevate-2: rgba(0,0,0, .06);
+
+  --background: 0 0% 98%;
+  --foreground: 0 0% 10%;
+  --border: 0 0% 89%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+  --card-border: 0 0% 90%;
+  --sidebar: 0 0% 98.5%;
+  --sidebar-foreground: 0 0% 15%;
+  --sidebar-border: 0 0% 90%;
+  --sidebar-primary: 38 92% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 0 0% 94%;
+  --sidebar-accent-foreground: 0 0% 10%;
+  --sidebar-ring: 38 92% 48%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 10%;
+  --popover-border: 0 0% 89%;
+
+  --primary: 38 92% 48%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 0 0% 94%;
+  --secondary-foreground: 0 0% 15%;
+
+  --muted: 0 0% 94.5%;
+  --muted-foreground: 0 0% 40%;
+
+  --accent: 0 0% 93.5%;
+  --accent-foreground: 0 0% 10%;
+
+  --destructive: 0 78% 52%;
+  --destructive-foreground: 0 0% 98%;
+
+  --success: 142 72% 38%;
+  --success-foreground: 0 0% 98%;
+
+  --warning: 38 92% 48%;
+  --warning-foreground: 0 0% 10%;
+
+  --input: 0 0% 89%;
+  --ring: 38 92% 48%;
+
+  --chart-1: 38 92% 48%;
+  --chart-2: 168 76% 36%;
+  --chart-3: 270 60% 48%;
+  --chart-4: 16 100% 46%;
+  --chart-5: 280 87% 44%;
+
+  --gray-1: 0 0% 99%;
+  --gray-2: 0 0% 97.5%;
+  --gray-3: 0 0% 94%;
+  --gray-4: 0 0% 90%;
+  --gray-5: 0 0% 86%;
+  --gray-6: 0 0% 80%;
+  --gray-7: 0 0% 72%;
+  --gray-8: 0 0% 60%;
+  --gray-9: 0 0% 45%;
+  --gray-10: 0 0% 36%;
+  --gray-11: 0 0% 28%;
+  --gray-12: 0 0% 9%;
+  --gray-a1: 0 0% 0% / 0.02;
+  --gray-a2: 0 0% 0% / 0.04;
+  --gray-a3: 0 0% 0% / 0.07;
+  --gray-a4: 0 0% 0% / 0.11;
+  --gray-a5: 0 0% 0% / 0.16;
+
+  --amber-1: 38 100% 98%;
+  --amber-2: 38 95% 95%;
+  --amber-3: 38 90% 89%;
+  --amber-4: 38 85% 82%;
+  --amber-5: 38 80% 74%;
+  --amber-6: 38 85% 64%;
+  --amber-7: 38 90% 53%;
+  --amber-8: 38 95% 44%;
+  --amber-9: 38 92% 44%;
+  --amber-10: 36 95% 38%;
+  --amber-11: 30 95% 30%;
+  --amber-12: 26 95% 18%;
+  --amber-a1: 38 92% 48% / 0.05;
+  --amber-a2: 38 92% 48% / 0.10;
+  --amber-a3: 38 92% 48% / 0.16;
+  --amber-a4: 38 92% 48% / 0.24;
+  --amber-a5: 38 92% 48% / 0.35;
+
+  --blue-1: 210 100% 98%;
+  --blue-2: 210 95% 95%;
+  --blue-3: 210 90% 89%;
+  --blue-4: 210 85% 82%;
+  --blue-5: 210 80% 73%;
+  --blue-6: 210 85% 63%;
+  --blue-7: 210 90% 51%;
+  --blue-8: 210 95% 43%;
+  --blue-9: 212 95% 45%;
+  --blue-10: 214 95% 38%;
+  --blue-11: 216 95% 30%;
+  --blue-12: 218 95% 17%;
+  --blue-a1: 212 95% 45% / 0.05;
+  --blue-a2: 212 95% 45% / 0.10;
+  --blue-a3: 212 95% 45% / 0.16;
+  --blue-a4: 212 95% 45% / 0.24;
+  --blue-a5: 212 95% 45% / 0.35;
+
+  --green-1: 145 80% 98%;
+  --green-2: 145 70% 94%;
+  --green-3: 145 65% 88%;
+  --green-4: 145 60% 80%;
+  --green-5: 146 55% 70%;
+  --green-6: 148 55% 58%;
+  --green-7: 150 60% 46%;
+  --green-8: 152 70% 36%;
+  --green-9: 151 75% 32%;
+  --green-10: 151 80% 26%;
+  --green-11: 151 85% 20%;
+  --green-12: 152 90% 13%;
+  --green-a1: 151 75% 32% / 0.05;
+  --green-a2: 151 75% 32% / 0.10;
+  --green-a3: 151 75% 32% / 0.16;
+  --green-a4: 151 75% 32% / 0.24;
+  --green-a5: 151 75% 32% / 0.35;
+
+  --red-1: 0 80% 98%;
+  --red-2: 0 70% 95%;
+  --red-3: 0 65% 90%;
+  --red-4: 0 60% 83%;
+  --red-5: 0 55% 75%;
+  --red-6: 0 55% 66%;
+  --red-7: 0 60% 55%;
+  --red-8: 0 70% 46%;
+  --red-9: 0 72% 44%;
+  --red-10: 0 75% 38%;
+  --red-11: 0 80% 32%;
+  --red-12: 0 85% 18%;
+
+  --orange-1: 24 100% 98%;
+  --orange-2: 24 95% 95%;
+  --orange-3: 24 90% 89%;
+  --orange-4: 24 85% 82%;
+  --orange-5: 24 80% 74%;
+  --orange-6: 24 85% 64%;
+  --orange-7: 24 90% 53%;
+  --orange-8: 24 95% 45%;
+  --orange-9: 24 95% 46%;
+  --orange-10: 24 95% 40%;
+  --orange-11: 24 95% 32%;
+  --orange-12: 24 95% 18%;
+  --orange-a1: 24 95% 46% / 0.05;
+  --orange-a2: 24 95% 46% / 0.10;
+  --orange-a3: 24 95% 46% / 0.16;
+  --orange-a4: 24 95% 46% / 0.24;
+  --orange-a5: 24 95% 46% / 0.35;
+
+  --pink-1: 330 100% 98%;
+  --pink-2: 330 90% 95%;
+  --pink-3: 330 85% 90%;
+  --pink-4: 330 80% 83%;
+  --pink-5: 330 75% 75%;
+  --pink-6: 330 75% 65%;
+  --pink-7: 330 75% 55%;
+  --pink-8: 330 80% 46%;
+  --pink-9: 330 80% 46%;
+  --pink-10: 330 85% 38%;
+  --pink-11: 330 90% 30%;
+  --pink-12: 330 95% 18%;
+  --pink-a1: 330 80% 46% / 0.05;
+  --pink-a2: 330 80% 46% / 0.10;
+  --pink-a3: 330 80% 46% / 0.16;
+  --pink-a4: 330 80% 46% / 0.24;
+  --pink-a5: 330 80% 46% / 0.35;
+
+  --cyan-1: 190 100% 98%;
+  --cyan-2: 190 90% 94%;
+  --cyan-3: 190 85% 88%;
+  --cyan-4: 190 80% 80%;
+  --cyan-5: 190 75% 70%;
+  --cyan-6: 190 75% 60%;
+  --cyan-7: 190 80% 48%;
+  --cyan-8: 190 85% 40%;
+  --cyan-9: 190 85% 42%;
+  --cyan-10: 190 90% 34%;
+  --cyan-11: 190 95% 26%;
+  --cyan-12: 190 100% 16%;
+  --cyan-a1: 190 85% 42% / 0.05;
+  --cyan-a2: 190 85% 42% / 0.10;
+  --cyan-a3: 190 85% 42% / 0.16;
+  --cyan-a4: 190 85% 42% / 0.24;
+  --cyan-a5: 190 85% 42% / 0.35;
+
+  --teal-1: 165 100% 98%;
+  --teal-2: 165 90% 94%;
+  --teal-3: 165 85% 88%;
+  --teal-4: 165 80% 80%;
+  --teal-5: 165 75% 70%;
+  --teal-6: 165 75% 58%;
+  --teal-7: 165 80% 46%;
+  --teal-8: 165 85% 36%;
+  --teal-9: 165 80% 38%;
+  --teal-10: 165 85% 30%;
+  --teal-11: 165 90% 22%;
+  --teal-12: 165 100% 14%;
+  --teal-a1: 165 80% 38% / 0.05;
+  --teal-a2: 165 80% 38% / 0.10;
+  --teal-a3: 165 80% 38% / 0.16;
+  --teal-a4: 165 80% 38% / 0.24;
+  --teal-a5: 165 80% 38% / 0.35;
+
+  --violet-1: 270 100% 98%;
+  --violet-2: 270 90% 96%;
+  --violet-3: 270 85% 91%;
+  --violet-4: 270 80% 84%;
+  --violet-5: 270 75% 76%;
+  --violet-6: 270 75% 66%;
+  --violet-7: 270 75% 55%;
+  --violet-8: 270 80% 45%;
+  --violet-9: 270 75% 48%;
+  --violet-10: 270 80% 40%;
+  --violet-11: 270 90% 32%;
+  --violet-12: 270 100% 18%;
+  --violet-a1: 270 75% 48% / 0.05;
+  --violet-a2: 270 75% 48% / 0.10;
+  --violet-a3: 270 75% 48% / 0.16;
+  --violet-a4: 270 75% 48% / 0.24;
+  --violet-a5: 270 75% 48% / 0.35;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -347,6 +578,37 @@
 
   .frosted-border {
     border: 1px solid hsl(var(--gray-5) / 0.5);
+  }
+
+  .light .glass {
+    background: hsl(0 0% 100% / 0.88);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--gray-a4));
+  }
+
+  .light .glass-hover:hover {
+    background: hsl(0 0% 100% / 0.98);
+    border-color: hsl(var(--gray-a5));
+  }
+
+  .light .frosted-card {
+    background: hsl(0 0% 100% / 0.88);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--gray-a3));
+    box-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  .light .frosted-surface {
+    background: hsl(0 0% 100% / 0.92);
+    backdrop-filter: blur(20px);
+  }
+
+  .light .frosted-border {
+    border: 1px solid hsl(var(--gray-a4));
+  }
+
+  .light .shadow-glow {
+    box-shadow: 0 0 35px hsl(var(--amber-a3));
   }
 
   .no-default-hover-elevate {}

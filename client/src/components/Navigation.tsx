@@ -13,9 +13,12 @@ import {
   Menu,
   X,
   Crown,
-  Stars
+  Stars,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useTheme } from '@/context/ThemeContext';
 
 interface MembershipInfo {
   hasMembership: boolean;
@@ -37,6 +40,7 @@ const navItems = [
 export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const { data: membership } = useQuery<MembershipInfo>({
     queryKey: ['/api/membership'],
@@ -97,6 +101,18 @@ export function Navigation() {
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-2 flex-shrink-0">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleTheme}
+                title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+                className="text-gray-11 hover:text-gray-12 hover:bg-gray-a3 rounded-lg"
+                data-testid="button-theme-toggle"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-9" /> : <Moon className="w-4 h-4 text-blue-9" />}
+              </Button>
+
               {isPro ? (
                 <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-a3 border border-amber-9/30">
                   <Crown className="w-4 h-4 text-amber-9" />
@@ -169,6 +185,28 @@ export function Navigation() {
                     Get Pro
                   </Button>
                 )}
+
+                <div className="pt-3 mt-2 border-t border-gray-5/40 flex items-center justify-between px-2">
+                  <span className="text-xs text-gray-11 font-medium">Theme Mode</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={toggleTheme}
+                    className="flex items-center gap-2 text-xs text-gray-12 hover:bg-gray-a3 px-3 py-1.5 rounded-md"
+                  >
+                    {theme === 'dark' ? (
+                      <>
+                        <Sun className="w-4 h-4 text-amber-9" />
+                        <span>Light Mode</span>
+                      </>
+                    ) : (
+                      <>
+                        <Moon className="w-4 h-4 text-blue-9" />
+                        <span>Dark Mode</span>
+                      </>
+                    )}
+                  </Button>
+                </div>
               </div>
             </div>
           )}

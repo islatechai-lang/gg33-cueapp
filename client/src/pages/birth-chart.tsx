@@ -470,7 +470,7 @@ export default function BirthChartPage() {
                           <Sun className="w-5 h-5 text-amber-9" />
                         </div>
                         <div>
-                          <h4 className="text-base font-black text-white flex items-center gap-1.5">
+                          <h4 className="text-base font-black text-gray-12 flex items-center gap-1.5">
                             Sun in {chartData.planets[0]?.sign} — Core Identity
                           </h4>
                           <p className="text-sm text-gray-11 leading-relaxed mt-1">
@@ -484,7 +484,7 @@ export default function BirthChartPage() {
                           <Moon className="w-5 h-5 text-blue-400" />
                         </div>
                         <div>
-                          <h4 className="text-base font-black text-white flex items-center gap-1.5">
+                          <h4 className="text-base font-black text-gray-12 flex items-center gap-1.5">
                             Moon in {chartData.planets[1]?.sign} — Emotional Inner Self
                           </h4>
                           <p className="text-sm text-gray-11 leading-relaxed mt-1">
@@ -498,7 +498,7 @@ export default function BirthChartPage() {
                           <Compass className="w-5 h-5 text-purple-400" />
                         </div>
                         <div>
-                          <h4 className="text-base font-black text-white flex items-center gap-1.5">
+                          <h4 className="text-base font-black text-gray-12 flex items-center gap-1.5">
                             Rising (Ascendant) in {chartData.ascendantSign} — Outer Persona
                           </h4>
                           <p className="text-sm text-gray-11 leading-relaxed mt-1">
@@ -530,7 +530,7 @@ export default function BirthChartPage() {
               {activeTab === 'houses' && (
                 <div className="space-y-6 animate-fade-in">
                   <div className="text-left space-y-1">
-                    <h2 className="text-4 font-black text-white">Your House Placements</h2>
+                    <h2 className="text-4 font-black text-gray-12">Your House Placements</h2>
                     <p className="text-sm text-gray-11">
                       Houses map the areas of your life where planetary energies play out. Here is where your planets reside:
                     </p>
@@ -550,7 +550,7 @@ export default function BirthChartPage() {
                                 <HouseIcon className="w-5 h-5" />
                               </div>
                               <div>
-                                <CardTitle className="text-base font-black text-white">{hDesc.name}</CardTitle>
+                                <CardTitle className="text-base font-black text-gray-12">{hDesc.name}</CardTitle>
                                 <CardDescription className="text-sm text-gray-11 leading-relaxed mt-0.5">{hDesc.meaning}</CardDescription>
                               </div>
                             </div>
@@ -571,7 +571,7 @@ export default function BirthChartPage() {
                                       {planet.glyph}
                                     </span>
                                     <div>
-                                      <span className="font-bold text-white uppercase tracking-wider text-xs mr-1.5">{planet.name} in {planet.sign}:</span>
+                                      <span className="font-bold text-gray-12 uppercase tracking-wider text-xs mr-1.5">{planet.name} in {planet.sign}:</span>
                                       <span className="text-gray-11 leading-relaxed">
                                         {PLANET_IN_HOUSE_INTERPRETATIONS[planet.name] || 'Brings its unique cosmic essence and energy pattern directly into this domain.'}
                                       </span>
@@ -622,7 +622,7 @@ export default function BirthChartPage() {
               {activeTab === 'aspects' && (
                 <div className="space-y-6 animate-fade-in">
                   <div className="text-left space-y-1">
-                    <h2 className="text-4 font-black text-white">Astrological Aspect Dynamics</h2>
+                    <h2 className="text-4 font-black text-gray-12">Astrological Aspect Dynamics</h2>
                     <p className="text-sm text-gray-11">
                       Aspects represent the geometry and mathematical angles formed between planets. They show where your energies cooperate or experience creative friction:
                     </p>
@@ -638,7 +638,7 @@ export default function BirthChartPage() {
                           }`}>
                             {type === 'conjunction' ? '☌' : type === 'sextile' ? '⚹' : type === 'square' ? '□' : type === 'trine' ? '△' : '☍'}
                           </div>
-                          <h4 className="text-sm font-black uppercase text-white tracking-wider">{type}</h4>
+                          <h4 className="text-sm font-black uppercase text-gray-12 tracking-wider">{type}</h4>
                           <Badge variant="outline" className="my-1.5 text-xs font-bold uppercase tracking-tight">{value.type}</Badge>
                         </div>
                         <p className="text-xs text-gray-11 mt-1.5 leading-relaxed">{value.desc}</p>
@@ -648,7 +648,7 @@ export default function BirthChartPage() {
 
                   <Card variant="frosted">
                     <CardHeader className="border-b border-gray-a3 pb-4">
-                      <CardTitle className="text-base font-black text-white">Your Personal Aspects Breakdown</CardTitle>
+                      <CardTitle className="text-base font-black text-gray-12">Your Personal Aspects Breakdown</CardTitle>
                       <CardDescription className="text-sm text-gray-11">
                         Listed in order of exactness (smallest orb value representing strongest connection).
                       </CardDescription>
@@ -662,7 +662,7 @@ export default function BirthChartPage() {
                                 <span style={{ color: PLANET_COLORS[aspect.planet1] }} className="text-sm font-bold">
                                   {PLANET_GLYPHS[aspect.planet1]}
                                 </span>
-                                <span className="font-bold text-white">{aspect.planet1}</span>
+                                <span className="font-bold text-gray-12">{aspect.planet1}</span>
                                 <span className={`px-2 py-0.5 rounded text-xs font-black uppercase ${
                                   aspect.type === 'conjunction' ? 'bg-amber-9/10 text-amber-11 border border-amber-9/20' :
                                   aspect.harmonious ? 'bg-blue-500/10 text-blue-11 border border-blue-500/20' :
@@ -670,7 +670,7 @@ export default function BirthChartPage() {
                                 }`}>
                                   {aspect.symbol} {aspect.type}
                                 </span>
-                                <span className="font-bold text-white">{aspect.planet2}</span>
+                                <span className="font-bold text-gray-12">{aspect.planet2}</span>
                                 <span style={{ color: PLANET_COLORS[aspect.planet2] }} className="text-sm font-bold">
                                   {PLANET_GLYPHS[aspect.planet2]}
                                 </span>
@@ -697,7 +697,7 @@ export default function BirthChartPage() {
                         setActiveTab('houses');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-white bg-transparent"
+                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-gray-12 bg-transparent"
                     >
                       <span>←</span>
                       Back
@@ -721,7 +721,7 @@ export default function BirthChartPage() {
               {activeTab === 'energy' && elementAndModalityStats && (
                 <div className="space-y-6 animate-fade-in">
                   <div className="text-left space-y-1">
-                    <h2 className="text-4 font-black text-white">Astrological Element & Modality Balance</h2>
+                    <h2 className="text-4 font-black text-gray-12">Astrological Element & Modality Balance</h2>
                     <p className="text-sm text-gray-11">
                       Astrology divides signs into four elements (Fire, Earth, Air, Water) and three modalities (Cardinal, Fixed, Mutable). This shows your dominant energetic temperament:
                     </p>
@@ -731,7 +731,7 @@ export default function BirthChartPage() {
                     {/* Elements Breakdown */}
                     <Card variant="frosted">
                       <CardHeader className="border-b border-gray-a3 pb-4">
-                        <CardTitle className="text-base font-black text-white flex items-center gap-2">
+                        <CardTitle className="text-base font-black text-gray-12 flex items-center gap-2">
                           <Globe className="w-4 h-4 text-amber-9" />
                           Elements (Your Temperament)
                         </CardTitle>
@@ -746,7 +746,7 @@ export default function BirthChartPage() {
 
                           return (
                             <div key={el} className="space-y-1.5 text-sm">
-                              <div className="flex justify-between font-bold text-white">
+                              <div className="flex justify-between font-bold text-gray-12">
                                 <span>{el}</span>
                                 <span className="text-gray-11">{count} / 10 ({percent}%)</span>
                               </div>
@@ -762,7 +762,7 @@ export default function BirthChartPage() {
                     {/* Modalities Breakdown */}
                     <Card variant="frosted">
                       <CardHeader className="border-b border-gray-a3 pb-4">
-                        <CardTitle className="text-base font-black text-white flex items-center gap-2">
+                        <CardTitle className="text-base font-black text-gray-12 flex items-center gap-2">
                           <Zap className="w-4 h-4 text-orange-500" />
                           Modalities (Your Action Style)
                         </CardTitle>
@@ -772,7 +772,7 @@ export default function BirthChartPage() {
                           const percent = (count / 10) * 100;
                           return (
                             <div key={mod} className="space-y-1.5 text-sm">
-                              <div className="flex justify-between font-bold text-white">
+                              <div className="flex justify-between font-bold text-gray-12">
                                 <span>{mod}</span>
                                 <span className="text-gray-11">{count} / 10 ({percent}%)</span>
                               </div>
@@ -789,7 +789,7 @@ export default function BirthChartPage() {
                   {/* Dominant Element Insight */}
                   <Card variant="glow">
                     <CardHeader className="border-b border-gray-a3 pb-4">
-                      <CardTitle className="text-base font-black text-white flex items-center gap-2">
+                      <CardTitle className="text-base font-black text-gray-12 flex items-center gap-2">
                         <Sparkles className="w-5 h-5 text-amber-9 animate-pulse" />
                         Dominant Energy: {elementAndModalityStats.dominantElement}
                       </CardTitle>
@@ -808,7 +808,7 @@ export default function BirthChartPage() {
                         setActiveTab('aspects');
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
-                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-white bg-transparent"
+                      className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm text-gray-11 border-gray-a3 hover:text-gray-12 bg-transparent"
                     >
                       <span>←</span>
                       Back to Aspects
